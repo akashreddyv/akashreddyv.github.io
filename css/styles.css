@@ -480,6 +480,8 @@ nav {
 .sc-discord:hover     { box-shadow: 0 20px 50px rgba(88,101,242,.18); }
 .sc-threads::before   { background: linear-gradient(135deg, rgba(255,255,255,.04), transparent); }
 .sc-threads:hover     { box-shadow: 0 20px 50px rgba(255,255,255,.07); }
+.sc-facebook::before  { background: linear-gradient(135deg, rgba(10,102,194,.14), transparent); }
+.sc-facebook::hover    { box-shadow: 0 20px 50px rgba(10,102,194,.18); }
 
 .social-icon   { width: 46px; height: 46px; border-radius: 12px; display: flex; align-items: center; justify-content: center; }
 .social-name   { font-family: var(--font-display); font-size: 18px; color: var(--white); }
