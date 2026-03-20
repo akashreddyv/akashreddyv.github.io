@@ -1,0 +1,606 @@
+/* ================================================================
+   style.css — All styles for Akash Reddy V's personal website
+   
+   SECTIONS:
+   1.  CSS Variables (colors, fonts)
+   2.  Reset & Base
+   3.  Custom Cursor
+   4.  Navigation
+   5.  Page System (show/hide logic)
+   6.  Shared / Reusable Components
+   7.  Home Page
+   8.  Personal Page
+   9.  Professional Page
+   10. Projects Page
+   11. Socials Page
+   12. Contact Page
+   13. Footer
+   14. Animations
+   15. Responsive (mobile)
+================================================================ */
+
+
+/* ----------------------------------------------------------------
+   1. CSS VARIABLES
+   Change these to restyle the whole site at once.
+---------------------------------------------------------------- */
+:root {
+  --bg:       #0a0a0a;   /* Main background          */
+  --surface:  #111111;   /* Slightly lighter bg       */
+  --card:     #161616;   /* Card backgrounds          */
+  --border:   #242424;   /* Borders / dividers        */
+  --accent:   #e8c97e;   /* Gold highlight color      */
+  --text:     #f0ece4;   /* Main body text            */
+  --muted:    #888888;   /* Secondary / dimmed text   */
+  --white:    #ffffff;
+
+  --font-display: 'Playfair Display', serif;
+  --font-body:    'DM Sans', sans-serif;
+}
+
+
+/* ----------------------------------------------------------------
+   2. RESET & BASE
+---------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-weight: 300;
+  overflow-x: hidden;
+  cursor: none;
+  min-height: 100vh;
+}
+
+/* Grain texture overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.025;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+
+/* ----------------------------------------------------------------
+   3. CUSTOM CURSOR
+---------------------------------------------------------------- */
+.cursor {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  background: var(--accent);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.2s ease, height 0.2s ease;
+}
+
+.cursor-ring {
+  position: fixed;
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(232, 201, 126, 0.35);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: width 0.25s ease, height 0.25s ease;
+}
+
+.cursor.hover  { width: 16px;  height: 16px; }
+.cursor-ring.hover { width: 54px; height: 54px; }
+
+
+/* ----------------------------------------------------------------
+   4. NAVIGATION
+---------------------------------------------------------------- */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 60px;
+  height: 72px;
+  background: rgba(10, 10, 10, 0.94);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: none;
+  cursor: none;
+  letter-spacing: 0.02em;
+}
+
+.nav-links {
+  display: flex;
+  gap: 4px;
+  list-style: none;
+}
+
+.nav-links button {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  border-radius: 2px;
+  cursor: none;
+  transition: color 0.25s, background 0.25s;
+}
+
+.nav-links button:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.nav-links button.active {
+  color: var(--accent);
+  background: rgba(232, 201, 126, 0.08);
+}
+
+/* Mobile hamburger */
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: none;
+  padding: 4px;
+}
+
+.nav-hamburger span {
+  display: block;
+  width: 22px;
+  height: 1px;
+  background: var(--muted);
+  transition: all 0.3s;
+}
+
+
+/* ----------------------------------------------------------------
+   5. PAGE SYSTEM
+   Pages are loaded into #page-container by main.js.
+   .page-content wraps each page's HTML.
+---------------------------------------------------------------- */
+#page-container {
+  min-height: calc(100vh - 72px);
+  margin-top: 72px;
+}
+
+.page-content {
+  animation: pageIn 0.4s ease forwards;
+}
+
+@keyframes pageIn {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+
+/* ----------------------------------------------------------------
+   6. SHARED / REUSABLE COMPONENTS
+   Used across multiple pages — edit once, applies everywhere.
+---------------------------------------------------------------- */
+
+/* Page inner wrapper */
+.page-inner {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 70px 60px 100px;
+}
+
+/* Page header block */
+.page-header      { margin-bottom: 60px; }
+.page-eyebrow     { font-size: 10px; letter-spacing: 0.35em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
+.page-title       { font-family: var(--font-display); font-size: clamp(42px, 6vw, 70px); font-weight: 700; line-height: 1.05; color: var(--white); }
+.page-title em    { color: var(--accent); font-style: italic; }
+.page-subtitle    { margin-top: 18px; font-size: 17px; color: var(--muted); line-height: 1.75; max-width: 560px; }
+
+/* Card */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 36px;
+  transition: border-color 0.3s, transform 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s;
+}
+
+.card:hover { border-color: #333; transform: translateY(-3px); }
+.card:hover::after { transform: scaleX(1); }
+
+.card-label { font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+.card-title { font-family: var(--font-display); font-size: 20px; color: var(--white); margin-bottom: 6px; }
+.card-sub   { font-size: 13px; color: var(--muted); margin-bottom: 18px; }
+.card p     { font-size: 15px; color: var(--muted); line-height: 1.8; }
+
+/* Grid layouts */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr;           gap: 24px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr);    gap: 24px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr);    gap: 16px; }
+
+/* Tags */
+.tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.tag  { padding: 5px 13px; background: rgba(232,201,126,0.07); border: 1px solid rgba(232,201,126,0.2); border-radius: 2px; font-size: 12px; color: var(--accent); letter-spacing: 0.04em; }
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  padding: 12px 28px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 2px;
+  transition: all 0.3s;
+  cursor: none;
+  border: none;
+}
+
+.btn-primary { background: var(--accent); color: #0a0a0a; font-weight: 500; }
+.btn-primary:hover { background: var(--white); transform: translateY(-2px); }
+
+.btn-outline { border: 1px solid var(--border); color: var(--muted); background: none; }
+.btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+/* Divider line */
+.divider { width: 48px; height: 1px; background: var(--accent); margin: 32px 0; }
+
+
+/* ----------------------------------------------------------------
+   7. HOME PAGE
+---------------------------------------------------------------- */
+.home-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 65% 40%, rgba(232,201,126,0.055) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 50% at 15% 80%,  rgba(232,201,126,0.03)  0%, transparent 60%);
+}
+
+.home-grid {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(232,201,126,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(232,201,126,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 70%);
+}
+
+.home-inner {
+  position: relative;
+  z-index: 1;
+  min-height: calc(100vh - 72px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px;
+}
+
+.home-eyebrow  { font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); margin-bottom: 28px; opacity: 0; animation: fadeUp 0.8s ease 0.1s forwards; }
+.home-name     { font-family: var(--font-display); font-size: clamp(58px, 10vw, 118px); font-weight: 900; line-height: 0.92; letter-spacing: -0.02em; color: var(--white); opacity: 0; animation: fadeUp 0.9s ease 0.25s forwards; }
+.home-name span { color: var(--accent); font-style: italic; }
+.home-tagline  { margin-top: 34px; font-size: 17px; color: var(--muted); line-height: 1.75; max-width: 480px; opacity: 0; animation: fadeUp 0.9s ease 0.4s forwards; }
+.home-cta      { margin-top: 48px; display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; opacity: 0; animation: fadeUp 0.9s ease 0.55s forwards; }
+
+/* Quick-nav cards on home page */
+.home-cards {
+  margin-top: 80px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  width: 100%;
+  max-width: 1000px;
+  opacity: 0;
+  animation: fadeUp 0.9s ease 0.7s forwards;
+}
+
+.home-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 28px 24px;
+  cursor: none;
+  transition: all 0.3s ease;
+  text-align: left;
+}
+
+.home-card:hover { border-color: rgba(232,201,126,0.3); transform: translateY(-4px); background: #1a1a1a; }
+.home-card-icon  { font-size: 26px; margin-bottom: 14px; }
+.home-card-title { font-family: var(--font-display); font-size: 17px; color: var(--white); margin-bottom: 6px; }
+.home-card-desc  { font-size: 13px; color: var(--muted); line-height: 1.6; }
+.home-card-arrow { display: block; margin-top: 16px; font-size: 18px; color: var(--accent); transition: transform 0.3s; }
+.home-card:hover .home-card-arrow { transform: translate(3px, -3px); }
+
+
+/* ----------------------------------------------------------------
+   8. PERSONAL PAGE
+---------------------------------------------------------------- */
+.personal-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+.about-text p          { font-size: 16px; color: var(--muted); line-height: 1.9; margin-bottom: 22px; }
+.about-text p strong   { color: var(--text); font-weight: 500; }
+
+/* Instagram block */
+.ig-block        { background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: 36px; }
+.ig-header       { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; }
+.ig-icon         { width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, #f58529, #dd2a7b, #8134af, #515bd4); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.ig-icon svg     { width: 22px; height: 22px; fill: white; }
+.ig-handle-name  { font-family: var(--font-display); font-size: 19px; color: var(--white); }
+.ig-handle-sub   { font-size: 13px; color: var(--muted); }
+.ig-note         { font-size: 13px; color: var(--muted); line-height: 1.7; padding: 16px 20px; background: rgba(232,201,126,0.04); border-left: 2px solid var(--accent); margin-bottom: 22px; border-radius: 2px; }
+.ig-grid         { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-bottom: 20px; }
+.ig-cell         { aspect-ratio: 1; background: var(--border); border-radius: 2px; display: flex; align-items: center; justify-content: center; font-size: 20px; transition: background 0.3s; }
+.ig-cell:hover   { background: #2a2a2a; }
+.ig-btn          { display: block; text-align: center; padding: 13px; border: 1px solid var(--border); color: var(--muted); text-decoration: none; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; border-radius: 2px; transition: all 0.3s; cursor: none; }
+.ig-btn:hover    { border-color: var(--accent); color: var(--accent); }
+
+
+/* ----------------------------------------------------------------
+   9. PROFESSIONAL PAGE
+---------------------------------------------------------------- */
+.timeline-item {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 40px;
+  padding: 40px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.timeline-item:last-child { border-bottom: none; }
+
+.timeline-date          { font-size: 13px; color: var(--muted); padding-top: 4px; }
+.timeline-date strong   { display: block; font-size: 15px; color: var(--accent); font-weight: 500; margin-bottom: 4px; }
+.timeline-content h3    { font-family: var(--font-display); font-size: 22px; color: var(--white); margin-bottom: 4px; }
+.timeline-content h4    { font-size: 14px; color: var(--muted); margin-bottom: 16px; }
+.timeline-content p     { font-size: 15px; color: var(--muted); line-height: 1.8; }
+
+.skills-section h3      { font-family: var(--font-display); font-size: 28px; color: var(--white); margin-bottom: 28px; }
+
+
+/* ----------------------------------------------------------------
+   10. PROJECTS PAGE
+---------------------------------------------------------------- */
+.project-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 40px;
+  transition: border-color 0.3s, transform 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.project-card::after     { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--accent),transparent); transform:scaleX(0); transform-origin:left; transition:transform 0.4s; }
+.project-card:hover      { border-color: #333; transform: translateY(-4px); }
+.project-card:hover::after { transform: scaleX(1); }
+
+.project-status   { display: inline-block; padding: 3px 12px; border-radius: 20px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 16px; }
+.status-active    { background: rgba(100,220,100,0.1); color: #6dc96d; border: 1px solid rgba(100,220,100,0.2); }
+.status-wip       { background: rgba(232,201,126,0.1); color: var(--accent); border: 1px solid rgba(232,201,126,0.2); }
+.status-complete  { background: rgba(100,150,255,0.1); color: #7aabff; border: 1px solid rgba(100,150,255,0.2); }
+
+.project-title    { font-family: var(--font-display); font-size: 24px; color: var(--white); margin-bottom: 8px; }
+.project-org      { font-size: 13px; color: var(--muted); margin-bottom: 18px; }
+.project-desc     { font-size: 15px; color: var(--muted); line-height: 1.8; margin-bottom: 20px; }
+.project-links    { display: flex; gap: 12px; margin-top: 24px; }
+
+
+/* ----------------------------------------------------------------
+   11. SOCIALS PAGE
+---------------------------------------------------------------- */
+.social-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 30px 26px;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.35s ease;
+}
+
+.social-card::before       { content:''; position:absolute; inset:0; opacity:0; transition:opacity 0.35s; }
+.social-card:hover         { border-color: transparent; transform: translateY(-5px); }
+.social-card:hover::before { opacity: 1; }
+
+/* Per-platform hover tints */
+/* ----------------------------------------------------------------
+   SOCIALS GRID
+   Uses auto-fill so any number of cards wraps cleanly.
+   Min card width 220px — fits 4 on wide screens, 2 on tablet, 1 on mobile.
+---------------------------------------------------------------- */
+.socials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+.sc-instagram::before { background: linear-gradient(135deg, rgba(245,133,41,.1), rgba(221,42,123,.1), rgba(81,91,212,.1)); }
+.sc-instagram:hover   { box-shadow: 0 20px 50px rgba(221,42,123,.18); }
+.sc-linkedin::before  { background: linear-gradient(135deg, rgba(10,102,194,.14), transparent); }
+.sc-linkedin:hover    { box-shadow: 0 20px 50px rgba(10,102,194,.18); }
+.sc-x::before         { background: linear-gradient(135deg, rgba(255,255,255,.04), transparent); }
+.sc-x:hover           { box-shadow: 0 20px 50px rgba(255,255,255,.07); }
+.sc-youtube::before   { background: linear-gradient(135deg, rgba(255,0,0,.1), transparent); }
+.sc-youtube:hover     { box-shadow: 0 20px 50px rgba(255,0,0,.18); }
+.sc-snapchat::before  { background: linear-gradient(135deg, rgba(255,252,0,.08), transparent); }
+.sc-snapchat:hover    { box-shadow: 0 20px 50px rgba(255,252,0,.12); }
+.sc-discord::before   { background: linear-gradient(135deg, rgba(88,101,242,.14), transparent); }
+.sc-discord:hover     { box-shadow: 0 20px 50px rgba(88,101,242,.18); }
+.sc-threads::before   { background: linear-gradient(135deg, rgba(255,255,255,.04), transparent); }
+.sc-threads:hover     { box-shadow: 0 20px 50px rgba(255,255,255,.07); }
+
+.social-icon   { width: 46px; height: 46px; border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+.social-name   { font-family: var(--font-display); font-size: 18px; color: var(--white); }
+.social-handle { font-size: 13px; color: var(--muted); }
+.social-arrow  { position: absolute; top: 26px; right: 26px; color: var(--muted); font-size: 16px; transition: all 0.3s; }
+.social-card:hover .social-arrow { color: var(--accent); transform: translate(3px, -3px); }
+
+
+/* ----------------------------------------------------------------
+   12. CONTACT PAGE
+---------------------------------------------------------------- */
+.contact-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+
+.contact-info p  { font-size: 16px; color: var(--muted); line-height: 1.9; margin-bottom: 20px; }
+
+.contact-list    { list-style: none; display: flex; flex-direction: column; gap: 16px; }
+.contact-list li { display: flex; align-items: center; gap: 14px; }
+.contact-list a  { color: var(--text); text-decoration: none; font-size: 15px; transition: color 0.3s; }
+.contact-list a:hover { color: var(--accent); }
+
+.contact-icon    { width: 38px; height: 38px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+
+.contact-form-block   { background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: 40px; }
+.contact-form-block h3 { font-family: var(--font-display); font-size: 24px; color: var(--white); margin-bottom: 28px; }
+
+.form-group          { margin-bottom: 20px; }
+.form-group label    { display: block; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 15px;
+  padding: 12px 16px;
+  border-radius: 2px;
+  transition: border-color 0.3s;
+  outline: none;
+  cursor: none;
+}
+
+.form-group input:focus,
+.form-group textarea:focus { border-color: var(--accent); }
+
+.form-group textarea { height: 120px; resize: vertical; }
+
+
+/* ----------------------------------------------------------------
+   13. FOOTER
+---------------------------------------------------------------- */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 32px 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-logo { font-family: var(--font-display); font-size: 18px; color: var(--accent); }
+footer p     { font-size: 12px; color: var(--muted); }
+.footer-tag  { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; }
+
+
+/* ----------------------------------------------------------------
+   14. ANIMATIONS
+---------------------------------------------------------------- */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pageIn {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+
+
+
+
+/* ----------------------------------------------------------------
+   15. RESPONSIVE (mobile / tablet)
+---------------------------------------------------------------- */
+@media (max-width: 900px) {
+  nav { padding: 0 24px; }
+
+  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+
+  /* Mobile nav dropdown */
+  .nav-links.open {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 72px; left: 0; right: 0;
+    background: rgba(10,10,10,0.97);
+    padding: 20px;
+    border-bottom: 1px solid var(--border);
+    gap: 4px;
+  }
+
+  .page-inner { padding: 40px 24px 80px; }
+
+  .grid-2,
+  .grid-3,
+  .grid-4,
+  .home-cards         { grid-template-columns: 1fr; }
+
+  .personal-layout,
+  .contact-layout,
+  .timeline-item      { grid-template-columns: 1fr; gap: 28px; }
+
+  .timeline-date      { padding-top: 0; }
+
+  .home-inner         { padding: 40px 24px; }
+
+  footer {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+    padding: 28px 24px;
+  }
+}

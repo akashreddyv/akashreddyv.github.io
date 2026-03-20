@@ -1,31 +1,53 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Akash Reddy</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' 'unsafe-eval' https://fonts.googleapis.com;">
+
+  <title>Akash Reddy </title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%230a0a0a'/><text y='72' x='50' text-anchor='middle' font-size='55' font-family='Georgia,serif' font-weight='bold' fill='%23e8c97e'>AR</text></svg>" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
-<h1>I'm Akash Reddy</h1>
-<p>Software Engineer</p>
 
-<h2>About Me</h2>
-<p>Software Engineer at Zoetis focused on backend systems, database architecture, and enterprise modernization.
+  <!-- Custom cursor -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
 
-Current Location - Raleigh NC
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="#" onclick="showPage('home'); return false;">AR</a>
 
-Experience
+    <ul class="nav-links" id="navLinks">
+      <li><button onclick="showPage('home')" data-page="home" class="active">Home</button></li>
+      <li><button onclick="showPage('personal')" data-page="personal">Personal</button></li>
+      <li><button onclick="showPage('professional')" data-page="professional">Professional</button></li>
+      <li><button onclick="showPage('projects')" data-page="projects">Projects</button></li>
+      <li><button onclick="showPage('socials')" data-page="socials">Socials</button></li>
+      <li><button onclick="showPage('contact')" data-page="contact">Contact</button></li>
+    </ul>
 
-Software Engineer – Zoetis
+    <button class="nav-hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
 
-Jr. Account Manager – Raptor Consultants Group
+  
+  <div id="page-container">
+    <div id="content" class="page-content"></div>
+  </div>
 
-Software Engineer – Tata Consultancy Services
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">AR</div>
+    <p>© 2026 - Akash Reddy V · Some rights reserved (I guess, idk)</p>
+    <p style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;"> - </p>
+  </footer>
 
-Software Engineer – Persistent Systems Ltd
-
-Education
-
-M.S - Engineering Management - Arkansas State University MBA - Digital Entrepreneurship - Amity University B.Tech - Information Technology - Jawaharlal Nehru Technologica University Hyderabad</p>
-
+  <script src="js/main.js"></script>
 </body>
 </html>
