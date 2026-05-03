@@ -223,6 +223,29 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   };
 
+  // ── Slideshow ──────────────────────────────────────────────────
+  let _slideshowTimer = null;
+
+  function startSlideshow() {
+    if (_slideshowTimer) clearInterval(_slideshowTimer);
+    const slides = document.querySelectorAll('.home-slide');
+    const dots   = document.querySelectorAll('.ss-dot');
+    if (slides.length < 2) return;
+    let cur = 0;
+    function advance() {
+      slides[cur].classList.remove('active');
+      dots[cur]  && dots[cur].classList.remove('active');
+      cur = (cur + 1) % slides.length;
+      slides[cur].classList.add('active');
+      dots[cur]  && dots[cur].classList.add('active');
+    }
+    _slideshowTimer = setInterval(advance, 15000);
+  }
+
+  function stopSlideshow() {
+    if (_slideshowTimer) { clearInterval(_slideshowTimer); _slideshowTimer = null; }
+  }
+
   const ROUTE_MAP = {
     '/':             'home',
     '/home':         'home',
@@ -296,6 +319,8 @@ document.addEventListener("DOMContentLoaded", function () {
       if (push) history.pushState({ page: name }, '', path);
 
       updateMeta(name);
+      stopSlideshow();
+      if (name === 'home') startSlideshow();
       window.scrollTo({ top: 0, behavior: 'smooth' });
 
       document.querySelectorAll('.nav-links [data-page]').forEach(el => {
