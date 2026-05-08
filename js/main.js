@@ -412,7 +412,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const name  = document.getElementById('form-name').value;
     const email = document.getElementById('form-email').value;
     const msg   = document.getElementById('form-msg').value;
-    window.location.href = `mailto:akashreddyvurenuka@gmail.com?subject=Message from ${encodeURIComponent(name)}&body=${encodeURIComponent(msg + '\n\nFrom: ' + email)}`;
+    window.location.href = `mailto:mail@reachakash.com?subject=Message from ${encodeURIComponent(name)}&body=${encodeURIComponent(msg + '\n\nFrom: ' + email)}`;
   };
 
   // ── Custom Cursor ──
