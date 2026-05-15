@@ -3,7 +3,6 @@
 
   <div class="personal-new-layout">
 
-    <!-- ── LEFT ── -->
     <div class="personal-left">
 
       <p class="personal-greeting">Yo, I'm</p>
@@ -29,53 +28,19 @@
 
     </div>
 
-    <!-- ── RIGHT: Quick facts ── -->
-    <div class="personal-right">
-
-      <div class="facts-card">
-        <div class="fact-item">
-          <span class="fact-label">Role</span>
-          <span class="fact-value">Software Developer at Zoetis</span>
-        </div>
-        <div class="fact-item">
-          <span class="fact-label">Based</span>
-          <span class="fact-value">Raleigh, NC, USA</span>
-        </div>
-        <div class="fact-item">
-          <span class="fact-label">From</span>
-          <span class="fact-value">Hyderabad, India</span>
-        </div>
-        <div class="fact-item">
-          <span class="fact-label">Stack</span>
-          <span class="fact-value">C# · .NET · PostgreSQL</span>
-        </div>
-        <div class="fact-item">
-          <span class="fact-label">Interests</span>
-          <span class="fact-value">AI · Travel · Tech</span>
-        </div>
-        <div class="fact-item">
-          <span class="fact-label">Instagram</span>
-          <a class="fact-value fact-link" href="https://www.instagram.com/ak.r48" target="_blank" rel="noopener">@ak.r48 ↗</a>
-        </div>
-        <div class="fact-item">
-          <span class="fact-label">LinkedIn</span>
-          <a class="fact-value fact-link" href="https://www.linkedin.com/in/akashreddyv/" target="_blank" rel="noopener">akashreddyv ↗</a>
-        </div>
-      </div>
-
-    </div>
-
   </div>
 
 </div>
 
 <style>
   .personal-new-layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
+    display: flex;
     align-items: center;
     min-height: calc(100vh - 200px);
+  }
+
+  .personal-left {
+    max-width: 560px;
   }
 
   .personal-greeting {
@@ -139,56 +104,10 @@
     flex-wrap: wrap;
   }
 
-  /* Facts card */
-  .facts-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-  }
-
-  .fact-item {
-    display: flex;
-    align-items: baseline;
-    gap: 16px;
-    padding: 16px 24px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .fact-item:last-child {
-    border-bottom: none;
-  }
-
-  .fact-label {
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    min-width: 72px;
-    flex-shrink: 0;
-  }
-
-  .fact-value {
-    font-size: 15px;
-    color: var(--text);
-    line-height: 1.5;
-  }
-
-  .fact-link {
-    color: var(--accent);
-    text-decoration: none;
-    transition: opacity 0.2s;
-  }
-
-  .fact-link:hover {
-    opacity: 0.75;
-  }
-
   @media (max-width: 900px) {
     .personal-new-layout {
-      grid-template-columns: 1fr;
-      gap: 48px;
       min-height: unset;
+      padding: 20px 0;
     }
   }
 </style>
