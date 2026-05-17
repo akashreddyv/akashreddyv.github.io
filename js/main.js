@@ -464,9 +464,28 @@ document.addEventListener("DOMContentLoaded", function () {
       e.stopPropagation();
       const on = document.body.classList.toggle('theme-retro');
       localStorage.setItem('retro-theme', on ? '1' : '');
+      // Hide hint permanently once the user has clicked
+      dismissLogoHint();
       showPage('home', true);
     });
   })();
+
+  // ── Logo hint tooltip ──
+  window.dismissLogoHint = function () {
+    const hint = document.getElementById('logo-hint');
+    if (hint) hint.style.display = 'none';
+    localStorage.setItem('logo-hint-done', '1');
+  };
+
+  document.getElementById('logo-hint-close').addEventListener('click', dismissLogoHint);
+
+  // Show hint once per visitor — not if they've already clicked the logo
+  if (!localStorage.getItem('logo-hint-done') && !localStorage.getItem('retro-theme')) {
+    setTimeout(function () {
+      const hint = document.getElementById('logo-hint');
+      if (hint) hint.style.display = 'flex';
+    }, 1200);
+  }
 
   // ── Initial route ──
   const initialName = ROUTE_MAP[location.pathname] || 'home';
