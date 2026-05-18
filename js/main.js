@@ -425,7 +425,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
       try {
         const res  = await fetch(form.action, { method: 'POST', body: new FormData(form) });
-        const data = await res.json();
+        let data;
+        try { data = await res.json(); } catch { throw new Error('Could not reach the server. Please email mail@reachakash.com directly.'); }
 
         if (data.success) {
           status.textContent         = "Message sent! I'll get back to you soon.";
@@ -464,8 +465,6 @@ document.addEventListener("DOMContentLoaded", function () {
       e.stopPropagation();
       const on = document.body.classList.toggle('theme-retro');
       localStorage.setItem('retro-theme', on ? '1' : '');
-      // Hide hint permanently once the user has clicked
-      dismissLogoHint();
       showPage('home', true);
     });
   })();
@@ -474,18 +473,15 @@ document.addEventListener("DOMContentLoaded", function () {
   window.dismissLogoHint = function () {
     const hint = document.getElementById('logo-hint');
     if (hint) hint.style.display = 'none';
-    localStorage.setItem('logo-hint-done', '1');
   };
 
   document.getElementById('logo-hint-close').addEventListener('click', dismissLogoHint);
 
-  // Show hint once per visitor — not if they've already clicked the logo
-  if (!localStorage.getItem('logo-hint-done') && !localStorage.getItem('retro-theme')) {
-    setTimeout(function () {
-      const hint = document.getElementById('logo-hint');
-      if (hint) hint.style.display = 'flex';
-    }, 1200);
-  }
+  // Always show hint after a short delay (X hides it for the session only)
+  setTimeout(function () {
+    const hint = document.getElementById('logo-hint');
+    if (hint) hint.style.display = 'flex';
+  }, 1200);
 
   // ── Initial route ──
   const initialName = ROUTE_MAP[location.pathname] || 'home';
