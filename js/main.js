@@ -451,11 +451,12 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // ── AR logo → toggle 90s retro theme ──
+  // ── AR logo → cycle through themes: dark → light → retro → dark ──
   (function () {
-    if (localStorage.getItem('retro-theme') === '1') {
-      document.body.classList.add('theme-retro');
-    }
+    let saved = localStorage.getItem('theme');
+    if (!saved && localStorage.getItem('retro-theme') === '1') saved = 'retro';
+    if (saved === 'retro')      document.body.classList.add('theme-retro');
+    else if (saved === 'light') document.body.classList.add('theme-light');
 
     const navLogo = document.querySelector('.nav-logo');
     if (!navLogo) return;
@@ -463,9 +464,22 @@ document.addEventListener("DOMContentLoaded", function () {
     navLogo.addEventListener('click', function (e) {
       e.preventDefault();
       e.stopPropagation();
-      const on = document.body.classList.toggle('theme-retro');
-      localStorage.setItem('retro-theme', on ? '1' : '');
-      showPage('home', true);
+      const body = document.body;
+      let next;
+      if (body.classList.contains('theme-retro')) {
+        body.classList.remove('theme-retro');
+        next = '';
+      } else if (body.classList.contains('theme-light')) {
+        body.classList.remove('theme-light');
+        body.classList.add('theme-retro');
+        next = 'retro';
+      } else {
+        body.classList.add('theme-light');
+        next = 'light';
+      }
+      localStorage.setItem('theme', next);
+      const currentName = ROUTE_MAP[location.pathname] || 'home';
+      showPage(currentName, true);
     });
   })();
 

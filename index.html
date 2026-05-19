@@ -40,8 +40,20 @@
   <link rel="preload" as="image" href="/images/home/vurenuka-akash-reddy-professional.jpg" fetchpriority="high">
 
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=VT323&display=swap" rel="stylesheet"/>
-  <!-- Restore retro theme before first paint to avoid flash -->
-  <script>if(localStorage.getItem('retro-theme')==='1')document.body.classList.add('theme-retro');</script>
+  <!-- Restore saved theme before first paint to avoid flash -->
+  <script>
+    (function(){
+      var t = localStorage.getItem('theme');
+      if (!t && localStorage.getItem('retro-theme') === '1') t = 'retro';
+      if (!t) return;
+      function apply(){
+        if (t === 'retro') document.body.classList.add('theme-retro');
+        else if (t === 'light') document.body.classList.add('theme-light');
+      }
+      if (document.body) apply();
+      else document.addEventListener('DOMContentLoaded', apply);
+    })();
+  </script>
   <link rel="stylesheet" href="css/styles.css">
 
   <!-- ── JSON-LD — replaced per page by router ── -->

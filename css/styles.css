@@ -842,6 +842,56 @@ body.theme-retro .logo-hint-close:hover { color: #000000; }
 
 
 /* ================================================================
+   LIGHT THEME
+   Warm cream background with a deeper gold accent for contrast.
+================================================================ */
+body.theme-light {
+  --bg:      #f6f0e1;
+  --surface: #fbf6e8;
+  --card:    #fbf6e8;
+  --border:  #d9cfb5;
+  --accent:  #8a6a2c;
+  --text:    #1a1410;
+  --muted:   #6e6557;
+  --white:   #1a1410;
+}
+
+body.theme-light::before { opacity: 0.05; }
+
+body.theme-light nav {
+  background: rgba(246, 240, 225, 0.92);
+}
+
+body.theme-light .nav-links.open {
+  background: rgba(246, 240, 225, 0.97);
+}
+
+body.theme-light .home-slideshow { background: #fbf6e8; }
+
+body.theme-light .home-slide figcaption {
+  background: linear-gradient(transparent, rgba(246, 240, 225, 0.92));
+}
+
+body.theme-light .home-card:hover {
+  background: #ffffff;
+  border-color: rgba(138, 106, 44, 0.45);
+}
+
+body.theme-light .btn-primary { color: #ffffff; }
+
+body.theme-light .skip-to-content { color: #ffffff; }
+
+body.theme-light .logo-hint {
+  background: #fbf6e8;
+  border-color: #8a6a2c;
+}
+body.theme-light .logo-hint::before {
+  background: #fbf6e8;
+  border-color: #8a6a2c;
+}
+
+
+/* ================================================================
    90s RETRO THEME
    Toggled by clicking the AR logo. Overrides the dark/gold theme
    with a Windows 95 / old-PC aesthetic.
