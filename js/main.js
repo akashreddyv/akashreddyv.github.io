@@ -3,22 +3,32 @@ document.addEventListener("DOMContentLoaded", function () {
   // ── Per-page SEO metadata ──────────────────────────────────────
   const PAGE_META = {
     home: {
-      title:       'Akash Reddy | Software Developer',
-      description: 'Personal site of Vurenuka Akash Reddy (Akash Reddy, V Akash Reddy), Software Developer at Zoetis in Durham, NC. Explore work, projects, and more.',
+      title:       'Akash Reddy (Reach Akash) | Software Developer',
+      description: 'Personal site of Vurenuka Akash Reddy (Reach Akash, Akash Reddy, Reddy Akash), Software Developer at Zoetis in Durham, NC. Explore work, projects, and more.',
       canonical:   'https://reachakash.com/',
       ogType:      'profile',
       ogTitle:     'Akash Reddy, Software Developer',
       ogDesc:      'Akash Reddy (V Akash Reddy) is a software developer at Zoetis based in Durham, NC. Explore his work, projects, and background at reachakash.com.',
-      jsonld: {
-        '@context': 'https://schema.org',
-        '@type': 'Person',
-        name: 'Vurenuka Akash Reddy',
-        givenName: 'Akash',
-        familyName: 'Reddy',
-        additionalName: 'Vurenuka',
-        alternateName: ['Akash Reddy', 'V Akash Reddy', 'V Akash', 'Akash', 'Reach Akash', 'Vurenuka'],
-        url: 'https://reachakash.com',
-        image: [
+      jsonld: [
+        {
+          '@context': 'https://schema.org',
+          '@type': 'WebSite',
+          '@id': 'https://reachakash.com/#website',
+          url: 'https://reachakash.com/',
+          name: 'Reach Akash',
+          alternateName: ['Akash Reddy', 'Reddy Akash', 'Reach Akash Reddy']
+        },
+        {
+          '@context': 'https://schema.org',
+          '@type': 'Person',
+          '@id': 'https://reachakash.com/#person',
+          name: 'Vurenuka Akash Reddy',
+          givenName: 'Akash',
+          familyName: 'Reddy',
+          additionalName: 'Vurenuka',
+          alternateName: ['Akash Reddy', 'Reddy Akash', 'V Akash Reddy', 'V Akash', 'Akash', 'Reach Akash', 'Vurenuka', 'Reddy'],
+          url: 'https://reachakash.com',
+          image: [
           'https://reachakash.com/images/home/vurenuka-akash-reddy-professional.jpg',
           'https://reachakash.com/images/home/akash-reddy-portrait.jpg'
         ],
@@ -42,7 +52,8 @@ document.addEventListener("DOMContentLoaded", function () {
         ],
         knowsAbout: ['Software Development', 'Web Development', 'C#', '.NET Framework', 'AI', 'Travel'],
         description: 'Vurenuka Akash Reddy (also known as Akash Reddy, V Akash Reddy) is a software developer at Zoetis based in Durham, NC, USA.'
-      }
+        }
+      ]
     },
 
     personal: {
@@ -372,6 +383,8 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       document.getElementById('navLinks').classList.remove('open');
+      const hamburger = document.getElementById('hamburger');
+      if (hamburger) hamburger.setAttribute('aria-expanded', 'false');
       attachCursorEvents();
       if (name === 'contact') attachContactForm();
 
@@ -404,7 +417,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // ── Mobile Menu ──
   window.toggleMenu = function () {
-    document.getElementById('navLinks').classList.toggle('open');
+    const navLinks = document.getElementById('navLinks');
+    const hamburger = document.getElementById('hamburger');
+    const isOpen = navLinks.classList.toggle('open');
+    if (hamburger) hamburger.setAttribute('aria-expanded', isOpen);
   };
 
 
