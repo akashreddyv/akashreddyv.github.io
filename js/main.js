@@ -467,12 +467,13 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // ── AR logo → cycle through themes: dark → light → retro → dark ──
+  // ── AR logo → cycle through themes: dark → light → retro → space → dark ──
   (function () {
     let saved = localStorage.getItem('theme');
     if (!saved && localStorage.getItem('retro-theme') === '1') saved = 'retro';
     if (saved === 'retro')      document.body.classList.add('theme-retro');
     else if (saved === 'light') document.body.classList.add('theme-light');
+    else if (saved === 'space') document.body.classList.add('theme-space');
 
     const navLogo = document.querySelector('.nav-logo');
     if (!navLogo) return;
@@ -482,9 +483,13 @@ document.addEventListener("DOMContentLoaded", function () {
       e.stopPropagation();
       const body = document.body;
       let next;
-      if (body.classList.contains('theme-retro')) {
-        body.classList.remove('theme-retro');
+      if (body.classList.contains('theme-space')) {
+        body.classList.remove('theme-space');
         next = '';
+      } else if (body.classList.contains('theme-retro')) {
+        body.classList.remove('theme-retro');
+        body.classList.add('theme-space');
+        next = 'space';
       } else if (body.classList.contains('theme-light')) {
         body.classList.remove('theme-light');
         body.classList.add('theme-retro');

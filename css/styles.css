@@ -1255,6 +1255,330 @@ body.theme-retro ::-webkit-scrollbar-button {
 }
 
 
+/* ================================================================
+   STAR WARS SPACE THEME
+   Pitch-black void, crisp starfield, photoreal planets rendered as
+   SVG with proper terminator-line shading and atmospheric rim glow:
+   Death Star (top-right), Tatooine (mid-left), Hoth ice moon
+   (bottom-right). Accent uses the iconic Star Wars title yellow.
+================================================================ */
+
+body.theme-space {
+  --bg:      #000000;
+  --surface: #050505;
+  --card:    #0a0a0a;
+  --border:  #1a1a1a;
+  --accent:  #ffe81f;          /* Star Wars title yellow */
+  --text:    #ffffff;
+  --muted:   #9a9a9a;
+  --white:   #ffffff;
+
+  background-color: #000000;
+  background-image:
+    /* Death Star — Photorealistic 3D crater noise and stark terminator shadow */
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><defs><filter id='tex'><feTurbulence type='fractalNoise' baseFrequency='0.05' numOctaves='5' result='n'/><feColorMatrix type='saturate' values='0' result='g'/><feComponentTransfer result='c'><feFuncR type='linear' slope='1.5' intercept='-0.2'/><feFuncG type='linear' slope='1.5' intercept='-0.2'/><feFuncB type='linear' slope='1.5' intercept='-0.2'/></feComponentTransfer><feComposite operator='in' in='c' in2='SourceGraphic' result='m'/><feBlend mode='multiply' in='m' in2='SourceGraphic'/></filter><radialGradient id='base' cx='30%25' cy='30%25' r='70%25'><stop offset='0%25' stop-color='%23e5e5e5'/><stop offset='40%25' stop-color='%23888888'/><stop offset='100%25' stop-color='%23222222'/></radialGradient><radialGradient id='shadow' cx='30%25' cy='30%25' r='70%25'><stop offset='0%25' stop-color='%23000' stop-opacity='0'/><stop offset='40%25' stop-color='%23000' stop-opacity='0.4'/><stop offset='70%25' stop-color='%23000' stop-opacity='0.98'/><stop offset='100%25' stop-color='%23000' stop-opacity='1'/></radialGradient></defs><circle cx='100' cy='100' r='90' fill='url(%23base)' filter='url(%23tex)'/><circle cx='60' cy='50' r='22' fill='%23111' opacity='0.3'/><circle cx='60' cy='50' r='18' fill='url(%23base)' filter='url(%23tex)' opacity='0.8'/><circle cx='60' cy='50' r='7' fill='%230a0a0a' opacity='0.8'/><path d='M10 100 Q100 105 190 100 L190 102 Q100 107 10 102 Z' fill='%23111' opacity='0.6'/><circle cx='100' cy='100' r='90' fill='url(%23shadow)'/></svg>"),
+    /* Tatooine — Photorealistic stretched sand dunes and atmospheric rim scatter */
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><defs><filter id='tex'><feTurbulence type='fractalNoise' baseFrequency='0.015 0.08' numOctaves='4' result='n'/><feColorMatrix type='saturate' values='0' result='g'/><feComponentTransfer result='c'><feFuncR type='linear' slope='1.2' intercept='-0.1'/><feFuncG type='linear' slope='1.2' intercept='-0.1'/><feFuncB type='linear' slope='1.2' intercept='-0.1'/></feComponentTransfer><feComposite operator='in' in='c' in2='SourceGraphic' result='m'/><feBlend mode='multiply' in='m' in2='SourceGraphic'/></filter><radialGradient id='base' cx='35%25' cy='35%25' r='65%25'><stop offset='0%25' stop-color='%23ffcc88'/><stop offset='50%25' stop-color='%23c27b42'/><stop offset='100%25' stop-color='%235a2100'/></radialGradient><radialGradient id='shadow' cx='25%25' cy='35%25' r='75%25'><stop offset='0%25' stop-color='%23000' stop-opacity='0'/><stop offset='35%25' stop-color='%23000' stop-opacity='0.3'/><stop offset='65%25' stop-color='%23000' stop-opacity='0.98'/><stop offset='100%25' stop-color='%23000' stop-opacity='1'/></radialGradient><radialGradient id='atm' cx='50%25' cy='50%25' r='50%25'><stop offset='88%25' stop-color='%23ffaa55' stop-opacity='0'/><stop offset='96%25' stop-color='%23ffaa55' stop-opacity='0.5'/><stop offset='100%25' stop-color='%23ffaa55' stop-opacity='0'/></radialGradient></defs><circle cx='100' cy='100' r='96' fill='url(%23atm)'/><circle cx='100' cy='100' r='90' fill='url(%23base)' filter='url(%23tex)'/><circle cx='100' cy='100' r='90' fill='url(%23shadow)'/></svg>"),
+    /* Hoth — Photorealistic frozen ice surface with blinding cinematic 3D lighting */
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><defs><filter id='tex'><feTurbulence type='fractalNoise' baseFrequency='0.04' numOctaves='4' result='n'/><feColorMatrix type='saturate' values='0' result='g'/><feComponentTransfer result='c'><feFuncR type='linear' slope='1.8' intercept='-0.4'/><feFuncG type='linear' slope='1.8' intercept='-0.4'/><feFuncB type='linear' slope='1.8' intercept='-0.4'/></feComponentTransfer><feComposite operator='in' in='c' in2='SourceGraphic' result='m'/><feBlend mode='screen' in='m' in2='SourceGraphic'/></filter><radialGradient id='base' cx='35%25' cy='25%25' r='65%25'><stop offset='0%25' stop-color='%23ffffff'/><stop offset='45%25' stop-color='%23aaddff'/><stop offset='100%25' stop-color='%232b5c8f'/></radialGradient><radialGradient id='shadow' cx='30%25' cy='30%25' r='70%25'><stop offset='0%25' stop-color='%23000' stop-opacity='0'/><stop offset='40%25' stop-color='%23000' stop-opacity='0.3'/><stop offset='65%25' stop-color='%23000' stop-opacity='0.95'/><stop offset='100%25' stop-color='%23000' stop-opacity='1'/></radialGradient><radialGradient id='atm' cx='50%25' cy='50%25' r='50%25'><stop offset='88%25' stop-color='%2388ccff' stop-opacity='0'/><stop offset='96%25' stop-color='%2388ccff' stop-opacity='0.6'/><stop offset='100%25' stop-color='%2388ccff' stop-opacity='0'/></radialGradient></defs><circle cx='100' cy='100' r='96' fill='url(%23atm)'/><circle cx='100' cy='100' r='90' fill='url(%23base)' filter='url(%23tex)'/><circle cx='100' cy='100' r='90' fill='url(%23shadow)'/></svg>"),
+    /* Richer nebulas */
+    radial-gradient(ellipse 60% 45% at 75% 75%, rgba(20, 40, 80, 0.25) 0%, transparent 60%),
+    radial-gradient(ellipse 55% 45% at 20% 30%, rgba(80, 20, 50, 0.2) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 30% at 50% 50%, rgba(10, 40, 60, 0.15) 0%, transparent 70%),
+    linear-gradient(180deg, #000000, #000205, #000000);
+  background-position:
+    calc(100% + 140px) -140px,  /* Death Star */
+    -80px 45%,                  /* Tatooine */
+    96% 92%,                    /* Hoth */
+    0 0, 0 0, 0 0, 0 0;
+  background-size:
+    540px 540px,                /* Death Star is larger and imposing */
+    320px 320px,
+    140px 140px,
+    100% 100%, 100% 100%, 100% 100%, 100% 100%;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+/* Highly realistic sharp starfield with diverse star temperatures */
+body.theme-space::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    /* Bright White Stars */
+    radial-gradient(circle at 10% 15%, #ffffff 1px, transparent 1.5px),
+    radial-gradient(circle at 35% 45%, #ffffff 1.5px, transparent 2px),
+    radial-gradient(circle at 85% 25%, #ffffff 1px, transparent 1.5px),
+    radial-gradient(circle at 65% 85%, #ffffff 1px, transparent 1.5px),
+    /* Bright Blue/White Stars */
+    radial-gradient(circle at 25% 80%, #cce0ff 1.5px, transparent 2px),
+    radial-gradient(circle at 75% 55%, #cce0ff 2px, transparent 2.5px),
+    radial-gradient(circle at 92% 10%, #cce0ff 1px, transparent 1.5px),
+    /* Warm Orange/Red Stars */
+    radial-gradient(circle at 45% 20%, #ffdca8 2px, transparent 2.5px),
+    radial-gradient(circle at 55% 70%, #ffdca8 1.5px, transparent 2px),
+    radial-gradient(circle at 15% 40%, #ffdca8 1px, transparent 1.5px),
+    /* Distant Faint Stars */
+    radial-gradient(circle at 5% 5%, rgba(255,255,255,0.5) 0.5px, transparent 1px),
+    radial-gradient(circle at 20% 25%, rgba(255,255,255,0.4) 0.5px, transparent 1px),
+    radial-gradient(circle at 40% 60%, rgba(255,255,255,0.6) 0.5px, transparent 1px),
+    radial-gradient(circle at 60% 15%, rgba(255,255,255,0.3) 0.5px, transparent 1px),
+    radial-gradient(circle at 80% 80%, rgba(255,255,255,0.5) 0.5px, transparent 1px),
+    radial-gradient(circle at 95% 45%, rgba(255,255,255,0.4) 0.5px, transparent 1px);
+  background-size:
+    400px 400px, 550px 550px, 700px 700px, 350px 350px,
+    600px 600px, 450px 450px, 800px 800px,
+    500px 500px, 650px 650px, 300px 300px,
+    250px 250px, 380px 380px, 420px 420px, 280px 280px, 320px 320px, 480px 480px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Secondary deep-space cluster providing depth and slow parallax */
+body.theme-space::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 12% 34%, rgba(255,255,255,0.7) 0.5px, transparent 1px),
+    radial-gradient(circle at 27% 88%, rgba(204,224,255,0.6) 0.5px, transparent 1px),
+    radial-gradient(circle at 58% 12%, rgba(255,220,168,0.7) 0.5px, transparent 1px),
+    radial-gradient(circle at 74% 56%, rgba(255,255,255,0.5) 0.5px, transparent 1px),
+    radial-gradient(circle at 89% 91%, rgba(204,224,255,0.8) 0.5px, transparent 1px),
+    radial-gradient(circle at 43% 45%, rgba(255,255,255,0.6) 0.5px, transparent 1px);
+  background-size: 150px 150px, 220px 220px, 180px 180px, 270px 270px, 190px 190px, 310px 310px;
+  z-index: 0;
+  opacity: 0.6;
+  animation: space-drift 180s linear infinite;
+}
+
+@keyframes space-drift {
+  0% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.05) rotate(0.5deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+/* Bright twinkling star with a cinematic lens flare */
+body.theme-space #page-container { position: relative; }
+body.theme-space #page-container::before {
+  content: '';
+  position: fixed;
+  top: 18%;
+  left: 28%;
+  width: 3px;
+  height: 3px;
+  background: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 0 12px 3px #ffffff, 0 0 25px 8px rgba(204,224,255,0.6), 0 0 50px 15px rgba(204,224,255,0.3);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 0;
+  animation: space-twinkle 3s ease-in-out infinite alternate;
+}
+
+body.theme-space #page-container::after {
+  content: '';
+  position: fixed;
+  top: 18%;
+  left: 28%;
+  width: 140px;
+  height: 1px;
+  background: radial-gradient(ellipse at center, rgba(255,255,255,0.8) 0%, transparent 70%);
+  transform: translate(-50%, -50%) rotate(-15deg);
+  pointer-events: none;
+  z-index: 0;
+  animation: space-twinkle 3s ease-in-out infinite alternate;
+}
+
+@keyframes space-twinkle {
+  0%   { opacity: 0.4; filter: brightness(0.8); }
+  100% { opacity: 1;   filter: brightness(1.2); }
+}
+
+/* Make sure foreground content sits above starfield */
+body.theme-space nav,
+body.theme-space #page-container > *,
+body.theme-space footer { position: relative; z-index: 1; }
+
+body.theme-space nav {
+  background: rgba(3, 5, 15, 0.7);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 209, 102, 0.15);
+}
+
+body.theme-space .nav-links.open {
+  background: rgba(3, 5, 15, 0.96);
+}
+
+body.theme-space .nav-logo {
+  color: #ffe81f;
+  text-shadow: 0 0 8px rgba(255,209,102,0.7), 0 0 18px rgba(255,209,102,0.35);
+}
+
+body.theme-space .nav-links a,
+body.theme-space .nav-links button { color: #ffffff; }
+body.theme-space .nav-links a:hover,
+body.theme-space .nav-links button:hover { color: #ffe81f; }
+body.theme-space .nav-links a.active,
+body.theme-space .nav-links button.active { color: #ffe81f; }
+
+body.theme-space h1,
+body.theme-space h2,
+body.theme-space h3,
+body.theme-space p,
+body.theme-space li,
+body.theme-space .home-name,
+body.theme-space .personal-bigname,
+body.theme-space .page-title,
+body.theme-space .personal-bio p {
+  color: #ffffff;
+}
+
+body.theme-space .home-name,
+body.theme-space .personal-bigname,
+body.theme-space .page-title {
+  text-shadow: 0 0 18px rgba(255,232,31,0.18), 0 2px 12px rgba(0,0,0,0.7);
+}
+
+body.theme-space em,
+body.theme-space .home-name span,
+body.theme-space .home-eyebrow,
+body.theme-space .page-eyebrow,
+body.theme-space .personal-greeting,
+body.theme-space .personal-work-label,
+body.theme-space .timeline-date,
+body.theme-space .timeline-content h2,
+body.theme-space .skills-heading,
+body.theme-space .home-card-arrow,
+body.theme-space .social-arrow,
+body.theme-space .project-org,
+body.theme-space .edu-degree,
+body.theme-space .footer-logo {
+  color: #ffe81f;
+}
+
+body.theme-space .home-tagline,
+body.theme-space .page-subtitle,
+body.theme-space .personal-work-sub,
+body.theme-space .home-card-desc,
+body.theme-space .social-handle,
+body.theme-space .edu-location,
+body.theme-space .edu-meta,
+body.theme-space .project-desc,
+body.theme-space .footer-text,
+body.theme-space .gallery-item figcaption {
+  color: #b8b8b8;
+}
+
+body.theme-space .home-card-title,
+body.theme-space .social-name,
+body.theme-space .edu-name,
+body.theme-space .project-title,
+body.theme-space .timeline-content h3 {
+  color: #ffffff;
+}
+
+body.theme-space .home-grid-bg { opacity: 0.04; }
+
+body.theme-space .home-card,
+body.theme-space .project-card,
+body.theme-space .card,
+body.theme-space .social-card,
+body.theme-space .timeline-item,
+body.theme-space .edu-card-big,
+body.theme-space .edu-card-small,
+body.theme-space .contact-form-block {
+  background: rgba(8, 8, 8, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+body.theme-space .home-card:hover,
+body.theme-space .project-card:hover,
+body.theme-space .social-card:hover,
+body.theme-space .edu-card-big:hover {
+  background: rgba(18, 18, 18, 0.8);
+  border-color: rgba(255, 232, 31, 0.45);
+  box-shadow: 0 0 24px rgba(255, 232, 31, 0.15), 0 4px 24px rgba(0,0,0,0.55);
+}
+
+body.theme-space .btn-primary {
+  background: #ffe81f;
+  color: #000000;
+  border: 1px solid #ffe81f;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+body.theme-space .btn-primary:hover {
+  background: #ffffff;
+  border-color: #ffffff;
+  box-shadow: 0 0 18px rgba(255, 232, 31, 0.6);
+}
+body.theme-space .btn-outline {
+  border: 1px solid #ffe81f;
+  color: #ffe81f;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+body.theme-space .btn-outline:hover {
+  background: rgba(255, 232, 31, 0.12);
+  color: #ffffff;
+}
+
+body.theme-space .tag {
+  background: rgba(255, 232, 31, 0.08);
+  border: 1px solid rgba(255, 232, 31, 0.3);
+  color: #ffe88a;
+}
+
+body.theme-space input[type="text"],
+body.theme-space input[type="email"],
+body.theme-space textarea {
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+}
+body.theme-space input::placeholder,
+body.theme-space textarea::placeholder { color: #6a6a6a; }
+body.theme-space input:focus,
+body.theme-space textarea:focus {
+  border-color: #ffe81f;
+  box-shadow: 0 0 0 3px rgba(255, 232, 31, 0.18);
+}
+
+body.theme-space .divider,
+body.theme-space .personal-divider {
+  background: linear-gradient(90deg, transparent, rgba(255,232,31,0.35), transparent);
+  height: 1px;
+  border: none;
+}
+
+body.theme-space footer {
+  background: rgba(0, 0, 0, 0.85);
+  border-top: 1px solid rgba(255, 232, 31, 0.18);
+}
+
+body.theme-space .logo-hint {
+  background: rgba(8, 8, 8, 0.96);
+  border: 1px solid #ffe81f;
+  color: #ffffff;
+  box-shadow: 0 0 24px rgba(255, 232, 31, 0.25);
+}
+body.theme-space .logo-hint::before {
+  background: rgba(8, 8, 8, 0.96);
+  border-color: #ffe81f;
+}
+
+body.theme-space a { color: #ffe81f; }
+body.theme-space a:hover { color: #fff4d6; }
+
+body.theme-space .contact-list a { color: #ffe81f; }
+
+
 /* ----------------------------------------------------------------
    15. RESPONSIVE (mobile / tablet)
 ---------------------------------------------------------------- */
