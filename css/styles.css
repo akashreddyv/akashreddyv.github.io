@@ -496,9 +496,10 @@ nav {
 
 .timeline-date          { font-size: 13px; color: var(--muted); padding-top: 4px; }
 .timeline-date strong   { display: block; font-size: 15px; color: var(--accent); font-weight: 500; margin-bottom: 4px; }
-.timeline-content h3    { font-family: var(--font-display); font-size: 22px; color: var(--white); margin-bottom: 4px; }
+.timeline-content h2    { font-family: var(--font-display); font-size: 26px; font-weight: 700; color: var(--white); margin-bottom: 6px; line-height: 1.2; }
+.timeline-content h3    { font-family: var(--font-display); font-size: 18px; font-weight: 500; color: var(--accent); margin-bottom: 14px; line-height: 1.3; }
 .timeline-content h4    { font-size: 14px; color: var(--muted); margin-bottom: 16px; }
-.timeline-content p     { font-size: 15px; color: var(--muted); line-height: 1.8; }
+.timeline-content p     { font-size: 15px; color: var(--muted); line-height: 1.8; margin-bottom: 14px; }
 
 .skills-section h3,
 .skills-heading         { font-family: var(--font-display); font-size: 28px; color: var(--white); margin-bottom: 28px; }
@@ -1256,149 +1257,179 @@ body.theme-retro ::-webkit-scrollbar-button {
 
 
 /* ================================================================
-   STAR WARS SPACE THEME
-   Pitch-black void, crisp starfield, photoreal planets rendered as
-   SVG with proper terminator-line shading and atmospheric rim glow:
-   Death Star (top-right), Tatooine (mid-left), Hoth ice moon
-   (bottom-right). Accent uses the iconic Star Wars title yellow.
+   DEEP-SPACE THEME (photoreal)
+   A cinematic view from low orbit: the deep void laced with
+   hydrogen-alpha and oxygen-III nebulosity, the Milky Way arm cutting
+   the sky, a dense multi-color starfield, and three SVG-rendered
+   bodies — a blue-marble world (top-right), a ringed gas giant
+   (mid-left), and a cratered moon (bottom-right). Pure CSS/SVG —
+   feTurbulence drives realistic surfaces, lighting and atmosphere.
 ================================================================ */
 
 body.theme-space {
   --bg:      #000000;
-  --surface: #050505;
-  --card:    #0a0a0a;
-  --border:  #1a1a1a;
-  --accent:  #ffe81f;          /* Star Wars title yellow */
+  --surface: #04060d;
+  --card:    #07090f;
+  --border:  #181b25;
+  --accent:  #ffe81f;
   --text:    #ffffff;
-  --muted:   #9a9a9a;
+  --muted:   #9aa3b2;
   --white:   #ffffff;
 
   background-color: #000000;
   background-image:
-    /* Death Star — Photorealistic 3D crater noise and stark terminator shadow */
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><defs><filter id='tex'><feTurbulence type='fractalNoise' baseFrequency='0.05' numOctaves='5' result='n'/><feColorMatrix type='saturate' values='0' result='g'/><feComponentTransfer result='c'><feFuncR type='linear' slope='1.5' intercept='-0.2'/><feFuncG type='linear' slope='1.5' intercept='-0.2'/><feFuncB type='linear' slope='1.5' intercept='-0.2'/></feComponentTransfer><feComposite operator='in' in='c' in2='SourceGraphic' result='m'/><feBlend mode='multiply' in='m' in2='SourceGraphic'/></filter><radialGradient id='base' cx='30%25' cy='30%25' r='70%25'><stop offset='0%25' stop-color='%23e5e5e5'/><stop offset='40%25' stop-color='%23888888'/><stop offset='100%25' stop-color='%23222222'/></radialGradient><radialGradient id='shadow' cx='30%25' cy='30%25' r='70%25'><stop offset='0%25' stop-color='%23000' stop-opacity='0'/><stop offset='40%25' stop-color='%23000' stop-opacity='0.4'/><stop offset='70%25' stop-color='%23000' stop-opacity='0.98'/><stop offset='100%25' stop-color='%23000' stop-opacity='1'/></radialGradient></defs><circle cx='100' cy='100' r='90' fill='url(%23base)' filter='url(%23tex)'/><circle cx='60' cy='50' r='22' fill='%23111' opacity='0.3'/><circle cx='60' cy='50' r='18' fill='url(%23base)' filter='url(%23tex)' opacity='0.8'/><circle cx='60' cy='50' r='7' fill='%230a0a0a' opacity='0.8'/><path d='M10 100 Q100 105 190 100 L190 102 Q100 107 10 102 Z' fill='%23111' opacity='0.6'/><circle cx='100' cy='100' r='90' fill='url(%23shadow)'/></svg>"),
-    /* Tatooine — Photorealistic stretched sand dunes and atmospheric rim scatter */
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><defs><filter id='tex'><feTurbulence type='fractalNoise' baseFrequency='0.015 0.08' numOctaves='4' result='n'/><feColorMatrix type='saturate' values='0' result='g'/><feComponentTransfer result='c'><feFuncR type='linear' slope='1.2' intercept='-0.1'/><feFuncG type='linear' slope='1.2' intercept='-0.1'/><feFuncB type='linear' slope='1.2' intercept='-0.1'/></feComponentTransfer><feComposite operator='in' in='c' in2='SourceGraphic' result='m'/><feBlend mode='multiply' in='m' in2='SourceGraphic'/></filter><radialGradient id='base' cx='35%25' cy='35%25' r='65%25'><stop offset='0%25' stop-color='%23ffcc88'/><stop offset='50%25' stop-color='%23c27b42'/><stop offset='100%25' stop-color='%235a2100'/></radialGradient><radialGradient id='shadow' cx='25%25' cy='35%25' r='75%25'><stop offset='0%25' stop-color='%23000' stop-opacity='0'/><stop offset='35%25' stop-color='%23000' stop-opacity='0.3'/><stop offset='65%25' stop-color='%23000' stop-opacity='0.98'/><stop offset='100%25' stop-color='%23000' stop-opacity='1'/></radialGradient><radialGradient id='atm' cx='50%25' cy='50%25' r='50%25'><stop offset='88%25' stop-color='%23ffaa55' stop-opacity='0'/><stop offset='96%25' stop-color='%23ffaa55' stop-opacity='0.5'/><stop offset='100%25' stop-color='%23ffaa55' stop-opacity='0'/></radialGradient></defs><circle cx='100' cy='100' r='96' fill='url(%23atm)'/><circle cx='100' cy='100' r='90' fill='url(%23base)' filter='url(%23tex)'/><circle cx='100' cy='100' r='90' fill='url(%23shadow)'/></svg>"),
-    /* Hoth — Photorealistic frozen ice surface with blinding cinematic 3D lighting */
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><defs><filter id='tex'><feTurbulence type='fractalNoise' baseFrequency='0.04' numOctaves='4' result='n'/><feColorMatrix type='saturate' values='0' result='g'/><feComponentTransfer result='c'><feFuncR type='linear' slope='1.8' intercept='-0.4'/><feFuncG type='linear' slope='1.8' intercept='-0.4'/><feFuncB type='linear' slope='1.8' intercept='-0.4'/></feComponentTransfer><feComposite operator='in' in='c' in2='SourceGraphic' result='m'/><feBlend mode='screen' in='m' in2='SourceGraphic'/></filter><radialGradient id='base' cx='35%25' cy='25%25' r='65%25'><stop offset='0%25' stop-color='%23ffffff'/><stop offset='45%25' stop-color='%23aaddff'/><stop offset='100%25' stop-color='%232b5c8f'/></radialGradient><radialGradient id='shadow' cx='30%25' cy='30%25' r='70%25'><stop offset='0%25' stop-color='%23000' stop-opacity='0'/><stop offset='40%25' stop-color='%23000' stop-opacity='0.3'/><stop offset='65%25' stop-color='%23000' stop-opacity='0.95'/><stop offset='100%25' stop-color='%23000' stop-opacity='1'/></radialGradient><radialGradient id='atm' cx='50%25' cy='50%25' r='50%25'><stop offset='88%25' stop-color='%2388ccff' stop-opacity='0'/><stop offset='96%25' stop-color='%2388ccff' stop-opacity='0.6'/><stop offset='100%25' stop-color='%2388ccff' stop-opacity='0'/></radialGradient></defs><circle cx='100' cy='100' r='96' fill='url(%23atm)'/><circle cx='100' cy='100' r='90' fill='url(%23base)' filter='url(%23tex)'/><circle cx='100' cy='100' r='90' fill='url(%23shadow)'/></svg>"),
-    /* Richer nebulas */
-    radial-gradient(ellipse 60% 45% at 75% 75%, rgba(20, 40, 80, 0.25) 0%, transparent 60%),
-    radial-gradient(ellipse 55% 45% at 20% 30%, rgba(80, 20, 50, 0.2) 0%, transparent 60%),
-    radial-gradient(ellipse 70% 30% at 50% 50%, rgba(10, 40, 60, 0.15) 0%, transparent 70%),
-    linear-gradient(180deg, #000000, #000205, #000000);
+    /* — Earth-like blue marble (top-right) — continents, oceans, swirling cloud band, atmospheric rim — */
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 240'><defs><radialGradient id='ocean' cx='32%25' cy='28%25' r='72%25'><stop offset='0%25' stop-color='%237fc8ff'/><stop offset='28%25' stop-color='%23337bbf'/><stop offset='62%25' stop-color='%23103a76'/><stop offset='100%25' stop-color='%23030a1f'/></radialGradient><radialGradient id='shade' cx='30%25' cy='28%25' r='80%25'><stop offset='0%25' stop-color='%23000' stop-opacity='0'/><stop offset='38%25' stop-color='%23000' stop-opacity='0.18'/><stop offset='70%25' stop-color='%23000' stop-opacity='0.93'/><stop offset='100%25' stop-color='%23000' stop-opacity='1'/></radialGradient><radialGradient id='haze' cx='50%25' cy='50%25' r='52%25'><stop offset='86%25' stop-color='%2390d6ff' stop-opacity='0'/><stop offset='94%25' stop-color='%2390d6ff' stop-opacity='0.55'/><stop offset='100%25' stop-color='%2390d6ff' stop-opacity='0'/></radialGradient><filter id='land' x='0%25' y='0%25' width='100%25' height='100%25'><feTurbulence type='fractalNoise' baseFrequency='0.012 0.018' numOctaves='5' seed='7'/><feColorMatrix values='0 0 0 0 0.18  0 0 0 0 0.42  0 0 0 0 0.16  0 0 0 1.8 -0.95'/><feComposite in2='SourceGraphic' operator='in'/></filter><filter id='dry' x='0%25' y='0%25' width='100%25' height='100%25'><feTurbulence type='fractalNoise' baseFrequency='0.025' numOctaves='4' seed='3'/><feColorMatrix values='0 0 0 0 0.62  0 0 0 0 0.48  0 0 0 0 0.22  0 0 0 1.5 -0.8'/><feComposite in2='SourceGraphic' operator='in'/></filter><filter id='clouds' x='0%25' y='0%25' width='100%25' height='100%25'><feTurbulence type='fractalNoise' baseFrequency='0.018 0.06' numOctaves='5' seed='11'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1.3 -0.6'/><feGaussianBlur stdDeviation='0.6'/><feComposite in2='SourceGraphic' operator='in'/></filter><filter id='ice' x='0%25' y='0%25' width='100%25' height='100%25'><feTurbulence type='fractalNoise' baseFrequency='0.04' numOctaves='3' seed='5'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1.6 -0.9'/><feComposite in2='SourceGraphic' operator='in'/></filter><clipPath id='globe'><circle cx='120' cy='120' r='102'/></clipPath></defs><circle cx='120' cy='120' r='110' fill='url(%23haze)'/><g clip-path='url(%23globe)'><circle cx='120' cy='120' r='102' fill='url(%23ocean)'/><rect x='18' y='18' width='204' height='204' filter='url(%23land)' opacity='0.85'/><rect x='18' y='18' width='204' height='204' filter='url(%23dry)' opacity='0.5'/><rect x='18' y='18' width='204' height='204' filter='url(%23clouds)' opacity='0.55'/><ellipse cx='120' cy='30' rx='90' ry='14' fill='%23ffffff' filter='url(%23ice)' opacity='0.85'/><ellipse cx='120' cy='210' rx='95' ry='12' fill='%23ffffff' filter='url(%23ice)' opacity='0.85'/></g><circle cx='120' cy='120' r='102' fill='url(%23shade)'/><circle cx='120' cy='120' r='102' fill='none' stroke='%23a8e0ff' stroke-opacity='0.35' stroke-width='0.6'/></svg>"),
+    /* — Ringed gas giant (mid-left) — banded atmosphere, storm spot, tilted rings, cast shadow — */
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 360 240'><defs><linearGradient id='gband' x1='0' x2='0' y1='0' y2='1'><stop offset='0%25' stop-color='%23f3d6a0'/><stop offset='18%25' stop-color='%23c89a5e'/><stop offset='30%25' stop-color='%23e8c189'/><stop offset='45%25' stop-color='%23a36f3a'/><stop offset='58%25' stop-color='%23dfb47a'/><stop offset='72%25' stop-color='%238a5827'/><stop offset='86%25' stop-color='%23c89a5e'/><stop offset='100%25' stop-color='%235a3614'/></linearGradient><radialGradient id='gshade' cx='32%25' cy='30%25' r='80%25'><stop offset='0%25' stop-color='%23000' stop-opacity='0'/><stop offset='40%25' stop-color='%23000' stop-opacity='0.18'/><stop offset='72%25' stop-color='%23000' stop-opacity='0.92'/><stop offset='100%25' stop-color='%23000' stop-opacity='1'/></radialGradient><radialGradient id='ghaze' cx='50%25' cy='50%25' r='52%25'><stop offset='86%25' stop-color='%23ffd99a' stop-opacity='0'/><stop offset='94%25' stop-color='%23ffd99a' stop-opacity='0.5'/><stop offset='100%25' stop-color='%23ffd99a' stop-opacity='0'/></radialGradient><linearGradient id='ringA' x1='0' x2='1' y1='0' y2='0'><stop offset='0%25' stop-color='%23000' stop-opacity='0'/><stop offset='12%25' stop-color='%23b89770' stop-opacity='0.85'/><stop offset='28%25' stop-color='%23dcb887' stop-opacity='0.95'/><stop offset='44%25' stop-color='%23000' stop-opacity='0.25'/><stop offset='60%25' stop-color='%23e3c397' stop-opacity='0.9'/><stop offset='78%25' stop-color='%23a78b65' stop-opacity='0.8'/><stop offset='100%25' stop-color='%23000' stop-opacity='0'/></linearGradient><filter id='gturb' x='0%25' y='0%25' width='100%25' height='100%25'><feTurbulence type='fractalNoise' baseFrequency='0.006 0.09' numOctaves='4' seed='4'/><feColorMatrix values='0 0 0 0 0.35  0 0 0 0 0.22  0 0 0 0 0.08  0 0 0 0.55 0'/><feComposite in2='SourceGraphic' operator='in'/></filter><clipPath id='gp'><circle cx='180' cy='120' r='90'/></clipPath></defs><g transform='rotate(-18 180 120)'><ellipse cx='180' cy='120' rx='170' ry='30' fill='url(%23ringA)' opacity='0.95'/><ellipse cx='180' cy='120' rx='170' ry='30' fill='none' stroke='%23000' stroke-opacity='0.4' stroke-width='0.5'/></g><circle cx='180' cy='120' r='98' fill='url(%23ghaze)'/><g clip-path='url(%23gp)'><circle cx='180' cy='120' r='90' fill='url(%23gband)'/><rect x='90' y='30' width='180' height='180' filter='url(%23gturb)' opacity='0.9'/><ellipse cx='205' cy='148' rx='14' ry='6' fill='%23e8b27a' opacity='0.9'/><ellipse cx='205' cy='148' rx='9' ry='3' fill='%236d3a14' opacity='0.85'/></g><circle cx='180' cy='120' r='90' fill='url(%23gshade)'/><g transform='rotate(-18 180 120)'><path d='M 95 120 A 170 30 0 0 1 265 120' fill='none' stroke='%23000' stroke-opacity='0.5' stroke-width='2'/></g></svg>"),
+    /* — Cratered moon (bottom-right) — heavy regolith, sharp terminator, scattered craters — */
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><defs><radialGradient id='reg' cx='34%25' cy='30%25' r='75%25'><stop offset='0%25' stop-color='%23e8e3da'/><stop offset='45%25' stop-color='%239e9a90'/><stop offset='100%25' stop-color='%23373430'/></radialGradient><radialGradient id='mshade' cx='30%25' cy='28%25' r='78%25'><stop offset='0%25' stop-color='%23000' stop-opacity='0'/><stop offset='42%25' stop-color='%23000' stop-opacity='0.22'/><stop offset='72%25' stop-color='%23000' stop-opacity='0.97'/><stop offset='100%25' stop-color='%23000' stop-opacity='1'/></radialGradient><filter id='mtex'><feTurbulence type='fractalNoise' baseFrequency='0.4' numOctaves='4' seed='9'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.55 -0.05'/><feComposite in2='SourceGraphic' operator='in'/></filter><filter id='maria'><feTurbulence type='fractalNoise' baseFrequency='0.018' numOctaves='3' seed='2'/><feColorMatrix values='0 0 0 0 0.2  0 0 0 0 0.19  0 0 0 0 0.17  0 0 0 1.4 -0.85'/><feComposite in2='SourceGraphic' operator='in'/></filter><clipPath id='mc'><circle cx='100' cy='100' r='90'/></clipPath></defs><g clip-path='url(%23mc)'><circle cx='100' cy='100' r='90' fill='url(%23reg)'/><rect x='10' y='10' width='180' height='180' filter='url(%23maria)' opacity='0.65'/><rect x='10' y='10' width='180' height='180' filter='url(%23mtex)' opacity='0.55'/><g fill='%23000' opacity='0.55'><circle cx='72' cy='62' r='9'/><circle cx='118' cy='80' r='5'/><circle cx='140' cy='118' r='8'/><circle cx='86' cy='132' r='6'/><circle cx='62' cy='98' r='4'/><circle cx='108' cy='150' r='5'/><circle cx='150' cy='62' r='3.5'/><circle cx='52' cy='130' r='3'/></g><g fill='%23ffffff' opacity='0.32'><circle cx='72' cy='59' r='9.5'/><circle cx='118' cy='77' r='5.5'/><circle cx='140' cy='115' r='8.5'/><circle cx='86' cy='129' r='6.5'/></g></g><circle cx='100' cy='100' r='90' fill='url(%23mshade)'/></svg>"),
+    /* — Hydrogen-alpha + Oxygen-III nebulosity (real-color emission palette) — */
+    radial-gradient(ellipse 55% 38% at 78% 22%, rgba(255, 70, 120, 0.22) 0%, rgba(255, 70, 120, 0.08) 35%, transparent 70%),
+    radial-gradient(ellipse 48% 36% at 22% 78%, rgba(70, 180, 255, 0.18) 0%, rgba(70, 180, 255, 0.06) 40%, transparent 72%),
+    radial-gradient(ellipse 42% 30% at 62% 58%, rgba(180, 90, 255, 0.13) 0%, transparent 65%),
+    radial-gradient(ellipse 35% 28% at 12% 28%, rgba(255, 160, 90, 0.10) 0%, transparent 70%),
+    /* — Milky Way band: warm dust lane diagonally across the sky — */
+    linear-gradient(118deg, transparent 28%, rgba(255, 230, 200, 0.05) 38%, rgba(255, 220, 180, 0.10) 46%, rgba(255, 210, 170, 0.07) 52%, rgba(120, 100, 90, 0.06) 56%, transparent 66%),
+    /* Deep void with subtle vertical sky-glow */
+    radial-gradient(ellipse 120% 90% at 50% 50%, #02030a 0%, #000003 60%, #000000 100%);
   background-position:
-    calc(100% + 140px) -140px,  /* Death Star */
-    -80px 45%,                  /* Tatooine */
-    96% 92%,                    /* Hoth */
-    0 0, 0 0, 0 0, 0 0;
+    calc(100% + 160px) -150px,   /* blue marble */
+    -120px 42%,                  /* gas giant + rings */
+    96% 92%,                     /* moon */
+    0 0, 0 0, 0 0, 0 0,
+    0 0,
+    0 0;
   background-size:
-    540px 540px,                /* Death Star is larger and imposing */
-    320px 320px,
-    140px 140px,
-    100% 100%, 100% 100%, 100% 100%, 100% 100%;
+    580px 580px,
+    520px 360px,
+    150px 150px,
+    100% 100%, 100% 100%, 100% 100%, 100% 100%,
+    100% 100%,
+    100% 100%;
   background-repeat: no-repeat;
   background-attachment: fixed;
 }
 
-/* Highly realistic sharp starfield with diverse star temperatures */
+/* —— Foreground starfield: dense, multi-temperature stars + diffraction spikes on the brightest —— */
 body.theme-space::before {
   content: '';
   position: fixed;
   inset: 0;
   background-image:
-    /* Bright White Stars */
-    radial-gradient(circle at 10% 15%, #ffffff 1px, transparent 1.5px),
-    radial-gradient(circle at 35% 45%, #ffffff 1.5px, transparent 2px),
-    radial-gradient(circle at 85% 25%, #ffffff 1px, transparent 1.5px),
-    radial-gradient(circle at 65% 85%, #ffffff 1px, transparent 1.5px),
-    /* Bright Blue/White Stars */
-    radial-gradient(circle at 25% 80%, #cce0ff 1.5px, transparent 2px),
-    radial-gradient(circle at 75% 55%, #cce0ff 2px, transparent 2.5px),
-    radial-gradient(circle at 92% 10%, #cce0ff 1px, transparent 1.5px),
-    /* Warm Orange/Red Stars */
-    radial-gradient(circle at 45% 20%, #ffdca8 2px, transparent 2.5px),
-    radial-gradient(circle at 55% 70%, #ffdca8 1.5px, transparent 2px),
-    radial-gradient(circle at 15% 40%, #ffdca8 1px, transparent 1.5px),
-    /* Distant Faint Stars */
-    radial-gradient(circle at 5% 5%, rgba(255,255,255,0.5) 0.5px, transparent 1px),
-    radial-gradient(circle at 20% 25%, rgba(255,255,255,0.4) 0.5px, transparent 1px),
-    radial-gradient(circle at 40% 60%, rgba(255,255,255,0.6) 0.5px, transparent 1px),
-    radial-gradient(circle at 60% 15%, rgba(255,255,255,0.3) 0.5px, transparent 1px),
-    radial-gradient(circle at 80% 80%, rgba(255,255,255,0.5) 0.5px, transparent 1px),
-    radial-gradient(circle at 95% 45%, rgba(255,255,255,0.4) 0.5px, transparent 1px);
+    /* O/B class hot blue */
+    radial-gradient(circle at 8% 12%, #c8dcff 1.4px, rgba(200,220,255,0.35) 2.2px, transparent 3px),
+    radial-gradient(circle at 73% 8%, #b8d0ff 1.2px, rgba(184,208,255,0.3) 2px, transparent 2.6px),
+    radial-gradient(circle at 36% 64%, #d4e4ff 1.5px, rgba(212,228,255,0.35) 2.4px, transparent 3.2px),
+    /* A class crisp white */
+    radial-gradient(circle at 22% 38%, #ffffff 1.3px, rgba(255,255,255,0.4) 2px, transparent 2.6px),
+    radial-gradient(circle at 88% 52%, #ffffff 1.4px, rgba(255,255,255,0.4) 2.2px, transparent 2.8px),
+    radial-gradient(circle at 54% 28%, #ffffff 1.1px, transparent 1.8px),
+    radial-gradient(circle at 14% 82%, #ffffff 1.3px, rgba(255,255,255,0.35) 2px, transparent 2.6px),
+    /* G class sun-yellow */
+    radial-gradient(circle at 46% 76%, #fff4d0 1.1px, rgba(255,244,208,0.3) 1.8px, transparent 2.4px),
+    radial-gradient(circle at 82% 88%, #ffe9b8 1px, transparent 1.6px),
+    /* K/M class orange-red giants */
+    radial-gradient(circle at 28% 18%, #ffb077 1.4px, rgba(255,176,119,0.35) 2.2px, transparent 3px),
+    radial-gradient(circle at 62% 92%, #ff8866 1.2px, rgba(255,136,102,0.3) 2px, transparent 2.6px),
+    radial-gradient(circle at 94% 28%, #ffa07a 1px, transparent 1.6px),
+    /* dense faint background carpet */
+    radial-gradient(circle at 6% 48%, rgba(255,255,255,0.7) 0.5px, transparent 1px),
+    radial-gradient(circle at 18% 6%, rgba(220,235,255,0.55) 0.5px, transparent 1px),
+    radial-gradient(circle at 33% 92%, rgba(255,255,255,0.6) 0.5px, transparent 1px),
+    radial-gradient(circle at 49% 14%, rgba(255,230,200,0.55) 0.5px, transparent 1px),
+    radial-gradient(circle at 67% 36%, rgba(255,255,255,0.5) 0.5px, transparent 1px),
+    radial-gradient(circle at 78% 72%, rgba(200,220,255,0.5) 0.5px, transparent 1px),
+    radial-gradient(circle at 92% 16%, rgba(255,255,255,0.65) 0.5px, transparent 1px);
   background-size:
-    400px 400px, 550px 550px, 700px 700px, 350px 350px,
-    600px 600px, 450px 450px, 800px 800px,
-    500px 500px, 650px 650px, 300px 300px,
-    250px 250px, 380px 380px, 420px 420px, 280px 280px, 320px 320px, 480px 480px;
+    420px 420px, 560px 560px, 720px 720px,
+    380px 380px, 640px 640px, 300px 300px, 500px 500px,
+    340px 340px, 590px 590px,
+    470px 470px, 680px 680px, 360px 360px,
+    180px 180px, 230px 230px, 210px 210px, 260px 260px, 300px 300px, 240px 240px, 320px 320px;
   z-index: 0;
   pointer-events: none;
+  opacity: 0.95;
 }
 
-/* Secondary deep-space cluster providing depth and slow parallax */
+/* —— Distant deep-field stars + slow parallax —— */
 body.theme-space::after {
   content: '';
   position: fixed;
   inset: 0;
   pointer-events: none;
   background-image:
-    radial-gradient(circle at 12% 34%, rgba(255,255,255,0.7) 0.5px, transparent 1px),
-    radial-gradient(circle at 27% 88%, rgba(204,224,255,0.6) 0.5px, transparent 1px),
-    radial-gradient(circle at 58% 12%, rgba(255,220,168,0.7) 0.5px, transparent 1px),
-    radial-gradient(circle at 74% 56%, rgba(255,255,255,0.5) 0.5px, transparent 1px),
-    radial-gradient(circle at 89% 91%, rgba(204,224,255,0.8) 0.5px, transparent 1px),
-    radial-gradient(circle at 43% 45%, rgba(255,255,255,0.6) 0.5px, transparent 1px);
-  background-size: 150px 150px, 220px 220px, 180px 180px, 270px 270px, 190px 190px, 310px 310px;
+    radial-gradient(circle at 11% 33%, rgba(255,255,255,0.55) 0.5px, transparent 1px),
+    radial-gradient(circle at 27% 87%, rgba(204,224,255,0.5) 0.5px, transparent 1px),
+    radial-gradient(circle at 58% 11%, rgba(255,220,168,0.6) 0.5px, transparent 1px),
+    radial-gradient(circle at 74% 55%, rgba(255,255,255,0.45) 0.5px, transparent 1px),
+    radial-gradient(circle at 89% 91%, rgba(204,224,255,0.65) 0.5px, transparent 1px),
+    radial-gradient(circle at 43% 45%, rgba(255,255,255,0.5) 0.5px, transparent 1px),
+    radial-gradient(circle at 36% 22%, rgba(255,255,255,0.4) 0.4px, transparent 0.9px),
+    radial-gradient(circle at 64% 78%, rgba(255,255,255,0.35) 0.4px, transparent 0.9px);
+  background-size: 130px 130px, 190px 190px, 160px 160px, 240px 240px, 170px 170px, 280px 280px, 110px 110px, 150px 150px;
   z-index: 0;
-  opacity: 0.6;
-  animation: space-drift 180s linear infinite;
+  opacity: 0.55;
+  animation: space-drift 240s linear infinite;
 }
 
 @keyframes space-drift {
-  0% { transform: scale(1) rotate(0deg); }
-  50% { transform: scale(1.05) rotate(0.5deg); }
-  100% { transform: scale(1) rotate(0deg); }
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  50%  { transform: translate3d(-12px, -8px, 0) scale(1.03); }
+  100% { transform: translate3d(0, 0, 0) scale(1); }
 }
 
-/* Bright twinkling star with a cinematic lens flare */
+/* —— Cinematic bright star with anamorphic flare + a distant spiral galaxy —— */
 body.theme-space #page-container { position: relative; }
+
 body.theme-space #page-container::before {
+  /* Bright A-type star + 4-point diffraction spikes */
   content: '';
   position: fixed;
-  top: 18%;
-  left: 28%;
-  width: 3px;
-  height: 3px;
-  background: #ffffff;
+  top: 17%;
+  left: 27%;
+  width: 4px;
+  height: 4px;
   border-radius: 50%;
-  box-shadow: 0 0 12px 3px #ffffff, 0 0 25px 8px rgba(204,224,255,0.6), 0 0 50px 15px rgba(204,224,255,0.3);
-  transform: translate(-50%, -50%);
+  background: #ffffff;
+  box-shadow:
+    0 0 8px 2px #ffffff,
+    0 0 22px 6px rgba(220, 235, 255, 0.7),
+    0 0 60px 18px rgba(160, 200, 255, 0.35),
+    0 0 120px 40px rgba(120, 170, 255, 0.18);
   pointer-events: none;
   z-index: 0;
-  animation: space-twinkle 3s ease-in-out infinite alternate;
+  animation: space-twinkle 4.2s ease-in-out infinite alternate;
 }
 
 body.theme-space #page-container::after {
+  /* Anamorphic streak + faint spiral galaxy (top-left quadrant) */
   content: '';
   position: fixed;
-  top: 18%;
-  left: 28%;
-  width: 140px;
-  height: 1px;
-  background: radial-gradient(ellipse at center, rgba(255,255,255,0.8) 0%, transparent 70%);
-  transform: translate(-50%, -50%) rotate(-15deg);
+  inset: 0;
   pointer-events: none;
   z-index: 0;
-  animation: space-twinkle 3s ease-in-out infinite alternate;
+  background-image:
+    /* anamorphic streak across the bright star */
+    radial-gradient(ellipse 200px 1.2px at 27% 17%, rgba(220,235,255,0.85) 0%, rgba(220,235,255,0) 75%),
+    /* vertical micro flare */
+    radial-gradient(ellipse 1.2px 80px at 27% 17%, rgba(220,235,255,0.55) 0%, rgba(220,235,255,0) 70%),
+    /* faint spiral galaxy puff */
+    radial-gradient(ellipse 90px 32px at 84% 18%, rgba(255,240,210,0.32) 0%, rgba(255,200,160,0.14) 35%, transparent 70%),
+    radial-gradient(ellipse 38px 14px at 84% 18%, rgba(255,250,235,0.7) 0%, transparent 70%),
+    /* a smaller elliptical galaxy bottom-left */
+    radial-gradient(ellipse 38px 16px at 9% 88%, rgba(255,220,180,0.22) 0%, transparent 70%);
+  animation: space-twinkle 4.2s ease-in-out infinite alternate;
 }
 
 @keyframes space-twinkle {
-  0%   { opacity: 0.4; filter: brightness(0.8); }
-  100% { opacity: 1;   filter: brightness(1.2); }
+  0%   { opacity: 0.55; filter: brightness(0.85); }
+  100% { opacity: 1;    filter: brightness(1.15); }
 }
 
-/* Make sure foreground content sits above starfield */
-body.theme-space nav,
+/* Make sure foreground content sits above the starfield. Nav stays
+   position:fixed (from base) so it doesn't scroll away — its base
+   z-index (500) already lifts it above the z-index:0 star layers. */
 body.theme-space #page-container > *,
 body.theme-space footer { position: relative; z-index: 1; }
 
