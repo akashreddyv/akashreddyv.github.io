@@ -120,10 +120,15 @@ for (const l of lightDefs) {
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 //  Controls
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Lock the camera to a fixed axis pointing at the origin. The user
+// cannot pan or orbit — the object stays centered on screen and spins
+// in place around the world Y axis. Zoom is still allowed.
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.target.set(0, 0, 0);
 controls.enableDamping = true;
 controls.dampingFactor = 0.06;
+controls.enablePan = false;
+controls.enableRotate = false;
 controls.update();
 
 
