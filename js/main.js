@@ -20,6 +20,17 @@ document.addEventListener("DOMContentLoaded", function () {
         },
         {
           '@context': 'https://schema.org',
+          '@type': 'WebPage',
+          '@id': 'https://reachakash.com/#webpage',
+          url: 'https://reachakash.com/',
+          name: 'Akash Reddy (Reach Akash) | Software Developer',
+          primaryImageOfPage: {
+            '@type': 'ImageObject',
+            url: 'https://reachakash.com/images/home/vurenuka-akash-reddy-professional.jpg'
+          }
+        },
+        {
+          '@context': 'https://schema.org',
           '@type': 'Person',
           '@id': 'https://reachakash.com/#person',
           name: 'Vurenuka Akash Reddy',
