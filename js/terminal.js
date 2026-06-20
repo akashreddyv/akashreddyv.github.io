@@ -55,6 +55,7 @@
   const history = [];
   let histIdx = -1;
   let matrixStop = null;
+  let gameStop = null;
 
   function esc(s) {
     return String(s).replace(/[&<>"']/g, c => (
@@ -100,7 +101,10 @@
     launcher.id = 'term-launcher';
     launcher.setAttribute('aria-label', 'Open terminal');
     launcher.title = 'Open terminal  (press ~)';
-    launcher.innerHTML = '<span>&gt;_</span>';
+    launcher.innerHTML =
+      '<span class="tl-prompt">&gt;_</span>' +
+      '<span class="tl-label">Open the terminal</span>' +
+      '<span class="tl-key">press ~</span>';
     launcher.addEventListener('click', open);
     document.body.appendChild(launcher);
   }
@@ -131,6 +135,7 @@
         ['contact',         'how to reach me'],
         ['theme &lt;name&gt;',    'dark | light | retro | space'],
         ['banner',          'show the ASCII banner'],
+        ['play',            'shoot down the 404s 👾'],
         ['matrix',          'enter the matrix 🟢'],
         ['date',            'current date'],
         ['clear',           'clear the screen'],
@@ -221,6 +226,7 @@
     history() { history.forEach((h, i) => write(`${String(i + 1).padStart(3)}  ${esc(h)}`)); },
 
     matrix() { startMatrix(); },
+    play() { startGame(); },
 
     sudo()  { write('We trust you have received the usual lecture. 🙂 Permission denied — but A+ for effort.', 'term-err'); },
     coffee() { write('☕ Brewing… your move. (Caffeine: the only true dependency.)'); },
@@ -343,6 +349,135 @@
     matrixStop = stop;
   }
 
+  // ── Mini-game: shoot down the 404s 👾 ──
+  function startGame() {
+    if (gameStop) return;
+    input.blur();
+    const cv = document.createElement('canvas');
+    cv.id = 'term-game';
+    document.body.appendChild(cv);
+    const ctx = cv.getContext('2d');
+
+    let w, h;
+    function size() { w = cv.width = window.innerWidth; h = cv.height = window.innerHeight; }
+    size();
+
+    const player = { x: 0, y: 0, w: 46, h: 16, speed: 7 };
+    let bullets = [], enemies = [], score = 0, lives = 3, over = false;
+    let left = false, right = false, lastShot = 0, lastSpawn = 0, raf;
+    player.x = w / 2 - player.w / 2;
+
+    function spawn() {
+      enemies.push({ x: 20 + Math.random() * (w - 80), y: -24, w: 38, h: 24, vy: 0.6 + Math.random() * 0.9 });
+    }
+
+    function onDown(e) {
+      if (e.key === 'ArrowLeft')  { left = true;  e.preventDefault(); }
+      else if (e.key === 'ArrowRight') { right = true; e.preventDefault(); }
+      else if (e.key === ' ' || e.key === 'Spacebar') {
+        e.preventDefault();
+        const now = performance.now();
+        if (!over && now - lastShot > 220) { bullets.push({ x: player.x + player.w / 2 - 2, y: player.y }); lastShot = now; }
+      } else if (e.key === 'Escape' || e.key === 'q') { e.preventDefault(); stop(); }
+    }
+    function onUp(e) {
+      if (e.key === 'ArrowLeft')  left = false;
+      else if (e.key === 'ArrowRight') right = false;
+    }
+
+    window.addEventListener('resize', size);
+    window.addEventListener('keydown', onDown, true);
+    window.addEventListener('keyup', onUp, true);
+
+    function loop(t) {
+      ctx.fillStyle = 'rgba(8,10,13,0.55)';
+      ctx.fillRect(0, 0, w, h);
+      player.y = h - 60;
+
+      if (!over) {
+        if (left)  player.x -= player.speed;
+        if (right) player.x += player.speed;
+        player.x = Math.max(8, Math.min(w - player.w - 8, player.x));
+
+        if (t - lastSpawn > Math.max(420, 1100 - score * 6)) { spawn(); lastSpawn = t; }
+
+        bullets.forEach(b => b.y -= 9);
+        bullets = bullets.filter(b => b.y > -12);
+        enemies.forEach(en => en.y += en.vy * 2);
+
+        enemies.forEach(en => bullets.forEach(b => {
+          if (b.x < en.x + en.w && b.x + 4 > en.x && b.y < en.y + en.h && b.y > en.y) {
+            en.dead = true; b.dead = true; score += 10;
+          }
+        }));
+        bullets = bullets.filter(b => !b.dead);
+
+        enemies.forEach(en => {
+          if (en.y + en.h >= player.y + player.h) { en.dead = true; lives--; if (lives <= 0) over = true; }
+        });
+        enemies = enemies.filter(en => !en.dead);
+      }
+
+      ctx.textBaseline = 'top';
+      ctx.font = 'bold 16px "Courier New", monospace';
+      enemies.forEach(en => {
+        ctx.fillStyle = '#ff5f57';
+        ctx.fillRect(en.x, en.y, en.w, en.h);
+        ctx.fillStyle = '#0b0d10';
+        ctx.fillText('404', en.x + 5, en.y + 4);
+      });
+
+      ctx.fillStyle = '#e8c97e';
+      bullets.forEach(b => ctx.fillRect(b.x, b.y, 4, 12));
+
+      ctx.beginPath();
+      ctx.moveTo(player.x + player.w / 2, player.y);
+      ctx.lineTo(player.x, player.y + player.h);
+      ctx.lineTo(player.x + player.w, player.y + player.h);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.fillStyle = '#cfd6dd';
+      ctx.font = '14px "Courier New", monospace';
+      ctx.fillText('SCORE ' + score, 16, 14);
+      ctx.fillText('LIVES ' + '♥'.repeat(Math.max(0, lives)), 16, 34);
+      ctx.fillStyle = '#6c747d';
+      ctx.fillText('← → move   space fire   esc quit', 16, h - 26);
+
+      if (over) {
+        ctx.fillStyle = 'rgba(0,0,0,0.55)';
+        ctx.fillRect(0, 0, w, h);
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#e8c97e';
+        ctx.font = 'bold 34px "Courier New", monospace';
+        ctx.fillText('GAME OVER', w / 2, h / 2 - 30);
+        ctx.fillStyle = '#cfd6dd';
+        ctx.font = '18px "Courier New", monospace';
+        ctx.fillText('Score: ' + score, w / 2, h / 2 + 12);
+        ctx.fillStyle = '#6c747d';
+        ctx.font = '14px "Courier New", monospace';
+        ctx.fillText('press Esc to return to the terminal', w / 2, h / 2 + 46);
+        ctx.textAlign = 'left';
+      }
+
+      raf = requestAnimationFrame(loop);
+    }
+    raf = requestAnimationFrame(loop);
+    write('👾 shoot the 404s — ← → to move, space to fire, Esc to quit.', 'term-accent');
+
+    function stop() {
+      cancelAnimationFrame(raf);
+      window.removeEventListener('resize', size);
+      window.removeEventListener('keydown', onDown, true);
+      window.removeEventListener('keyup', onUp, true);
+      cv.remove();
+      gameStop = null;
+      write('score: ' + score + (score >= 100 ? ' 🏆 nice shooting!' : ''), 'term-accent');
+      input.focus();
+    }
+    gameStop = stop;
+  }
+
   // ── Open / close ──
   function open() {
     if (isOpen) return;
@@ -363,6 +498,7 @@
   function close() {
     if (!isOpen) return;
     if (matrixStop) matrixStop();
+    if (gameStop) gameStop();
     isOpen = false;
     term.classList.remove('open');
     term.setAttribute('aria-hidden', 'true');
