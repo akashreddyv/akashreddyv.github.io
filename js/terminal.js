@@ -137,6 +137,7 @@
         ['banner',          'show the ASCII banner'],
         ['play',            'shoot down the 404s 👾'],
         ['matrix',          'enter the matrix 🟢'],
+        ['era',             'time-travel the site 🕰'],
         ['date',            'current date'],
         ['clear',           'clear the screen'],
         ['exit',            'close the terminal']
@@ -227,6 +228,16 @@
 
     matrix() { startMatrix(); },
     play() { startGame(); },
+    era() {
+      if (typeof window.openTimeMachine === 'function') {
+        write('🕰 opening the time machine — drag the slider through the web eras.', 'term-accent');
+        window.openTimeMachine();
+        setTimeout(close, 350);
+      } else {
+        write('time machine unavailable.', 'term-err');
+      }
+    },
+    timemachine() { this.era(); },
 
     sudo()  { write('We trust you have received the usual lecture. 🙂 Permission denied — but A+ for effort.', 'term-err'); },
     coffee() { write('☕ Brewing… your move. (Caffeine: the only true dependency.)'); },
