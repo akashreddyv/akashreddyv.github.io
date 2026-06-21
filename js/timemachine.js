@@ -80,6 +80,8 @@
     if (isOpen) return;
     isOpen = true;
     panel.classList.add('open');
+    // Bring the home hero into view so the era change is visible
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   function close() {

@@ -369,36 +369,56 @@
     document.body.appendChild(cv);
     const ctx = cv.getContext('2d');
 
+    // Crisp on high-DPI screens; draw in logical (CSS) pixels.
+    const dpr = Math.max(1, Math.min(window.devicePixelRatio || 1, 2));
     let w, h;
-    function size() { w = cv.width = window.innerWidth; h = cv.height = window.innerHeight; }
+    function size() {
+      w = window.innerWidth; h = window.innerHeight;
+      cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
+      cv.style.width = w + 'px'; cv.style.height = h + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
     size();
 
+    const isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
     const player = { x: 0, y: 0, w: 46, h: 16, speed: 7 };
     let bullets = [], enemies = [], score = 0, lives = 3, over = false;
     let left = false, right = false, lastShot = 0, lastSpawn = 0, raf;
+    let touching = false, targetX = null;   // touch: drag-to-aim + auto-fire
     player.x = w / 2 - player.w / 2;
 
     function spawn() {
       enemies.push({ x: 20 + Math.random() * (w - 80), y: -24, w: 38, h: 24, vy: 0.6 + Math.random() * 0.9 });
     }
+    function fire() {
+      const now = performance.now();
+      if (!over && now - lastShot > 220) { bullets.push({ x: player.x + player.w / 2 - 2, y: player.y }); lastShot = now; }
+    }
 
     function onDown(e) {
       if (e.key === 'ArrowLeft')  { left = true;  e.preventDefault(); }
       else if (e.key === 'ArrowRight') { right = true; e.preventDefault(); }
-      else if (e.key === ' ' || e.key === 'Spacebar') {
-        e.preventDefault();
-        const now = performance.now();
-        if (!over && now - lastShot > 220) { bullets.push({ x: player.x + player.w / 2 - 2, y: player.y }); lastShot = now; }
-      } else if (e.key === 'Escape' || e.key === 'q') { e.preventDefault(); stop(); }
+      else if (e.key === ' ' || e.key === 'Spacebar') { e.preventDefault(); fire(); }
+      else if (e.key === 'Escape' || e.key === 'q') { e.preventDefault(); stop(); }
     }
     function onUp(e) {
       if (e.key === 'ArrowLeft')  left = false;
       else if (e.key === 'ArrowRight') right = false;
     }
 
+    // Touch: drag anywhere to move the ship; it auto-fires while held.
+    function aim(e) { const t = e.touches && e.touches[0]; if (t) targetX = t.clientX - player.w / 2; }
+    function onTouchStart(e) { e.preventDefault(); if (over) { stop(); return; } touching = true; aim(e); }
+    function onTouchMove(e)  { e.preventDefault(); aim(e); }
+    function onTouchEnd(e)   { e.preventDefault(); if (!(e.touches && e.touches.length)) touching = false; }
+
     window.addEventListener('resize', size);
     window.addEventListener('keydown', onDown, true);
     window.addEventListener('keyup', onUp, true);
+    cv.addEventListener('touchstart', onTouchStart, { passive: false });
+    cv.addEventListener('touchmove',  onTouchMove,  { passive: false });
+    cv.addEventListener('touchend',   onTouchEnd,   { passive: false });
+    cv.addEventListener('touchcancel', onTouchEnd,  { passive: false });
 
     function loop(t) {
       ctx.fillStyle = 'rgba(8,10,13,0.55)';
@@ -408,7 +428,9 @@
       if (!over) {
         if (left)  player.x -= player.speed;
         if (right) player.x += player.speed;
+        if (targetX !== null) player.x += (targetX - player.x) * 0.4;   // smooth follow
         player.x = Math.max(8, Math.min(w - player.w - 8, player.x));
+        if (touching) fire();   // auto-fire on mobile while holding
 
         if (t - lastSpawn > Math.max(420, 1100 - score * 6)) { spawn(); lastSpawn = t; }
 
@@ -453,7 +475,7 @@
       ctx.fillText('SCORE ' + score, 16, 14);
       ctx.fillText('LIVES ' + '♥'.repeat(Math.max(0, lives)), 16, 34);
       ctx.fillStyle = '#6c747d';
-      ctx.fillText('← → move   space fire   esc quit', 16, h - 26);
+      ctx.fillText(isTouch ? 'drag to move · auto-fires · tap to quit' : '← → move   space fire   esc quit', 16, h - 26);
 
       if (over) {
         ctx.fillStyle = 'rgba(0,0,0,0.55)';
@@ -467,14 +489,16 @@
         ctx.fillText('Score: ' + score, w / 2, h / 2 + 12);
         ctx.fillStyle = '#6c747d';
         ctx.font = '14px "Courier New", monospace';
-        ctx.fillText('press Esc to return to the terminal', w / 2, h / 2 + 46);
+        ctx.fillText(isTouch ? 'tap to return to the terminal' : 'press Esc to return to the terminal', w / 2, h / 2 + 46);
         ctx.textAlign = 'left';
       }
 
       raf = requestAnimationFrame(loop);
     }
     raf = requestAnimationFrame(loop);
-    write('👾 shoot the 404s — ← → to move, space to fire, Esc to quit.', 'term-accent');
+    write(isTouch
+      ? '👾 shoot the 404s — drag to move, it auto-fires. Tap to quit.'
+      : '👾 shoot the 404s — ← → to move, space to fire, Esc to quit.', 'term-accent');
 
     function stop() {
       cancelAnimationFrame(raf);
@@ -487,6 +511,16 @@
       input.focus();
     }
     gameStop = stop;
+  }
+
+  // Keep the terminal sized to the visible area above the mobile keyboard
+  function fitViewport() {
+    const vv = window.visualViewport;
+    if (!isOpen || !vv) return;
+    term.style.top = vv.offsetTop + 'px';
+    term.style.height = vv.height + 'px';
+    term.style.bottom = 'auto';
+    out.scrollTop = out.scrollHeight;
   }
 
   // ── Open / close ──
@@ -503,7 +537,7 @@
       write("Type <span class='term-cmd'>help</span> to get started.", 'term-dim');
       gap();
     }
-    setTimeout(() => input.focus(), 60);
+    setTimeout(() => { input.focus(); fitViewport(); }, 60);
   }
 
   function close() {
@@ -514,6 +548,7 @@
     term.classList.remove('open');
     term.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('term-active');
+    term.style.top = term.style.height = term.style.bottom = '';
   }
 
   function toggle() { isOpen ? close() : open(); }
@@ -553,6 +588,10 @@
   function init() {
     build();
     wireFooter();
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', fitViewport);
+      window.visualViewport.addEventListener('scroll', fitViewport);
+    }
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
