@@ -1,0 +1,16 @@
+{
+  "name": "Akash Reddy — reachakash.com",
+  "short_name": "Reach Akash",
+  "description": "Personal site of Akash Reddy (Vurenuka Akash Reddy), AI Software Developer at Molex in Detroit, MI.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
+  "icons": [
+    { "src": "/favicon-192x192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/favicon-512x512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/favicon-512x512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

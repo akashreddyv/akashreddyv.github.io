@@ -1,23 +1,24 @@
 # Vurenuka Akash Reddy
 
-> Vurenuka Akash Reddy (also known as Akash Reddy, V Akash Reddy, V Akash, Reach Akash, Vurenuka) is a software developer at Zoetis based in Durham, NC, USA. Originally from Hyderabad, India. His personal website is reachakash.com.
+> Vurenuka Akash Reddy (also known as Akash Reddy, V Akash Reddy, V Akash, Reach Akash, Vurenuka) is an AI software developer at Molex based in Detroit, MI, USA. Originally from Hyderabad, India. His personal website is reachakash.com.
 
 ## Pages
 
 - [Home](https://reachakash.com/): Landing page for Vurenuka Akash Reddy, software developer, creator, digital native.
-- [Personal](https://reachakash.com/personal): Personal background. Techie, software developer, AI enthusiast, travel and adventure seeker. Based in Durham, NC; originally from Hyderabad, India.
-- [Professional](https://reachakash.com/professional): Career and education. Software Developer at Zoetis (2023-present), building ZAHM (.NET 4.8, C#, WinForms, PostgreSQL, NI-VISA). Education: MS Engineering Management (Arkansas State University, 2023-2024), MBA Digital Entrepreneurship (Amity University, 2023-2025), B.Tech Information Technology (Malla Reddy Institute of Technology, 2018-2022).
+- [Personal](https://reachakash.com/personal): Personal background. Techie, software developer, AI enthusiast, travel and adventure seeker. Based in Detroit, MI; originally from Hyderabad, India.
+- [Professional](https://reachakash.com/professional): Career and education. AI Software Developer at Molex (Jun 2026-present) on the GRTS team, building database systems for connector reliability test stations (SQL Server, C#, .NET Framework, LabVIEW). Previously Software Developer at Zoetis (Jan 2026-Jun 2026), building ZAHM (.NET 4.8, C#, WinForms, PostgreSQL, NI-VISA), and Software Engineer at Tata Consultancy Services (Aug 2022-Aug 2023). Education: MS Engineering Management (Arkansas State University, 2023-2024), MBA Digital Entrepreneurship (Amity University, 2023-2025), B.Tech Information Technology (Malla Reddy Institute of Technology, 2018-2022).
 - [Projects](https://reachakash.com/projects): Software portfolio, including personal website reachakash.com (HTML/CSS/JS, GitHub Pages) and a 3D interactive logo viewer for Raptor Consultants Group (Three.js, SVG).
 - [Socials](https://reachakash.com/socials): Social media profiles. Instagram @ak.r48, LinkedIn @akashreddyv, X @AkReddy48, YouTube @ak.r48, Snapchat @ak.r48, Discord @ak.r48, Threads @ak.r48, Facebook @ak.r48.
-- [Contact](https://reachakash.com/contact): Contact Akash Reddy via LinkedIn, Instagram, or the contact form. Located in Durham, NC, USA.
+- [Contact](https://reachakash.com/contact): Contact Akash Reddy via LinkedIn, Instagram, or the contact form. Located in Detroit, MI, USA.
 
 ## Identity
 
 - Full legal name: Vurenuka Akash Reddy
 - Common names: Akash Reddy, V Akash Reddy, V Akash, Akash, Reach Akash, Vurenuka
-- Role: Software Developer
-- Employer: Zoetis (Veterinary Medicine Research & Development department)
-- Location: Durham, North Carolina, USA
+- Role: AI Software Developer
+- Employer: Molex (GRTS team)
+- Previous employers: Zoetis (Veterinary Medicine Research & Development department), Tata Consultancy Services
+- Location: Detroit, Michigan, USA
 - Origin: Hyderabad, Telangana, India
 - Website: https://reachakash.com
 

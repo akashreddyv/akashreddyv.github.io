@@ -36,6 +36,10 @@
 
   --font-display: 'Playfair Display', serif;
   --font-body:    'DM Sans', sans-serif;
+
+  /* Horizontal nav gutter — anything that must line up with the AR
+     logo (e.g. the "Click Here" hint) derives its position from this. */
+  --nav-gutter: 60px;
 }
 
 
@@ -138,7 +142,7 @@ nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 60px;
+  padding: 0 var(--nav-gutter);
   height: 72px;
   background: rgba(0, 0, 0, 0.94);
   backdrop-filter: blur(14px);
@@ -436,6 +440,11 @@ nav {
 }
 
 .home-card {
+  /* Real <a> elements so crawlers can follow them and keyboard users
+     can tab to them; the router intercepts internal hrefs. */
+  display: block;
+  text-decoration: none;
+  color: inherit;
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 4px;
@@ -443,6 +452,11 @@ nav {
   cursor: pointer;
   transition: all 0.3s ease;
   text-align: left;
+}
+
+.home-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
 
 .home-card:hover { border-color: rgba(232,201,126,0.3); transform: translateY(-4px); background: #1a1a1a; }
@@ -771,14 +785,19 @@ footer p      { font-size: 12px; color: var(--muted); }
 /* ── AR Logo hint tooltip ── */
 .logo-hint {
   position: fixed;
+  /* Sits just under the 72px nav, and tracks the nav gutter so its
+     arrow keeps pointing at the AR logo at every breakpoint. */
   top: 84px;
-  left: 48px;
+  left: calc(var(--nav-gutter) - 12px);
   z-index: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   background: var(--surface);
   border: 1px solid var(--accent);
   border-radius: 8px;
-  padding: 10px 38px 10px 14px;
-  font-size: 13px;
+  padding: 9px 10px 9px 13px;
+  font-size: clamp(12px, 1.1vw + 8px, 13px);
   font-family: var(--font-body);
   color: var(--text);
   white-space: nowrap;
@@ -801,20 +820,28 @@ footer p      { font-size: 12px; color: var(--muted); }
 }
 
 .logo-hint-close {
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
+  /* In-flow (not absolute) so the pill grows around it and the text
+     is never overlapped; sized as a real 24px touch target.
+     order:2 keeps it after the label — the button precedes the text
+     node in the markup. */
+  order: 2;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  margin: -4px -2px -4px 0;
   background: none;
   border: none;
+  border-radius: 6px;
   color: var(--muted);
   font-size: 14px;
   line-height: 1;
-  padding: 2px 4px;
   cursor: pointer;
-  transition: color 0.2s;
+  transition: color 0.2s, background 0.2s;
 }
-.logo-hint-close:hover { color: var(--text); }
+.logo-hint-close:hover { color: var(--text); background: rgba(255,255,255,0.08); }
 
 @keyframes hintPop {
   from { opacity: 0; transform: translateY(-6px) scale(0.95); }
@@ -1311,6 +1338,28 @@ body.theme-space {
   background-attachment: fixed;
 }
 
+/* The planets are sized in fixed px, so on a phone they'd fill the screen
+   and sit behind the hero copy. Scale them down and tuck them further
+   into the corners so the text stays readable. */
+@media (max-width: 700px) {
+  body.theme-space {
+    background-size:
+      300px 300px,
+      280px 194px,
+      84px 84px,
+      100% 100%, 100% 100%, 100% 100%, 100% 100%,
+      100% 100%,
+      100% 100%;
+    background-position:
+      calc(100% + 96px) -86px,
+      -78px 34%,
+      93% 90%,
+      0 0, 0 0, 0 0, 0 0,
+      0 0,
+      0 0;
+  }
+}
+
 /* —— Foreground starfield: dense, multi-temperature stars + diffraction spikes on the brightest —— */
 body.theme-space::before {
   content: '';
@@ -1432,6 +1481,30 @@ body.theme-space #page-container::after {
    z-index (500) already lifts it above the z-index:0 star layers. */
 body.theme-space #page-container > *,
 body.theme-space footer { position: relative; z-index: 1; }
+
+/* —— Procedural canvas starfield (js/starfield.js) ——
+   The CSS gradient stars above tile on a fixed grid, so the repetition
+   is visible on a wide screen. When the canvas mounts we retire those
+   tiled layers and keep only the nebulosity, planets and deep-field
+   wash, which don't read as repeating. */
+#space-starfield {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+body.theme-space.space-canvas-on::before { display: none; }
+
+/* Keep ::after, but drop its tiled star dots — retain the slow drift as
+   a faint deep-field haze behind the canvas stars. */
+body.theme-space.space-canvas-on::after {
+  background-image:
+    radial-gradient(ellipse 60% 40% at 30% 25%, rgba(120, 150, 220, 0.05) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 35% at 72% 70%, rgba(150, 120, 200, 0.04) 0%, transparent 70%);
+  background-size: 100% 100%, 100% 100%;
+  opacity: 1;
+}
 
 body.theme-space nav {
   background: rgba(3, 5, 15, 0.7);
@@ -1614,7 +1687,8 @@ body.theme-space .contact-list a { color: #ffe81f; }
    15. RESPONSIVE (mobile / tablet)
 ---------------------------------------------------------------- */
 @media (max-width: 900px) {
-  nav { padding: 0 24px; }
+  /* Nav padding and the "Click Here" hint both derive from this. */
+  :root { --nav-gutter: 24px; }
 
   .nav-links { display: none; }
   .nav-hamburger { display: flex; }
@@ -1631,7 +1705,9 @@ body.theme-space .contact-list a { color: #ffe81f; }
     gap: 4px;
   }
 
-  .page-inner { padding: 40px 24px 80px; }
+  /* Extra top padding clears the fixed "Click Here" hint, which floats
+     just under the nav and would otherwise sit on top of the eyebrow. */
+  .page-inner { padding: 74px 24px 80px; }
 
   .grid-2,
   .grid-3,
@@ -1644,7 +1720,7 @@ body.theme-space .contact-list a { color: #ffe81f; }
 
   .timeline-date      { padding-top: 0; }
 
-  .home-inner         { padding: 40px 24px; }
+  .home-inner         { padding: 74px 24px 40px; }
 
   .home-slideshow     { margin-bottom: 60px; }
 

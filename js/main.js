@@ -3,12 +3,12 @@ document.addEventListener("DOMContentLoaded", function () {
   // ── Per-page SEO metadata ──────────────────────────────────────
   const PAGE_META = {
     home: {
-      title:       'Akash Reddy (Reach Akash) | Software Developer',
-      description: 'Personal site of Vurenuka Akash Reddy (Reach Akash, Akash Reddy, Reddy Akash), Software Developer at Zoetis in Durham, NC. Explore work, projects, and more.',
+      title:       'Akash Reddy (Reach Akash) | AI Software Developer',
+      description: 'Personal site of Vurenuka Akash Reddy (Reach Akash, Akash Reddy, Reddy Akash), AI Software Developer at Molex in Detroit, MI. Explore work, projects, and more.',
       canonical:   'https://reachakash.com/',
       ogType:      'profile',
-      ogTitle:     'Akash Reddy, Software Developer',
-      ogDesc:      'Akash Reddy (V Akash Reddy) is a software developer at Zoetis based in Durham, NC. Explore his work, projects, and background at reachakash.com.',
+      ogTitle:     'Akash Reddy, AI Software Developer',
+      ogDesc:      'Akash Reddy (V Akash Reddy) is an AI software developer at Molex based in Detroit, MI. Explore his work, projects, and background at reachakash.com.',
       jsonld: [
         {
           '@context': 'https://schema.org',
@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
           '@type': 'WebPage',
           '@id': 'https://reachakash.com/#webpage',
           url: 'https://reachakash.com/',
-          name: 'Akash Reddy (Reach Akash) | Software Developer',
+          name: 'Akash Reddy (Reach Akash) | AI Software Developer',
           primaryImageOfPage: {
             '@type': 'ImageObject',
             url: 'https://reachakash.com/images/home/vurenuka-akash-reddy-professional.jpg'
@@ -43,14 +43,14 @@ document.addEventListener("DOMContentLoaded", function () {
           'https://reachakash.com/images/home/vurenuka-akash-reddy-professional.jpg',
           'https://reachakash.com/images/home/akash-reddy-portrait.jpg'
         ],
-        jobTitle: 'Software Developer',
-        worksFor: { '@type': 'Organization', name: 'Zoetis', url: 'https://www.zoetis.com' },
+        jobTitle: 'AI Software Developer',
+        worksFor: { '@type': 'Organization', name: 'Molex', url: 'https://www.molex.com' },
         alumniOf: [
           { '@type': 'CollegeOrUniversity', name: 'Arkansas State University', sameAs: 'https://www.astate.edu' },
           { '@type': 'CollegeOrUniversity', name: 'Amity University' },
           { '@type': 'CollegeOrUniversity', name: 'Malla Reddy College of Engineering and Technology' }
         ],
-        address: { '@type': 'PostalAddress', addressLocality: 'Durham', addressRegion: 'NC', addressCountry: 'US' },
+        address: { '@type': 'PostalAddress', addressLocality: 'Detroit', addressRegion: 'MI', addressCountry: 'US' },
         sameAs: [
           'https://www.linkedin.com/in/akashreddyv/',
           'https://github.com/akashreddyv',
@@ -61,19 +61,19 @@ document.addEventListener("DOMContentLoaded", function () {
           'https://www.snapchat.com/@ak.r48',
           'https://www.facebook.com/ak.r48'
         ],
-        knowsAbout: ['Software Development', 'Web Development', 'C#', '.NET Framework', 'AI', 'Travel'],
-        description: 'Vurenuka Akash Reddy (also known as Akash Reddy, V Akash Reddy) is a software developer at Zoetis based in Durham, NC, USA.'
+        knowsAbout: ['Software Development', 'Database Architecture', 'SQL Server', 'C#', '.NET Framework', 'LabVIEW', 'Industrial Test Automation', 'AI', 'Travel'],
+        description: 'Vurenuka Akash Reddy (also known as Akash Reddy, V Akash Reddy) is an AI software developer at Molex based in Detroit, MI, USA. Originally from Hyderabad, India.'
         }
       ]
     },
 
     personal: {
       title:       'Akash Reddy | Personal',
-      description: 'Get to know Akash Reddy (Vurenuka Akash Reddy), techie, software developer, and travel enthusiast based in Durham, NC, originally from Hyderabad, India.',
+      description: 'Get to know Akash Reddy (Vurenuka Akash Reddy), techie, software developer, and travel enthusiast based in Detroit, MI, originally from Hyderabad, India.',
       canonical:   'https://reachakash.com/personal',
       ogType:      'website',
       ogTitle:     'Akash Reddy, Personal Background and Interests',
-      ogDesc:      'Get to know Akash Reddy (Vurenuka Akash Reddy), software developer, travel enthusiast, and creator based in Durham, NC, originally from Hyderabad.',
+      ogDesc:      'Get to know Akash Reddy (Vurenuka Akash Reddy), software developer, travel enthusiast, and creator based in Detroit, MI, originally from Hyderabad.',
       jsonld: [
         {
           '@context': 'https://schema.org',
@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", function () {
             name: 'Vurenuka Akash Reddy',
             alternateName: ['Akash Reddy', 'V Akash Reddy'],
             url: 'https://reachakash.com',
-            description: 'Techie, software developer, and AI enthusiast. Travel and adventure seeker based in Durham, NC, originally from Hyderabad, India.'
+            description: 'Techie, software developer, and AI enthusiast. Travel and adventure seeker based in Detroit, MI, originally from Hyderabad, India.'
           }
         },
         {
@@ -99,11 +99,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     professional: {
       title:       'Akash Reddy | Professional',
-      description: 'Career timeline and skills of Akash Reddy (V Akash Reddy), Software Developer at Zoetis. C#, .NET, PostgreSQL, and more. MS Engineering Management, Arkansas State.',
+      description: 'Career timeline and skills of Akash Reddy (V Akash Reddy), AI Software Developer at Molex. SQL Server, C#, .NET, LabVIEW, and more. MS Engineering Management, Arkansas State.',
       canonical:   'https://reachakash.com/professional',
       ogType:      'website',
       ogTitle:     'Akash Reddy, Professional Experience and Skills',
-      ogDesc:      'Software Developer at Zoetis, Durham NC. C#, .NET, PostgreSQL, NI-VISA. MS Engineering Management from Arkansas State University.',
+      ogDesc:      'AI Software Developer at Molex, Detroit MI. SQL Server, C#, .NET, LabVIEW. Previously Zoetis. MS Engineering Management from Arkansas State University.',
       jsonld: [
         {
           '@context': 'https://schema.org',
@@ -111,13 +111,13 @@ document.addEventListener("DOMContentLoaded", function () {
           name: 'Vurenuka Akash Reddy',
           alternateName: ['Akash Reddy', 'V Akash Reddy'],
           url: 'https://reachakash.com',
-          jobTitle: 'Software Developer',
-          worksFor: { '@type': 'Organization', name: 'Zoetis', url: 'https://www.zoetis.com' },
+          jobTitle: 'AI Software Developer',
+          worksFor: { '@type': 'Organization', name: 'Molex', url: 'https://www.molex.com' },
           hasOccupation: {
             '@type': 'Occupation',
-            name: 'Software Developer',
-            occupationLocation: { '@type': 'City', name: 'Durham, NC' },
-            skills: 'C#, .NET Framework, WinForms, PostgreSQL, NI-VISA, NI-DAQmx, SQL, JavaScript, Git'
+            name: 'AI Software Developer',
+            occupationLocation: { '@type': 'City', name: 'Detroit, MI' },
+            skills: 'SQL Server, T-SQL, database architecture, C#, .NET Framework, LabVIEW, .NET/LabVIEW interop, industrial test automation, data pipeline design, PostgreSQL, SQL, JavaScript, Git, GitLab'
           },
           alumniOf: [
             { '@type': 'CollegeOrUniversity', name: 'Arkansas State University', sameAs: 'https://www.astate.edu' },
@@ -215,7 +215,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     contact: {
       title:       'Akash Reddy | Contact',
-      description: 'Contact Vurenuka Akash Reddy (Akash Reddy, V Akash Reddy). Reach out for work, collaboration, or just to connect. Based in Durham, NC.',
+      description: 'Contact Vurenuka Akash Reddy (Akash Reddy, V Akash Reddy). Reach out for work, collaboration, or just to connect. Based in Detroit, MI.',
       canonical:   'https://reachakash.com/contact',
       ogType:      'website',
       ogTitle:     'Contact Akash Reddy, Get In Touch',
@@ -225,7 +225,7 @@ document.addEventListener("DOMContentLoaded", function () {
           '@context': 'https://schema.org',
           '@type': 'ContactPage',
           name: 'Contact Akash Reddy',
-          description: 'Contact page for Vurenuka Akash Reddy, software developer in Durham, NC',
+          description: 'Contact page for Vurenuka Akash Reddy, AI software developer in Detroit, MI',
           url: 'https://reachakash.com/contact',
           mainEntity: {
             '@type': 'Person',
@@ -246,17 +246,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
     gallery: {
       title:       'Akash Reddy | Gallery',
-      description: 'Photos of Akash Reddy (Vurenuka Akash Reddy, V Akash Reddy), software developer based in Durham, NC, originally from Hyderabad, India.',
+      description: 'Photos of Akash Reddy (Vurenuka Akash Reddy, V Akash Reddy), software developer based in Detroit, MI, originally from Hyderabad, India.',
       canonical:   'https://reachakash.com/gallery',
       ogType:      'website',
       ogTitle:     'Akash Reddy Photo Gallery',
-      ogDesc:      'Photo gallery of Vurenuka Akash Reddy (Akash Reddy, V Akash Reddy), software developer in Durham, NC.',
+      ogDesc:      'Photo gallery of Vurenuka Akash Reddy (Akash Reddy, V Akash Reddy), software developer in Detroit, MI.',
       jsonld: [
         {
           '@context': 'https://schema.org',
           '@type': 'ImageGallery',
           name: 'Akash Reddy Photo Gallery',
-          description: 'Photos of Vurenuka Akash Reddy (Akash Reddy, V Akash Reddy), software developer in Durham, NC, originally from Hyderabad, India.',
+          description: 'Photos of Vurenuka Akash Reddy (Akash Reddy, V Akash Reddy), software developer in Detroit, MI, originally from Hyderabad, India.',
           url: 'https://reachakash.com/gallery',
           author: { '@type': 'Person', name: 'Vurenuka Akash Reddy', url: 'https://reachakash.com' },
           image: [
@@ -264,7 +264,7 @@ document.addEventListener("DOMContentLoaded", function () {
               '@type': 'ImageObject',
               contentUrl: 'https://reachakash.com/images/home/vurenuka-akash-reddy-professional.jpg',
               name: 'Vurenuka Akash Reddy, Professional Portrait',
-              description: 'Akash Reddy in professional attire outdoors, software developer at Zoetis, Durham NC',
+              description: 'Akash Reddy in professional attire outdoors, AI software developer at Molex, Detroit MI',
               width: 1200, height: 847
             },
             {

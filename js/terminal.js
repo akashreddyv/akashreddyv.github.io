@@ -12,15 +12,20 @@
   const ME = {
     name:    'Akash Reddy',
     full:    'Vurenuka Akash Reddy',
-    role:    'Software Developer @ Zoetis',
-    where:   'Research Triangle Park, NC, USA',
+    role:    'AI Software Developer @ Molex',
+    where:   'Detroit, MI, USA',
     origin:  'Hyderabad, India',
     email:   'mail@reachakash.com',
-    skills:  ['C#', '.NET Framework', 'WinForms', 'PostgreSQL', 'NI-VISA', 'NI-DAQmx', 'SQL', 'JavaScript', 'Git'],
+    skills:  ['C#', '.NET Framework', 'SQL Server', 'T-SQL', 'LabVIEW', 'PostgreSQL', 'WinForms', 'NI-VISA', 'NI-DAQmx', 'SQL', 'JavaScript', 'Git', 'GitLab'],
     edu: [
       'M.S. Engineering Management — Arkansas State University',
       'Amity University',
       'Malla Reddy College of Engineering and Technology'
+    ],
+    work: [
+      ['Jun 2026 — Present',   'AI Software Developer',  'Molex (GRTS)',            'Database systems for connector reliability test stations.'],
+      ['Jan 2026 — Jun 2026',  'Software Developer',     'Zoetis (VMRD)',           'ZAHM — .NET app for manufacturing test workflows.'],
+      ['Aug 2022 — Aug 2023',  'Software Engineer',      'Tata Consultancy Services', 'AWS cloud infrastructure; AWS Certified Cloud Practitioner.']
     ],
     projects: [
       ['reachakash.com', 'This site — multi-page SPA in vanilla JS, History API routing, hosted on GitHub Pages.'],
@@ -128,6 +133,7 @@
         ['whoami / about',  'who is Akash?'],
         ['ls',              'list site sections'],
         ['cd &lt;page&gt;',       'open a page (e.g. cd projects)'],
+        ['work',            'where I have worked'],
         ['skills',          'tech I work with'],
         ['projects',        'things I have built'],
         ['edu',             'education'],
@@ -174,6 +180,16 @@
     },
     open(a) { this.cd(a); },
     goto(a) { this.cd(a); },
+
+    work() {
+      ME.work.forEach(([when, title, org, desc], i) => {
+        write(`<span class="term-accent">${esc(title)}</span> · ${esc(org)}${i === 0 ? '  <span class="term-tag">current</span>' : ''}`);
+        write(`  ${esc(when)}`, 'term-dim');
+        write(`  ${esc(desc)}`, 'term-dim');
+      });
+      write('Full timeline: <span class="term-cmd">cd professional</span>', 'term-dim');
+    },
+    jobs() { this.work(); },
 
     skills() {
       write('skills --list', 'term-dim');
