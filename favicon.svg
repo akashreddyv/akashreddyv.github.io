@@ -1,21 +1,21 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="AR — Akash Reddy">
-  <rect width="100" height="100" rx="20" fill="#0a0a0a"/>
-  <g fill="#e8c97e">
-    <!-- A -->
-    <path d="M26.5 22 L48 80 L5 80 Z"/>
-    <!-- R stem -->
-    <rect x="55" y="22" width="12" height="58"/>
-    <!-- R bowl -->
-    <path d="M67 22 H78 A16 16 0 0 1 78 54 H67 Z"/>
-    <!-- R leg -->
-    <path d="M67 52 H79 L93 80 H80 Z"/>
-  </g>
+  <rect width="100" height="100" rx="22" fill="#e8c97e"/>
   <g fill="#0a0a0a">
+    <!-- A -->
+    <path d="M26.5 24 L47 78 L6 78 Z"/>
+    <!-- R stem -->
+    <rect x="55" y="24" width="12" height="54"/>
+    <!-- R bowl -->
+    <path d="M67 24 H78 A15.5 15.5 0 0 1 78 55 H67 Z"/>
+    <!-- R leg -->
+    <path d="M67 53 H79 L92 78 H79 Z"/>
+  </g>
+  <g fill="#e8c97e">
     <!-- A counter -->
-    <path d="M26.5 40 L36 60 L17 60 Z"/>
+    <path d="M26.5 43 L35 62 L18 62 Z"/>
     <!-- A leg gap -->
-    <path d="M16 69 H37 L41.5 80 H11.5 Z"/>
+    <path d="M17 70 H36 L40.5 78 H12.5 Z"/>
     <!-- R bowl counter -->
-    <path d="M67 30 H78 A8 8 0 0 1 78 46 H67 Z"/>
+    <path d="M67 31 H78 A8.5 8.5 0 0 1 78 48 H67 Z"/>
   </g>
 </svg>

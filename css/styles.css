@@ -515,6 +515,17 @@ nav {
 .timeline-content h4    { font-size: 14px; color: var(--muted); margin-bottom: 16px; }
 .timeline-content p     { font-size: 15px; color: var(--muted); line-height: 1.8; margin-bottom: 14px; }
 
+/* Some brand logos are dark-on-transparent and would disappear against the
+   dark themes. A light chip keeps them legible without recolouring the mark. */
+.tl-logo-chip {
+  object-fit: contain;
+  flex-shrink: 0;
+  background: #ffffff;
+  border-radius: 4px;
+  padding: 3px 6px;
+  box-sizing: content-box;
+}
+
 .skills-section h3,
 .skills-heading         { font-family: var(--font-display); font-size: 28px; color: var(--white); margin-bottom: 28px; }
 

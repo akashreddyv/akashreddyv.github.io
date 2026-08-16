@@ -23,9 +23,11 @@
       'Malla Reddy College of Engineering and Technology'
     ],
     work: [
-      ['Jun 2026 — Present',   'AI Software Developer',  'Molex (GRTS)',            'Database systems for connector reliability test stations.'],
-      ['Jan 2026 — Jun 2026',  'Software Developer',     'Zoetis (VMRD)',           'ZAHM — .NET app for manufacturing test workflows.'],
-      ['Aug 2022 — Aug 2023',  'Software Engineer',      'Tata Consultancy Services', 'AWS cloud infrastructure; AWS Certified Cloud Practitioner.']
+      ['Jun 2026 — Present',   'AI Software Developer',        'Molex (GRTS)',              'Database systems for connector reliability test stations.'],
+      ['Jan 2026 — Jun 2026',  'Software Developer',           'Zoetis (VMRD)',             'ZAHM — .NET app for manufacturing test workflows.'],
+      ['Nov 2024 — Dec 2025',  'Software Developer',           'Raptor Consultants Group',  ''],
+      ['Aug 2022 — Aug 2023',  'Software Engineer',            'Tata Consultancy Services', 'AWS cloud infrastructure; AWS Certified Cloud Practitioner.'],
+      ['',                     'Associate Software Developer', 'Persistent Systems Ltd.',   '']
     ],
     projects: [
       ['reachakash.com', 'This site — multi-page SPA in vanilla JS, History API routing, hosted on GitHub Pages.'],
@@ -184,8 +186,8 @@
     work() {
       ME.work.forEach(([when, title, org, desc], i) => {
         write(`<span class="term-accent">${esc(title)}</span> · ${esc(org)}${i === 0 ? '  <span class="term-tag">current</span>' : ''}`);
-        write(`  ${esc(when)}`, 'term-dim');
-        write(`  ${esc(desc)}`, 'term-dim');
+        if (when) write(`  ${esc(when)}`, 'term-dim');
+        if (desc) write(`  ${esc(desc)}`, 'term-dim');
       });
       write('Full timeline: <span class="term-cmd">cd professional</span>', 'term-dim');
     },
