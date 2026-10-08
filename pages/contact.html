@@ -54,9 +54,15 @@
     <div class="contact-form-block">
       <h2>Send a <em style="color:var(--accent);font-style:italic;">Message</em></h2>
 
-      <form id="contact-form" action="https://reachakash.com/api/contact" method="POST" aria-label="Contact form for Akash Reddy" novalidate>
-        <!-- Honeypot — hidden from humans, filled by bots -->
+      <form id="contact-form" action="https://api.reachakash.com/contact" method="POST" aria-label="Contact form for Akash Reddy" novalidate>
+        <!-- Honeypots — hidden from humans, filled by bots. The Worker silently drops
+             any submission where either is set. The text field sits off-screen rather
+             than display:none, because many bots skip display:none fields. -->
         <input type="checkbox" name="botcheck" style="display:none;" tabindex="-1" aria-hidden="true"/>
+        <div aria-hidden="true" style="position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;">
+          <label for="form-website">Website (leave this empty)</label>
+          <input type="text" id="form-website" name="website" tabindex="-1" autocomplete="off"/>
+        </div>
 
         <div class="form-group">
           <label for="form-name">Your Name</label>
