@@ -10,7 +10,7 @@
    of twinkling stars drawn from pre-rendered sprites (no gradient
    objects are allocated in the animation loop). Capped DPR, capped
    frame rate, and paused while the tab is hidden.
-   Mounts only while <body> has .theme-space. No dependencies.
+   Mounts only while <html> has .theme-space. No dependencies.
    ============================================================ */
 (function () {
   'use strict';
@@ -49,7 +49,7 @@
     return 0;
   }
 
-  function isSpace() { return document.body.classList.contains('theme-space'); }
+  function isSpace() { return document.documentElement.classList.contains('theme-space'); }
 
   // ── Pre-rendered sprites, built once per palette colour ────────
   const GLOW_PX = 64, SPIKE_PX = 128;
@@ -279,8 +279,8 @@
 
   function init() {
     sync();
-    // The AR-logo theme cycler toggles body classes — follow it.
-    new MutationObserver(sync).observe(document.body, {
+    // The theme switch (nav button or terminal) toggles <html> classes — follow it.
+    new MutationObserver(sync).observe(document.documentElement, {
       attributes: true, attributeFilter: ['class']
     });
     if (reduceMotion.addEventListener) {

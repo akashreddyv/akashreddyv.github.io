@@ -2,8 +2,8 @@
    reachakash.com — Interactive Terminal
    A keyboard-driven CLI easter egg. Open with the `~` / backtick
    key, the footer "terminal" link, or the floating launcher.
-   100% static — no backend. Drives the existing SPA router and
-   theme system in js/main.js.
+   100% static — no backend. `cd` navigates to the real page URLs,
+   and `theme` uses the same theme switch as the nav's sun/moon button.
    ============================================================ */
 (function () {
   'use strict';
@@ -45,7 +45,12 @@
     ]
   };
 
-  const PAGES = ['home', 'personal', 'professional', 'projects', 'socials', 'contact', 'gallery'];
+  const PAGES = ['home', 'services', 'lab', 'notes', 'about', 'personal', 'professional', 'projects', 'socials', 'contact', 'gallery', 'privacy'];
+
+  // The current brand accent, read from the theme tokens (CSS custom properties).
+  function accent() {
+    return getComputedStyle(document.body).getPropertyValue('--accent').trim() || '#3D7BFF';
+  }
   const THEMES = ['dark', 'light', 'retro', 'space'];
 
   const BANNER = [
@@ -176,9 +181,9 @@
         write(`cd: no such page: ${esc(arg)}`, 'term-err');
         return;
       }
-      write(`→ opening /${target === 'home' ? '' : target} …`, 'term-accent');
-      if (typeof window.showPage === 'function') window.showPage(target, true);
-      setTimeout(close, 350);
+      const dest = target === 'home' ? '/' : '/' + target;
+      write(`→ opening ${dest} …`, 'term-accent');
+      setTimeout(function () { location.href = dest; }, 250);
     },
     open(a) { this.cd(a); },
     goto(a) { this.cd(a); },
@@ -224,15 +229,19 @@
     theme(arg) {
       const name = (arg || '').toLowerCase();
       if (!name) {
-        const cur = document.body.className.match(/theme-(\w+)/);
+        const cur = document.documentElement.className.match(/theme-(\w+)/);
         write('current theme: ' + (cur ? cur[1] : 'dark'));
         write('options: ' + THEMES.join(', '), 'term-dim');
         return;
       }
       if (!THEMES.includes(name)) { write(`theme: unknown "${esc(arg)}". Try: ${THEMES.join(', ')}`, 'term-err'); return; }
-      document.body.classList.remove('theme-light', 'theme-retro', 'theme-space');
-      if (name !== 'dark') document.body.classList.add('theme-' + name);
-      try { localStorage.setItem('theme', name === 'dark' ? '' : name); } catch (e) {}
+      if (typeof window.setSiteTheme === 'function') {
+        window.setSiteTheme(name);
+      } else {
+        document.documentElement.classList.remove('theme-light', 'theme-retro', 'theme-space');
+        if (name !== 'dark') document.documentElement.classList.add('theme-' + name);
+        try { localStorage.setItem('theme', name === 'dark' ? '' : name); } catch (e) {}
+      }
       write(`theme set to <span class="term-accent">${name}</span> ✨`);
     },
 
@@ -325,6 +334,7 @@
   // ── Matrix rain easter egg ──
   function startMatrix() {
     if (matrixStop) return;
+    const ACC = accent();
     const cv = document.createElement('canvas');
     cv.id = 'term-matrix';
     document.body.appendChild(cv);
@@ -342,7 +352,7 @@
     function draw() {
       ctx.fillStyle = 'rgba(0,0,0,0.08)';
       ctx.fillRect(0, 0, w, h);
-      ctx.fillStyle = '#e8c97e';
+      ctx.fillStyle = ACC;
       ctx.font = '15px monospace';
       for (let i = 0; i < drops.length; i++) {
         const ch = glyphs[Math.floor(Math.random() * glyphs.length)];
@@ -370,6 +380,7 @@
   // ── Mini-game: shoot down the 404s 👾 ──
   function startGame() {
     if (gameStop) return;
+    const ACC = accent();
     input.blur();
     const cv = document.createElement('canvas');
     cv.id = 'term-game';
@@ -467,7 +478,7 @@
         ctx.fillText('404', en.x + 5, en.y + 4);
       });
 
-      ctx.fillStyle = '#e8c97e';
+      ctx.fillStyle = ACC;
       bullets.forEach(b => ctx.fillRect(b.x, b.y, 4, 12));
 
       ctx.beginPath();
@@ -488,7 +499,7 @@
         ctx.fillStyle = 'rgba(0,0,0,0.55)';
         ctx.fillRect(0, 0, w, h);
         ctx.textAlign = 'center';
-        ctx.fillStyle = '#e8c97e';
+        ctx.fillStyle = ACC;
         ctx.font = 'bold 34px "Courier New", monospace';
         ctx.fillText('GAME OVER', w / 2, h / 2 - 30);
         ctx.fillStyle = '#cfd6dd';
