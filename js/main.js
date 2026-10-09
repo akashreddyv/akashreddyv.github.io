@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
       btn.setAttribute('aria-label', light ? 'Switch to dark theme' : 'Switch to light theme');
     });
     const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', light ? '#FFFFFF' : '#0B0B0C');
+    if (meta) meta.setAttribute('content', light ? '#FFFFFF' : '#181A29');
   }
 
   window.setSiteTheme = function (name) {

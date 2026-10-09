@@ -22,67 +22,68 @@
 
 
 /* ----------------------------------------------------------------
-   1. BRAND TOKENS — reachAkash "North Ladder" kit
+   1. BRAND TOKENS — reachAkash "The Ascent"
    The brand lives here and only here. Every colour and font on the
    site reads these properties; themes just re-point the semantic
-   tokens. Contrast ratios are WCAG 2.x, measured against --bg.
+   tokens. Contrast ratios are WCAG 2.x. Ember is only ever used inside
+   the logo, never for text.
 ---------------------------------------------------------------- */
 :root {
-  /* Kit palette (brand kit README) */
-  --brand-obsidian: #0B0B0C;  /* ladder, wordmark, dark backgrounds   */
-  --brand-zenith:   #002FA7;  /* brand blue; the star on light        */
-  --brand-signal:   #3D7BFF;  /* the star on dark (dark mode)         */
-  --brand-paper:    #FFFFFF;  /* backgrounds, reversed artwork        */
-  --brand-horizon:  #8A8F98;  /* ".COM", captions                     */
+  /* Logo palette (brand README) */
+  --brand-navy:       #181A29;  /* backgrounds, app icon, theme colour */
+  --brand-gold:       #BE934E;  /* the line and the steps              */
+  --brand-ember:      #D7400F;  /* the third step only                 */
+  --brand-cream:      #F1EAE0;  /* wordmark on navy                    */
+  --brand-gold-light: #B5873F;  /* the mark on white                   */
 
-  /* Dark theme (default) — the kit's dark-mode mapping */
-  --bg:        var(--brand-obsidian);
-  --surface:   #131316;
-  --card:      #15161A;
-  --border:    #26272D;
-  --text:      #E6E7EB;               /* 15.92:1 */
-  --muted:     var(--brand-horizon);  /* 6.05:1 (5.56:1 on --card) */
-  --white:     var(--brand-paper);    /* headings */
-  --accent:    var(--brand-signal);   /* 5.13:1: AA for body-size text and links */
-  --accent-rgb: 61, 123, 255;
-  --on-accent: var(--brand-obsidian); /* button labels on --accent: 5.13:1
-                                         (white would be 3.84:1 and fail AA) */
-  --nav-bg:    rgba(11, 11, 12, 0.92);
+  /* Dark theme (default) — gold on navy */
+  --bg:        var(--brand-navy);
+  --surface:   #1F2235;
+  --card:      #222539;
+  --border:    #33374D;
+  --text:      var(--brand-cream);  /* 14.43:1 (12.64:1 on --card) */
+  --muted:     #A8A39A;             /* 6.87:1 (6.01:1 on --card) */
+  --white:     var(--brand-cream);  /* headings */
+  --accent:    var(--brand-gold);   /* 6.13:1 (5.37:1 on --card): AA for body text and links */
+  --accent-rgb: 190, 147, 78;
+  --btn-bg:    var(--brand-gold);
+  --on-accent: var(--brand-navy);   /* button labels: 6.13:1 (cream would be 2.35:1 and fail) */
+  --nav-bg:    rgba(24, 26, 41, 0.92);
 
-  /* Logo colour roles, matching the kit's dark-mode artwork */
-  --logo-ink:  var(--brand-paper);
-  --logo-star: var(--brand-signal);
-  --logo-dot:  #6B7079;
+  /* Logo colour roles: the kit's gold-on-navy artwork */
+  --logo-word:  var(--brand-cream);
+  --logo-mark:  var(--brand-gold);
+  --logo-ember: var(--brand-ember);
 
-  /* Type — Jost (SIL OFL), per the kit */
-  --font-display: 'Jost', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-body:    'Jost', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  /* Type — Montserrat (SIL OFL), per the brand */
+  --font-display: 'Montserrat', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-body:    'Montserrat', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
   --nav-gutter: 60px;
   --nav-h:      72px;
 }
 
-/* Light theme — a proposed mapping. The kit only defines Paper and
-   Obsidian for light use, so the surface, border and text greys are
-   derived. Horizon Grey fails AA on white (3.25:1), so muted text uses
-   a darker grey from the same family. */
+/* Light theme — white page, navy text. Gold-on-light (#B5873F) is 3.23:1
+   on white: fine for the logo and for buttons with navy labels, too light
+   for text, so links use a deeper gold. */
 :root.theme-light {
-  --bg:        var(--brand-paper);
-  --surface:   #F4F5F7;
-  --card:      #F7F8FA;
-  --border:    #E2E4E9;
-  --text:      #1D1E22;               /* 16.65:1 */
-  --muted:     #5C616A;               /* 6.23:1 (5.71:1 on --surface) */
-  --white:     var(--brand-obsidian); /* headings */
-  --accent:    var(--brand-zenith);   /* 10.69:1 */
-  --accent-rgb: 0, 47, 167;
-  --on-accent: var(--brand-paper);    /* 10.69:1 */
+  --bg:        #FFFFFF;
+  --surface:   #F7F5F1;
+  --card:      #FBFAF7;
+  --border:    #E7E2D9;
+  --text:      var(--brand-navy);       /* 17.23:1 */
+  --muted:     #5F5B55;                 /* 6.74:1 (6.19:1 on --surface) */
+  --white:     var(--brand-navy);       /* headings */
+  --accent:    #8A6526;                 /* links and text accents: 5.29:1 (4.86:1 on --surface) */
+  --accent-rgb: 138, 101, 38;
+  --btn-bg:    var(--brand-gold-light); /* with navy labels: 5.34:1 */
+  --on-accent: var(--brand-navy);
   --nav-bg:    rgba(255, 255, 255, 0.92);
 
-  /* The kit's colour artwork */
-  --logo-ink:  var(--brand-obsidian);
-  --logo-star: var(--brand-zenith);
-  --logo-dot:  var(--brand-horizon);
+  /* The kit's colour-on-light artwork */
+  --logo-word:  var(--brand-navy);
+  --logo-mark:  var(--brand-gold-light);
+  --logo-ember: var(--brand-ember);
 }
 
 
@@ -134,7 +135,7 @@ body::before {
   top: -100%;
   left: 16px;
   padding: 12px 24px;
-  background: var(--accent);
+  background: var(--btn-bg);
   color: var(--on-accent);
   font-size: 13px;
   font-weight: 500;
@@ -200,8 +201,8 @@ nav {
   border-bottom: 1px solid var(--border);
 }
 
-/* Brand lockup — the kit's horizontal lockup, recoloured per theme via
-   --logo-ink / --logo-star / --logo-dot (see images/brand/lockup.svg). */
+/* Brand lockup — the kit's header logo, recoloured per theme via
+   --logo-word / --logo-mark / --logo-ember (see images/brand/lockup.svg). */
 .nav-brand {
   display: inline-flex;
   align-items: center;
@@ -209,7 +210,8 @@ nav {
   flex-shrink: 0;
   margin-right: auto;
 }
-.brand-lockup { display: block; height: 40px; width: auto; aspect-ratio: 905.48 / 187; }
+/* The kit sizes its header logo (small cut) for 48px and up. */
+.brand-lockup { display: block; height: 52px; width: auto; aspect-ratio: 1219 / 518.2; }
 
 .nav-links {
   display: flex;
@@ -419,7 +421,7 @@ html:not(.js) .footer-term-wrap { display: none; }
   border: none;
 }
 
-.btn-primary { background: var(--accent); color: var(--on-accent); font-weight: 600; }
+.btn-primary { background: var(--btn-bg); color: var(--on-accent); font-weight: 600; }
 .btn-primary:hover { background: var(--white); transform: translateY(-2px); }
 
 .btn-outline { border: 1px solid var(--border); color: var(--muted); background: none; }
@@ -771,7 +773,7 @@ footer {
 }
 
 .footer-brand { display: inline-flex; align-items: center; min-height: 44px; }
-.footer-brand .brand-lockup { height: 28px; }
+.footer-brand .brand-lockup { height: 48px; }
 
 .footer-links {
   display: flex;
@@ -967,14 +969,15 @@ footer p      { font-size: 13px; color: var(--muted); }
   --accent-rgb:   0, 0, 128;
   --on-accent:    #ffffff;
   --nav-bg:       #000080;
+  --btn-bg:       #000080;
   /* Logo: the kit's one-colour white on the navy title bar */
-  --logo-ink:     #ffffff;
-  --logo-star:    #ffffff;
-  --logo-dot:     #ffffff;
+  --logo-word:    #ffffff;
+  --logo-mark:    #ffffff;
+  --logo-ember:   #ffffff;
   background: #008080;
 }
 /* …and one-colour black on the grey footer */
-.theme-retro body footer { --logo-ink: #000000; --logo-star: #000000; --logo-dot: #000000; }
+.theme-retro body footer { --logo-word: #000000; --logo-mark: #000000; --logo-ember: #000000; }
 
 /* Remove gold grain, add CRT scanlines */
 .theme-retro body::before { display: none; }
@@ -1334,9 +1337,8 @@ footer p      { font-size: 13px; color: var(--muted); }
   --accent-rgb: 255, 232, 31;
   --on-accent:  #000000;
   --nav-bg:     rgba(0, 0, 0, 0.88);
-  --logo-ink:   #ffffff;
-  --logo-star:  var(--brand-signal);
-  --logo-dot:   #6B7079;
+  --btn-bg:     #ffe81f;
+  /* Logo inherits the default gold-on-navy roles, which read on black too */
 
   background-color: #000000;
   background-image:
@@ -1710,7 +1712,7 @@ footer p      { font-size: 13px; color: var(--muted); }
   :root { --nav-gutter: 24px; }
 
   nav { gap: 12px; }
-  .nav-brand .brand-lockup { height: 34px; }
+  .nav-brand .brand-lockup { height: 48px; }
   .nav-cta { display: none; }              /* the CTA moves into the menu */
   .nav-hamburger { display: flex; }
   html:not(.js) .nav-hamburger { display: none; }

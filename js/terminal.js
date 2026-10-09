@@ -49,7 +49,7 @@
 
   // The current brand accent, read from the theme tokens (CSS custom properties).
   function accent() {
-    return getComputedStyle(document.body).getPropertyValue('--accent').trim() || '#3D7BFF';
+    return getComputedStyle(document.body).getPropertyValue('--accent').trim() || '#BE934E';
   }
   const THEMES = ['dark', 'light', 'retro', 'space'];
 

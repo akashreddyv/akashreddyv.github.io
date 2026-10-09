@@ -67,14 +67,14 @@ const PERSON = {
   description: 'Vurenuka Akash Reddy (also known as Akash Reddy, V Akash Reddy) is an AI software developer at Molex based in Detroit, MI, USA. Originally from Hyderabad, India.'
 };
 
-// The studio brand — carries the North Ladder mark as its logo.
+// The studio brand — carries "The Ascent" mark as its logo.
 const BRAND = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   '@id': url('/#brand'),
   name: 'Reach Akash',
   url: url('/'),
-  logo: { '@type': 'ImageObject', url: url('/images/brand/reachakash-symbol.png'), width: 843, height: 2048 },
+  logo: { '@type': 'ImageObject', url: url('/images/brand/reachakash-symbol.png'), width: 2400, height: 1626 },
   founder: { '@id': url('/#person') }
 };
 
