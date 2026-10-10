@@ -240,7 +240,7 @@
       } else {
         document.documentElement.classList.remove('theme-light', 'theme-retro', 'theme-space');
         if (name !== 'dark') document.documentElement.classList.add('theme-' + name);
-        try { localStorage.setItem('theme', name === 'dark' ? '' : name); } catch (e) {}
+        try { localStorage.setItem('theme', name); localStorage.removeItem('retro-theme'); } catch (e) {}
       }
       write(`theme set to <span class="term-accent">${name}</span> ✨`);
     },

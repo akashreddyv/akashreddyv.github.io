@@ -36,7 +36,9 @@ document.addEventListener("DOMContentLoaded", function () {
       l.href = 'https://fonts.googleapis.com/css2?family=VT323&display=swap';
       document.head.appendChild(l);
     }
-    try { localStorage.setItem('theme', name === 'dark' ? '' : name); } catch (e) {}
+    // Save "dark" explicitly: an empty value used to read as "no choice", which
+    // let the old retro-theme flag override it on the next page load.
+    try { localStorage.setItem('theme', name); localStorage.removeItem('retro-theme'); } catch (e) {}
     syncThemeControls();
   };
 

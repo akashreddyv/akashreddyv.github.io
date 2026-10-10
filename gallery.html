@@ -11,11 +11,17 @@
        `theme` command write the same localStorage key. -->
   <script>
     (function () {
-      var d = document.documentElement, t = '';
+      var d = document.documentElement, t = null;
       d.classList.add('js');
       try {
-        t = localStorage.getItem('theme') || '';
-        if (!t && localStorage.getItem('retro-theme') === '1') t = 'retro';
+        t = localStorage.getItem('theme');
+        // One-time migration of the old site's retro flag. Only when no theme
+        // was ever chosen: dark is a choice too, and must win over the flag.
+        if (t === null && localStorage.getItem('retro-theme') === '1') {
+          t = 'retro';
+          localStorage.setItem('theme', 'retro');
+        }
+        localStorage.removeItem('retro-theme');
       } catch (e) {}
       if (t === 'light' || t === 'retro' || t === 'space') d.classList.add('theme-' + t);
       if (t === 'retro') {
