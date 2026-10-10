@@ -29,31 +29,34 @@
    the logo, never for text.
 ---------------------------------------------------------------- */
 :root {
-  /* Logo palette (brand README) */
-  --brand-navy:       #181A29;  /* backgrounds, app icon, theme colour */
-  --brand-gold:       #BE934E;  /* the steps                          */
-  --brand-ember:      #600000;  /* the curve and the 2nd step          */
-  --brand-cream:      #F1EAE0;  /* wordmark on navy                    */
-  --brand-gold-light: #B5873F;  /* the mark on white                   */
+  /* Brand palette */
+  --brand-navy:       #181A29;  /* text on light, button labels, app icon */
+  --brand-gold:       #BE934E;  /* accent: links and buttons on dark   */
+  --brand-ember:      #600000;  /* the logo's curve and 2nd step       */
+  --brand-cream:      #F1EAE0;  /* body text on dark                   */
+  --brand-gold-light: #B5873F;  /* buttons on white                    */
 
-  /* Dark theme (default) — gold on navy */
-  --bg:        var(--brand-navy);
-  --surface:   #1F2235;
-  --card:      #222539;
-  --border:    #33374D;
-  --text:      var(--brand-cream);  /* 14.43:1 (12.64:1 on --card) */
-  --muted:     #A8A39A;             /* 6.87:1 (6.01:1 on --card) */
+  /* Dark theme (default) — black page */
+  --bg:        #000000;
+  --surface:   #0E0E0E;
+  --card:      #141414;
+  --border:    #2A2A2A;
+  --text:      var(--brand-cream);  /* 17.59:1 (15.43:1 on --card) */
+  --muted:     #A8A39A;             /* 8.37:1 (7.34:1 on --card) */
   --white:     var(--brand-cream);  /* headings */
-  --accent:    var(--brand-gold);   /* 6.13:1 (5.37:1 on --card): AA for body text and links */
+  --accent:    var(--brand-gold);   /* 7.47:1 (6.56:1 on --card): AA for body text and links */
   --accent-rgb: 190, 147, 78;
   --btn-bg:    var(--brand-gold);
   --on-accent: var(--brand-navy);   /* button labels: 6.13:1 (cream would be 2.35:1 and fail) */
-  --nav-bg:    rgba(24, 26, 41, 0.92);
+  --nav-bg:    rgba(0, 0, 0, 0.92);
 
-  /* Logo colour roles: the kit's gold-on-navy artwork */
-  --logo-word:  var(--brand-cream);
-  --logo-mark:  var(--brand-gold);
-  --logo-ember: var(--brand-ember);
+  /* Logo colour roles: white on dark, with the red curve and 2nd step.
+     The shades darken (black) or lighten (white) each step's front and side for the 3D look. */
+  --logo-word:        #FFFFFF;
+  --logo-mark:        #FFFFFF;
+  --logo-ember:       var(--brand-ember);
+  --logo-mark-shade:  #000000;
+  --logo-ember-shade: #000000;
 
   /* Type — Montserrat (SIL OFL), per the brand */
   --font-display: 'Montserrat', system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -64,8 +67,8 @@
 }
 
 /* Light theme — white page, navy text. Gold-on-light (#B5873F) is 3.23:1
-   on white: fine for the logo and for buttons with navy labels, too light
-   for text, so links use a deeper gold. */
+   on white: fine for buttons with navy labels, too light for text, so
+   links use a deeper gold. */
 :root.theme-light {
   --bg:        #FFFFFF;
   --surface:   #F7F5F1;
@@ -80,10 +83,12 @@
   --on-accent: var(--brand-navy);
   --nav-bg:    rgba(255, 255, 255, 0.92);
 
-  /* The kit's colour-on-light artwork */
-  --logo-word:  var(--brand-navy);
-  --logo-mark:  var(--brand-gold-light);
-  --logo-ember: var(--brand-ember);
+  /* Logo: black on white, same red; white lightens the black steps' faces */
+  --logo-word:        #000000;
+  --logo-mark:        #000000;
+  --logo-ember:       var(--brand-ember);
+  --logo-mark-shade:  #FFFFFF;
+  --logo-ember-shade: #000000;
 }
 
 
@@ -201,8 +206,8 @@ nav {
   border-bottom: 1px solid var(--border);
 }
 
-/* Brand lockup — the kit's header logo, recoloured per theme via
-   --logo-word / --logo-mark / --logo-ember (see images/brand/lockup.svg). */
+/* Brand lockup — recoloured per theme via --logo-word / --logo-mark /
+   --logo-ember and the two shades (see images/brand/lockup.svg). */
 .nav-brand {
   display: inline-flex;
   align-items: center;
@@ -210,8 +215,8 @@ nav {
   flex-shrink: 0;
   margin-right: auto;
 }
-/* The full 8-step cut of the logo. */
-.brand-lockup { display: block; height: 52px; width: auto; aspect-ratio: 1231.4 / 526.3; }
+/* The full 8-step cut of the logo, with the wordmark at 2x the kit size. */
+.brand-lockup { display: block; height: 52px; width: auto; aspect-ratio: 1785.7 / 526.3; }
 
 .nav-links {
   display: flex;
@@ -273,8 +278,6 @@ nav {
 .nav-submenu a { display: flex; width: 100%; }
 
 .nav-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-.nav-cta { padding: 11px 20px; }
-.nav-cta-mobile { display: none; }
 
 /* Sun/moon theme switch — shows the theme you'd switch to */
 .theme-toggle {
@@ -977,7 +980,7 @@ footer p      { font-size: 13px; color: var(--muted); }
   background: #008080;
 }
 /* …and one-colour black on the grey footer */
-.theme-retro body footer { --logo-word: #000000; --logo-mark: #000000; --logo-ember: #000000; }
+.theme-retro body footer { --logo-word: #000000; --logo-mark: #000000; --logo-ember: #000000; --logo-mark-shade: #FFFFFF; --logo-ember-shade: #FFFFFF; }
 
 /* Remove gold grain, add CRT scanlines */
 .theme-retro body::before { display: none; }
@@ -1338,7 +1341,7 @@ footer p      { font-size: 13px; color: var(--muted); }
   --on-accent:  #000000;
   --nav-bg:     rgba(0, 0, 0, 0.88);
   --btn-bg:     #ffe81f;
-  /* Logo inherits the default gold-on-navy roles, which read on black too */
+  /* Logo inherits the default white-on-dark roles */
 
   background-color: #000000;
   background-image:
@@ -1713,7 +1716,6 @@ footer p      { font-size: 13px; color: var(--muted); }
 
   nav { gap: 12px; }
   .nav-brand .brand-lockup { height: 48px; }
-  .nav-cta { display: none; }              /* the CTA moves into the menu */
   .nav-hamburger { display: flex; }
   html:not(.js) .nav-hamburger { display: none; }
 
@@ -1745,8 +1747,6 @@ footer p      { font-size: 13px; color: var(--muted); }
     border: none;
     box-shadow: none;
   }
-  .nav-cta-mobile { display: block; margin-top: 12px; }
-  .nav-cta-mobile .btn { width: 100%; }
 
   /* Without JS the header stops being fixed and the links wrap below the
      brand, so every page stays reachable. */
