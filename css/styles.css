@@ -210,8 +210,8 @@ nav {
   flex-shrink: 0;
   margin-right: auto;
 }
-/* The kit sizes its header logo (small cut) for 48px and up. */
-.brand-lockup { display: block; height: 52px; width: auto; aspect-ratio: 1219 / 518.2; }
+/* The full 8-step cut of the logo. */
+.brand-lockup { display: block; height: 52px; width: auto; aspect-ratio: 1231.4 / 526.3; }
 
 .nav-links {
   display: flex;
