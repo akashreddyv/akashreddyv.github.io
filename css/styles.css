@@ -31,8 +31,8 @@
 :root {
   /* Logo palette (brand README) */
   --brand-navy:       #181A29;  /* backgrounds, app icon, theme colour */
-  --brand-gold:       #BE934E;  /* the line and the steps              */
-  --brand-ember:      #D7400F;  /* the third step only                 */
+  --brand-gold:       #BE934E;  /* the steps                          */
+  --brand-ember:      #600000;  /* the curve and the 2nd step          */
   --brand-cream:      #F1EAE0;  /* wordmark on navy                    */
   --brand-gold-light: #B5873F;  /* the mark on white                   */
 
