@@ -61,6 +61,9 @@ const warnings = [];
 // Referral entries: published, not expired. Stale lastVerified dates only warn.
 const REF = referrals.load(read('_build/data/referrals.json'), TODAY);
 warnings.push(...REF.warnings);
+for (const e of REF.live) {
+  if (e.logo && !fs.existsSync(path.join(ROOT, e.logo))) throw new Error(`referrals.json "${e.id}": logo file ${e.logo} does not exist`);
+}
 
 function renderPage(route) {
   const source = read(route.source)

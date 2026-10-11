@@ -1,16 +1,36 @@
 {
-  "_readme": "Source of truth for /referrals, /referrals.json and the 'Referral codes' section of llms.txt. Edit this file, then run: node _build/build.js. Only publish:true entries appear anywhere; entries past 'expires' (YYYY-MM-DD) are skipped. 'asOf' labels bonus amounts in forYou. 'note' adds a line to the card. --check warns when lastVerified is more than 60 days old.",
+  "_readme": "Source of truth for /referrals, /referrals.json and the 'Referral codes' section of llms.txt. Edit this file, then run: node _build/build.js. Only publish:true entries appear anywhere; entries past 'expires' (YYYY-MM-DD) are skipped. 'asOf' labels bonus amounts in forYou. 'note' adds a line to the card. 'logo' is a site path to the company's icon (128px PNG in images/referrals/). --check warns when lastVerified is more than 60 days old.",
   "categories": [
-    { "id": "credit-cards", "label": "Credit cards" },
-    { "id": "investing", "label": "Investing & trading" },
-    { "id": "payments", "label": "Payments" },
-    { "id": "send-money-to-india", "label": "Send money to India" },
-    { "id": "ai-tools", "label": "AI tools" }
+    {
+      "id": "credit-cards",
+      "label": "Credit cards"
+    },
+    {
+      "id": "investing",
+      "label": "Investing & trading"
+    },
+    {
+      "id": "payments",
+      "label": "Payments"
+    },
+    {
+      "id": "send-money-to-india",
+      "label": "Send money to India"
+    },
+    {
+      "id": "shopping",
+      "label": "Shopping & cash back"
+    },
+    {
+      "id": "ai-tools",
+      "label": "AI tools"
+    }
   ],
   "entries": [
     {
       "id": "chase-sapphire",
       "name": "Chase Sapphire Reserve / Sapphire Preferred",
+      "logo": "/images/referrals/chase.png",
       "category": "credit-cards",
       "region": "US",
       "code": null,
@@ -25,6 +45,7 @@
     {
       "id": "chase-freedom",
       "name": "Chase Freedom Unlimited / Freedom Flex",
+      "logo": "/images/referrals/chase.png",
       "category": "credit-cards",
       "region": "US",
       "code": null,
@@ -53,6 +74,7 @@
     {
       "id": "amex-blue-cash-everyday",
       "name": "Amex Blue Cash Everyday",
+      "logo": "/images/referrals/amex.png",
       "category": "credit-cards",
       "region": "US",
       "code": null,
@@ -66,6 +88,7 @@
     {
       "id": "amex-delta-skymiles-blue",
       "name": "Amex Delta SkyMiles Blue",
+      "logo": "/images/referrals/amex.png",
       "category": "credit-cards",
       "region": "US",
       "code": null,
@@ -79,6 +102,7 @@
     {
       "id": "robinhood",
       "name": "Robinhood",
+      "logo": "/images/referrals/robinhood.png",
       "category": "investing",
       "region": "US",
       "code": null,
@@ -92,6 +116,7 @@
     {
       "id": "kraken",
       "name": "Kraken Pro",
+      "logo": "/images/referrals/kraken.png",
       "category": "investing",
       "region": "US",
       "code": "r9rh9tdr",
@@ -105,6 +130,7 @@
     {
       "id": "kalshi",
       "name": "Kalshi",
+      "logo": "/images/referrals/kalshi.png",
       "category": "investing",
       "region": "US",
       "code": null,
@@ -119,6 +145,7 @@
     {
       "id": "cash-app",
       "name": "Cash App",
+      "logo": "/images/referrals/cashapp.png",
       "category": "payments",
       "region": "US",
       "code": "DLC673L",
@@ -133,21 +160,23 @@
     {
       "id": "remitly",
       "name": "Remitly",
+      "logo": "/images/referrals/remitly.png",
       "category": "send-money-to-india",
       "region": "US to India",
       "code": null,
-      "url": null,
-      "forYou": "$10 off, no fees and a special rate on your first transfer of $300 or more",
-      "iGet": null,
-      "termsUrl": "https://www.remitly.com/us/en/home/referral-offer-program",
+      "url": "https://www.remitly.com/r/2w9tlk9p",
+      "forYou": "$10 off, no fees and a special exchange rate on your first transfer of $300 or more",
+      "iGet": "$25 when your first transfer goes through",
+      "termsUrl": "https://www.remitly.com/us/en/india/fx-plus-discount-referral-promo-tnc",
       "lastVerified": "2026-10-11",
       "asOf": "2026-10-11",
-      "publish": false,
-      "_why": "No referral link yet."
+      "publish": true,
+      "note": "Remitly promises on-time delivery or a refund of your fees. Terms apply."
     },
     {
       "id": "abound",
       "name": "Abound (Times of India)",
+      "logo": "/images/referrals/abound.png",
       "category": "send-money-to-india",
       "region": "US to India",
       "code": "ZGDA4I",
@@ -162,6 +191,7 @@
     {
       "id": "mypursu",
       "name": "MyPursu",
+      "logo": "/images/referrals/mypursu.png",
       "category": "send-money-to-india",
       "region": "India",
       "code": "H8NOD",
@@ -174,8 +204,24 @@
       "publish": true
     },
     {
+      "id": "rakuten",
+      "name": "Rakuten",
+      "logo": "/images/referrals/rakuten.png",
+      "category": "shopping",
+      "region": "US",
+      "code": null,
+      "url": "https://www.rakuten.com/r/AKASHR229?eeid=44749",
+      "forYou": "a $50 bonus when you spend $50 through Rakuten within 90 days of joining",
+      "iGet": "a $50 bonus when you qualify",
+      "termsUrl": "https://www.rakuten.com/help/article/referral-program-terms",
+      "lastVerified": "2026-10-11",
+      "asOf": "2026-10-11",
+      "publish": true
+    },
+    {
       "id": "claude",
       "name": "Claude",
+      "logo": "/images/referrals/claude.png",
       "category": "ai-tools",
       "region": null,
       "code": null,

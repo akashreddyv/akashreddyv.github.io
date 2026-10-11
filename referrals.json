@@ -7,6 +7,7 @@
     {
       "id": "chase-sapphire",
       "name": "Chase Sapphire Reserve / Sapphire Preferred",
+      "logo": "https://reachakash.com/images/referrals/chase.png",
       "category": "credit-cards",
       "region": "US",
       "code": null,
@@ -21,6 +22,7 @@
     {
       "id": "chase-freedom",
       "name": "Chase Freedom Unlimited / Freedom Flex",
+      "logo": "https://reachakash.com/images/referrals/chase.png",
       "category": "credit-cards",
       "region": "US",
       "code": null,
@@ -34,6 +36,7 @@
     {
       "id": "amex-blue-cash-everyday",
       "name": "Amex Blue Cash Everyday",
+      "logo": "https://reachakash.com/images/referrals/amex.png",
       "category": "credit-cards",
       "region": "US",
       "code": null,
@@ -47,6 +50,7 @@
     {
       "id": "amex-delta-skymiles-blue",
       "name": "Amex Delta SkyMiles Blue",
+      "logo": "https://reachakash.com/images/referrals/amex.png",
       "category": "credit-cards",
       "region": "US",
       "code": null,
@@ -60,6 +64,7 @@
     {
       "id": "robinhood",
       "name": "Robinhood",
+      "logo": "https://reachakash.com/images/referrals/robinhood.png",
       "category": "investing",
       "region": "US",
       "code": null,
@@ -73,6 +78,7 @@
     {
       "id": "kraken",
       "name": "Kraken Pro",
+      "logo": "https://reachakash.com/images/referrals/kraken.png",
       "category": "investing",
       "region": "US",
       "code": "r9rh9tdr",
@@ -86,6 +92,7 @@
     {
       "id": "kalshi",
       "name": "Kalshi",
+      "logo": "https://reachakash.com/images/referrals/kalshi.png",
       "category": "investing",
       "region": "US",
       "code": null,
@@ -100,6 +107,7 @@
     {
       "id": "cash-app",
       "name": "Cash App",
+      "logo": "https://reachakash.com/images/referrals/cashapp.png",
       "category": "payments",
       "region": "US",
       "code": "DLC673L",
@@ -112,8 +120,25 @@
       "page": "https://reachakash.com/referrals#cash-app"
     },
     {
+      "id": "remitly",
+      "name": "Remitly",
+      "logo": "https://reachakash.com/images/referrals/remitly.png",
+      "category": "send-money-to-india",
+      "region": "US to India",
+      "code": null,
+      "url": "https://www.remitly.com/r/2w9tlk9p",
+      "forYou": "$10 off, no fees and a special exchange rate on your first transfer of $300 or more",
+      "iGet": "$25 when your first transfer goes through",
+      "termsUrl": "https://www.remitly.com/us/en/india/fx-plus-discount-referral-promo-tnc",
+      "lastVerified": "2026-10-11",
+      "asOf": "2026-10-11",
+      "note": "Remitly promises on-time delivery or a refund of your fees. Terms apply.",
+      "page": "https://reachakash.com/referrals#remitly"
+    },
+    {
       "id": "abound",
       "name": "Abound (Times of India)",
+      "logo": "https://reachakash.com/images/referrals/abound.png",
       "category": "send-money-to-india",
       "region": "US to India",
       "code": "ZGDA4I",
@@ -128,6 +153,7 @@
     {
       "id": "mypursu",
       "name": "MyPursu",
+      "logo": "https://reachakash.com/images/referrals/mypursu.png",
       "category": "send-money-to-india",
       "region": "India",
       "code": "H8NOD",
@@ -140,8 +166,24 @@
       "page": "https://reachakash.com/referrals#mypursu"
     },
     {
+      "id": "rakuten",
+      "name": "Rakuten",
+      "logo": "https://reachakash.com/images/referrals/rakuten.png",
+      "category": "shopping",
+      "region": "US",
+      "code": null,
+      "url": "https://www.rakuten.com/r/AKASHR229?eeid=44749",
+      "forYou": "a $50 bonus when you spend $50 through Rakuten within 90 days of joining",
+      "iGet": "a $50 bonus when you qualify",
+      "termsUrl": "https://www.rakuten.com/help/article/referral-program-terms",
+      "lastVerified": "2026-10-11",
+      "asOf": "2026-10-11",
+      "page": "https://reachakash.com/referrals#rakuten"
+    },
+    {
       "id": "claude",
       "name": "Claude",
+      "logo": "https://reachakash.com/images/referrals/claude.png",
       "category": "ai-tools",
       "region": null,
       "code": null,

@@ -321,7 +321,7 @@ const routes = [
   {
     slug: 'referrals', path: '/referrals', out: 'referrals.html', source: 'pages/referrals.html', nav: 'referrals',
     title: "Akash Reddy's referral codes: Chase, Robinhood & more",
-    description: "Akash Reddy's referral codes and links for Chase, Amex, Robinhood, Kraken, Kalshi, Cash App, Abound, MyPursu and Claude. He earns a reward if you sign up.",
+    description: "Akash Reddy's referral codes and links for Chase, Amex, Robinhood, Kraken, Cash App, Remitly, Rakuten, Claude and more. He earns a reward if you sign up.",
     ogType: 'website',
     ogTitle: "Akash Reddy's referral codes",
     ogDesc: 'All of Akash Reddy’s referral codes and links in one place, with official terms. He earns a reward when you sign up through them.',
@@ -340,7 +340,7 @@ const routes = [
       crumbs(['Referrals', '/referrals'])
     ],
     sitemap: { changefreq: 'weekly', priority: '0.6' },
-    llms: 'Referral codes and links of Akash Reddy (credit cards, investing and trading, payments, sending money to India, AI tools), with a disclosure that he earns a reward and links to official terms. Machine-readable copy: https://reachakash.com/referrals.json'
+    llms: 'Referral codes and links of Akash Reddy (credit cards, investing and trading, payments, sending money to India, shopping and cash back, AI tools), with a disclosure that he earns a reward and links to official terms. Machine-readable copy: https://reachakash.com/referrals.json'
   },
 
   // ── Business routes: stubs until Phases 2–3 fill them. Drafts are noindex

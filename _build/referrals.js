@@ -40,6 +40,7 @@ function load(json, today) {
       if (e[f] && /[?&]utm_/i.test(e[f])) errors.push(`${where}: ${f} has utm_ parameters; strip them`);
     }
     if (e.publish && !e.url) errors.push(`${where}: published entries need a url`);
+    if (e.logo != null && !/^\/images\/referrals\/[a-z0-9-]+\.(png|svg|webp)$/.test(e.logo)) errors.push(`${where}: logo must be /images/referrals/<name>.png|svg|webp`);
   }
 
   const live = data.entries.filter((e) => e.publish && !(e.expires && e.expires < today));
@@ -62,6 +63,7 @@ function card(e) {
   const lines = [
     `      <article class="ref-card" id="${e.id}" aria-labelledby="${e.id}-name">`,
     '        <div class="ref-card-head">',
+    e.logo ? `          <img class="ref-logo" src="${e.logo}" alt="" width="44" height="44" loading="lazy" decoding="async">` : null,
     `          <h3 class="ref-name" id="${e.id}-name">${name}</h3>`,
     e.region ? `          <span class="ref-region">${esc(e.region)}</span>` : null,
     '        </div>',
@@ -116,7 +118,7 @@ function renderJson(loaded, origin, note) {
     updated: loaded.updated,
     entries: loaded.live.map((e) => {
       const o = {
-        id: e.id, name: e.name, category: e.category, region: e.region || null,
+        id: e.id, name: e.name, logo: e.logo ? origin + e.logo : null, category: e.category, region: e.region || null,
         code: e.code || null, url: e.url, forYou: e.forYou, iGet: e.iGet || null,
         termsUrl: e.termsUrl, lastVerified: e.lastVerified
       };

@@ -2086,8 +2086,15 @@ a.project-card { display: block; color: inherit; text-decoration: none; }
 }
 .ref-card:target { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
 
-.ref-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
-.ref-name { font-family: var(--font-display); font-size: 19px; font-weight: 600; line-height: 1.3; color: var(--white); }
+.ref-card-head { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+.ref-logo {
+  flex-shrink: 0;
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  object-fit: contain;
+}
+.ref-name { flex: 1; min-width: 0; font-family: var(--font-display); font-size: 19px; font-weight: 600; line-height: 1.3; color: var(--white); }
 .ref-region {
   flex-shrink: 0;
   padding: 4px 9px;
