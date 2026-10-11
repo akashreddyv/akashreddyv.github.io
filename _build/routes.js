@@ -34,6 +34,10 @@ const SAME_AS = [
   'https://www.facebook.com/ak.r48'
 ];
 
+// Latest "checked" date across published referral entries, for the page's dateModified.
+const REFERRALS_UPDATED = require('./data/referrals.json').entries
+  .filter((e) => e.publish).map((e) => e.lastVerified).sort().pop();
+
 const crumbs = (...items) => ({
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
@@ -309,6 +313,34 @@ const routes = [
     ],
     sitemap: { changefreq: 'yearly', priority: '0.5' },
     llms: null
+  },
+
+  // ── Referral codes. Cards come from _build/data/referrals.json (see
+  //    _build/referrals.js). WebPage + BreadcrumbList only: no Offer,
+  //    Product or Review markup.
+  {
+    slug: 'referrals', path: '/referrals', out: 'referrals.html', source: 'pages/referrals.html', nav: 'referrals',
+    title: "Akash Reddy's referral codes: Chase, Robinhood & more",
+    description: "Akash Reddy's referral codes and links for Chase, Amex, Robinhood, Kraken, Kalshi, Cash App, Abound, MyPursu and Claude. He earns a reward if you sign up.",
+    ogType: 'website',
+    ogTitle: "Akash Reddy's referral codes",
+    ogDesc: 'All of Akash Reddy’s referral codes and links in one place, with official terms. He earns a reward when you sign up through them.',
+    jsonld: [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        '@id': url('/referrals#webpage'),
+        url: url('/referrals'),
+        name: "Akash Reddy's referral codes",
+        description: 'Referral codes and links from Akash Reddy, with a disclosure that he earns a reward and links to each program’s official terms.',
+        isPartOf: { '@id': url('/#website') },
+        about: { '@id': url('/#person') },
+        dateModified: REFERRALS_UPDATED
+      },
+      crumbs(['Referrals', '/referrals'])
+    ],
+    sitemap: { changefreq: 'weekly', priority: '0.6' },
+    llms: 'Referral codes and links of Akash Reddy (credit cards, investing and trading, payments, sending money to India, AI tools), with a disclosure that he earns a reward and links to official terms. Machine-readable copy: https://reachakash.com/referrals.json'
   },
 
   // ── Business routes: stubs until Phases 2–3 fill them. Drafts are noindex

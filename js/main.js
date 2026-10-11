@@ -96,6 +96,54 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 15000);
   }
 
+  // ── Referral codes: Copy buttons (the code itself is always visible) ──
+  // Shared links like /referrals#robinhood: re-align once web fonts have
+  // loaded, since the text above the card grows after the first jump.
+  if (location.hash && document.querySelector('.ref-card') && document.fonts) {
+    document.fonts.ready.then(function () {
+      const t = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+      if (t) t.scrollIntoView({ block: 'start', behavior: 'instant' });
+    });
+  }
+  const copyStatus = document.getElementById('copy-status');
+  document.querySelectorAll('[data-copy]').forEach(function (btn) {
+    btn.hidden = false;                                   // hidden without JS
+    const label = btn.firstChild;                         // the "Copy" text node
+    btn.addEventListener('click', function () {
+      const text = btn.getAttribute('data-copy');
+      const done = function () {
+        label.nodeValue = 'Copied';
+        if (copyStatus) copyStatus.textContent = 'Copied ' + btn.getAttribute('data-copy-label') + ' ' + text;
+        clearTimeout(btn.copyTimer);
+        btn.copyTimer = setTimeout(function () {
+          label.nodeValue = 'Copy';
+          if (copyStatus) copyStatus.textContent = '';
+        }, 2000);
+      };
+      // If the browser won't copy, select the code so a keyboard copy works.
+      const selectCode = function () {
+        const code = btn.parentElement.querySelector('.ref-code');
+        if (code) window.getSelection().selectAllChildren(code);
+        if (copyStatus) copyStatus.textContent = 'Couldn’t copy automatically. The code is selected; press Ctrl+C or Command+C.';
+      };
+      const fallback = function () {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        let ok = false;
+        try { ok = document.execCommand('copy'); } catch (e) {}
+        document.body.removeChild(ta);
+        if (ok) done(); else selectCode();
+      };
+      if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(done, fallback);
+      else fallback();
+    });
+  });
+
   // ── Contact Form ────────────────────────────────────────────────
   const form = document.getElementById('contact-form');
   if (form) {

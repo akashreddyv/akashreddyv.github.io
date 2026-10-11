@@ -45,11 +45,11 @@
     ]
   };
 
-  const PAGES = ['home', 'services', 'lab', 'notes', 'about', 'personal', 'professional', 'projects', 'socials', 'contact', 'gallery', 'privacy'];
+  const PAGES = ['home', 'services', 'referrals', 'lab', 'notes', 'about', 'personal', 'professional', 'projects', 'socials', 'contact', 'gallery', 'privacy'];
 
   // The current brand accent, read from the theme tokens (CSS custom properties).
   function accent() {
-    return getComputedStyle(document.body).getPropertyValue('--accent').trim() || '#BE934E';
+    return getComputedStyle(document.body).getPropertyValue('--accent').trim() || '#FFFFFF';
   }
   const THEMES = ['dark', 'light', 'retro', 'space'];
 
