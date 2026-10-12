@@ -8,7 +8,7 @@
    No secrets here — this file is public.
    ============================================================ */
 window.SITE_CONFIG = {
-  acceptingClients: false, // false: CTAs say "Get early access" and prices are hidden
+  acceptingClients: false, // false: CTAs say "Contact me"; true: "Start a project" (bookingUrl)
   bookingUrl: "",          // [EDIT] booking link; empty -> /contact
   paymentLinks: {          // Phase 5: Stripe Payment Links by service id; empty -> no pay button
     "diagnostic": "",
@@ -27,7 +27,7 @@ window.siteCta = function (kind, config) {
   if (kind === "primary") {
     return c.acceptingClients
       ? { text: "Start a project",  href: c.bookingUrl || "/contact" }
-      : { text: "Get early access", href: "/contact" };
+      : { text: "Contact me",      href: "/contact" };
   }
   return null;
 };

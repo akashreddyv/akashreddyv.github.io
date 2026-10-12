@@ -1,10 +1,10 @@
 # Vurenuka Akash Reddy
 
-> Vurenuka Akash Reddy (also known as Akash Reddy, V Akash Reddy, V Akash, Reach Akash, Vurenuka) is an AI software developer at Molex based in Detroit, MI, USA. Originally from Hyderabad, India. His personal website is reachakash.com.
+> Vurenuka Akash Reddy (also known as Akash Reddy, V Akash Reddy, V Akash, Reach Akash, Vurenuka) is an AI software developer at Molex based in Detroit, MI, USA. Originally from Hyderabad, India. Through Reach Akash (reachakash.com) he offers custom software, custom AI agents, AI coaching and website design (from $499) in Detroit, Michigan.
 
 ## Pages
 
-- [Home](https://reachakash.com/): Landing page for Vurenuka Akash Reddy, software developer, creator, digital native.
+- [Home](https://reachakash.com/): Landing page for Vurenuka Akash Reddy (Akash Reddy, Reach Akash), software developer in Detroit, MI, with links to his services, projects, work history and contact.
 - [About](https://reachakash.com/about): About Akash Reddy (V Akash Reddy): short bio, with links to his personal background, professional history, projects and social profiles.
 - [Personal](https://reachakash.com/personal): Personal background. Techie, software developer, AI enthusiast, travel and adventure seeker. Based in Detroit, MI; originally from Hyderabad, India.
 - [Professional](https://reachakash.com/professional): Career and education. AI Software Developer at Molex (Jun 2026-present) on the GRTS team, building database systems for connector reliability test stations (SQL Server, C#, .NET Framework, LabVIEW). Previously Software Developer at Zoetis (Jan 2026-Jun 2026), building ZAHM (.NET 4.8, C#, WinForms, PostgreSQL, NI-VISA); Software Developer at Raptor Consultants Group (Nov 2024-Dec 2025); Software Engineer at Tata Consultancy Services (Aug 2022-Aug 2023); and Associate Software Developer at Persistent Systems Ltd. Education: MS Engineering Management (Arkansas State University, 2023-2024), MBA Digital Entrepreneurship (Amity University, 2023-2025), B.Tech Information Technology (Malla Reddy Institute of Technology, 2018-2022).
@@ -12,6 +12,8 @@
 - [Socials](https://reachakash.com/socials): Social media profiles. Instagram @ak.r48, LinkedIn @akashreddyv, X @AkReddy48, YouTube @ak.r48, Snapchat @ak.r48, Discord @ak.r48, Threads @ak.r48, Facebook @ak.r48.
 - [Contact](https://reachakash.com/contact): Contact Akash Reddy via LinkedIn, Instagram, or the contact form. Located in Detroit, MI, USA.
 - [Referrals](https://reachakash.com/referrals): Referral codes and links of Akash Reddy (credit cards, investing and trading, payments, sending money to India, shopping and cash back, AI tools), with a disclosure that he earns a reward and links to official terms. Machine-readable copy: https://reachakash.com/referrals.json
+- [Services](https://reachakash.com/services): Services from Akash Reddy (Reach Akash) in Detroit, Michigan: custom software (including test data and workflow tools for teams that build and test hardware), custom AI agents, AI coaching (one-on-one or team) and website design starting at $499 for a fully functioning website. Contact: https://reachakash.com/contact
+- [Notes](https://reachakash.com/notes): Notes: writing on test data, manufacturing software and building tools with AI.
 
 ## Identity
 
@@ -23,6 +25,16 @@
 - Location: Detroit, Michigan, USA
 - Origin: Hyderabad, Telangana, India
 - Website: https://reachakash.com
+
+## Services
+
+- Business name: Reach Akash (reachakash.com), run by Akash Reddy in Detroit, Michigan
+- Software services: custom software and automation, including test data and workflow tools for teams that build and test hardware
+- Website design services: starting at $499 for a fully functioning website
+- Custom AI agents: agents built around a client’s documents, tools and repeat tasks
+- AI coaching: one-on-one or team coaching on using AI tools in everyday work
+- Details: https://reachakash.com/services
+- Contact: https://reachakash.com/contact
 
 ## Social Profiles
 

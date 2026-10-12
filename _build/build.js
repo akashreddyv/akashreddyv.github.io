@@ -51,6 +51,17 @@ function fill(tpl, values) {
   });
 }
 
+// FAQPage JSON-LD built from the page's own questions (<div class="faq-item"><h3>Q</h3><p>A</p></div>),
+// so the markup always matches what visitors read.
+const plain = (html) => html.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim()
+  .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+function faqJsonLd(html, route) {
+  const items = [...html.matchAll(/<div class="faq-item">\s*<h3>([\s\S]*?)<\/h3>\s*<p>([\s\S]*?)<\/p>\s*<\/div>/g)]
+    .map(([, q, a]) => ({ '@type': 'Question', name: plain(q), acceptedAnswer: { '@type': 'Answer', text: plain(a) } }));
+  if (!items.length) throw new Error(`${route.out}: faq is on but the page has no .faq-item blocks`);
+  return { '@context': 'https://schema.org', '@type': 'FAQPage', '@id': site.origin + route.path + '#faq', mainEntity: items };
+}
+
 function jsonLd(objects) {
   // Guard against "</script>" inside strings ending the block early.
   return JSON.stringify(objects, null, 2).replace(/<\//g, '<\\/').replace(/^/gm, '  ');
@@ -113,7 +124,7 @@ function renderPage(route) {
       ? '  <meta property="profile:first_name" content="Akash">\n  <meta property="profile:last_name"  content="Reddy">\n'
       : '',
     headExtra,
-    jsonld: jsonLd(route.jsonld),
+    jsonld: jsonLd(route.faq ? [...route.jsonld, faqJsonLd(content, route)] : route.jsonld),
     slug: route.slug,
     content,
     year: YEAR,

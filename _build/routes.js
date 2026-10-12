@@ -67,9 +67,12 @@ const PERSON = {
   ],
   address: { '@type': 'PostalAddress', addressLocality: 'Detroit', addressRegion: 'MI', addressCountry: 'US' },
   sameAs: SAME_AS,
-  knowsAbout: ['Software Development', 'Database Architecture', 'SQL Server', 'C#', '.NET Framework', 'LabVIEW', 'Industrial Test Automation', 'AI', 'Travel'],
-  description: 'Vurenuka Akash Reddy (also known as Akash Reddy, V Akash Reddy) is an AI software developer at Molex based in Detroit, MI, USA. Originally from Hyderabad, India.'
+  knowsAbout: ['Software Development', 'AI Agents', 'AI Coaching', 'Website Design', 'Database Architecture', 'SQL Server', 'C#', '.NET Framework', 'LabVIEW', 'Industrial Test Automation', 'AI', 'Travel'],
+  brand: { '@id': url('/#brand') },
+  description: 'Vurenuka Akash Reddy (also known as Akash Reddy, V Akash Reddy, Reach Akash) is an AI software developer at Molex based in Detroit, MI, USA, originally from Hyderabad, India. Through Reach Akash he offers custom software, custom AI agents, AI coaching and website design.'
 };
+
+const DETROIT = { '@type': 'City', name: 'Detroit', containedInPlace: { '@type': 'State', name: 'Michigan' } };
 
 // The studio brand — carries "The Ascent" mark as its logo.
 const BRAND = {
@@ -77,16 +80,45 @@ const BRAND = {
   '@type': 'Organization',
   '@id': url('/#brand'),
   name: 'Reach Akash',
+  alternateName: ['reachAkash.com', 'Reach Akash by Akash Reddy'],
   url: url('/'),
   logo: { '@type': 'ImageObject', url: url('/images/brand/reachakash-symbol.png'), width: 2400, height: 1681 },
+  description: 'Reach Akash is the studio of Akash Reddy in Detroit, Michigan: custom software, custom AI agents, AI coaching and website design.',
+  address: { '@type': 'PostalAddress', addressLocality: 'Detroit', addressRegion: 'MI', addressCountry: 'US' },
+  areaServed: DETROIT,
+  knowsAbout: ['Custom Software', 'AI Agents', 'AI Coaching', 'Website Design'],
   founder: { '@id': url('/#person') }
 };
+
+// One Service entity per offering on /services (no Review or rating markup).
+const service = (id, name, serviceType, description, extra = {}) => ({
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  '@id': url('/services#' + id),
+  name, serviceType, description,
+  provider: { '@id': url('/#brand') },
+  areaServed: DETROIT,
+  url: url('/services'),
+  ...extra
+});
+const SERVICES = [
+  service('software', 'Software services', 'Custom software development',
+    'Custom software and automation, including test data and workflow tools for teams that build and test hardware.'),
+  service('website-design', 'Website design services', 'Website design',
+    'Website design starting at $499 for a fully functioning website.',
+    { offers: { '@type': 'Offer', description: 'Starting at $499 for a fully functioning website.',
+                priceSpecification: { '@type': 'PriceSpecification', minPrice: 499, priceCurrency: 'USD' } } }),
+  service('ai-agents', 'Custom AI agents', 'AI agent development',
+    'AI agents built around your work that use your documents and tools to handle repeat tasks.'),
+  service('ai-coaching', 'AI coaching', 'AI coaching',
+    'One-on-one or team coaching on using AI tools in your everyday work.')
+];
 
 const routes = [
   {
     slug: 'home', path: '/', out: 'index.html', source: 'pages/home.html', nav: 'home',
     title: 'Akash Reddy (Reach Akash) | AI Software Developer',
-    description: 'Personal site of Vurenuka Akash Reddy (Reach Akash, Akash Reddy, Reddy Akash), AI Software Developer at Molex in Detroit, MI. Explore work, projects, and more.',
+    description: 'Personal site of Vurenuka Akash Reddy (Reach Akash, Akash Reddy), AI software developer in Detroit, MI. Services, projects, work history and contact.',
     ogType: 'profile',
     ogTitle: 'Akash Reddy, AI Software Developer',
     ogDesc: 'Akash Reddy (V Akash Reddy) is an AI software developer at Molex based in Detroit, MI. Explore his work, projects, and background at reachakash.com.',
@@ -127,7 +159,7 @@ const routes = [
       "      if (p && /^\\/(?!\\/)[a-z0-9\\-\\/]*$/i.test(p)) location.replace(p); })();",
       '  </script>'
     ].join('\n') + '\n',
-    llms: 'Landing page for Vurenuka Akash Reddy, software developer, creator, digital native.'
+    llms: 'Landing page for Vurenuka Akash Reddy (Akash Reddy, Reach Akash), software developer in Detroit, MI, with links to his services, projects, work history and contact.'
   },
 
   {
@@ -180,7 +212,7 @@ const routes = [
   {
     slug: 'professional', path: '/professional', out: 'professional.html', source: 'pages/professional.html', nav: 'professional', navGroup: 'about',
     title: 'Akash Reddy | Professional',
-    description: 'Career timeline and skills of Akash Reddy (V Akash Reddy), AI Software Developer at Molex. SQL Server, C#, .NET, LabVIEW, and more. MS Engineering Management, Arkansas State.',
+    description: 'Career and skills of Akash Reddy (V Akash Reddy), AI Software Developer at Molex: SQL Server, C#, .NET, LabVIEW. MS Engineering Management, Arkansas State.',
     ogType: 'website',
     ogTitle: 'Akash Reddy, Professional Experience and Skills',
     ogDesc: 'AI Software Developer at Molex, Detroit MI. SQL Server, C#, .NET, LabVIEW. Previously Zoetis. MS Engineering Management from Arkansas State University.',
@@ -210,7 +242,7 @@ const routes = [
   {
     slug: 'projects', path: '/projects', out: 'projects.html', source: 'pages/projects.html', nav: 'projects', navGroup: 'about',
     title: 'Akash Reddy | Projects',
-    description: 'Software projects and portfolio of V Akash Reddy (Vurenuka Akash Reddy), including a personal website built with vanilla JS, a 3D interactive logo viewer, and more.',
+    description: 'Software projects by V Akash Reddy (Vurenuka Akash Reddy): this website, generated from one template with vanilla JS, a 3D logo viewer and more.',
     ogType: 'website',
     ogTitle: 'V Akash Reddy, Software Projects and Portfolio',
     ogDesc: 'Software projects by V Akash Reddy: personal website, 3D logo viewer built with Three.js, and more. HTML, CSS, JavaScript, and C# / .NET.',
@@ -343,18 +375,32 @@ const routes = [
     llms: 'Referral codes and links of Akash Reddy (credit cards, investing and trading, payments, sending money to India, shopping and cash back, AI tools), with a disclosure that he earns a reward and links to official terms. Machine-readable copy: https://reachakash.com/referrals.json'
   },
 
-  // ── Business routes: stubs until Phases 2–3 fill them. Drafts are noindex
-  //    and stay out of the sitemap and llms.txt.
+  // ── Business routes. Lab is retired (no links point to it) and stays a noindex
+  //    draft; drafts stay out of the sitemap and llms.txt.
   {
-    slug: 'services', path: '/services', out: 'services.html', source: 'pages/services.html', nav: 'services', draft: true,
-    title: 'Services | Reach Akash',
-    description: 'Software and AI tools for teams that build and test hardware: test data sprints, AI workflow sprints and a paid diagnostic.',
+    // faq: build.js adds FAQPage JSON-LD from the page's .faq-item blocks.
+    slug: 'services', path: '/services', out: 'services.html', source: 'pages/services.html', nav: 'services', faq: true,
+    title: 'AI Coaching, AI Agents & Web Design, Detroit | Akash Reddy',
+    description: 'Custom software, AI agents, AI coaching and website design services in Detroit, MI from Akash Reddy (Reach Akash). Websites start at $499.',
     ogType: 'website',
-    ogTitle: 'Services | Reach Akash',
-    ogDesc: 'Software and AI tools for teams that build and test hardware.',
-    jsonld: [crumbs(['Services', '/services'])],
+    ogTitle: 'Services from Akash Reddy (Reach Akash), Detroit',
+    ogDesc: 'Custom software, custom AI agents, AI coaching and website design (from $499) in Detroit, Michigan.',
+    jsonld: [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        '@id': url('/services#webpage'),
+        url: url('/services'),
+        name: 'Services from Akash Reddy (Reach Akash)',
+        description: 'Custom software, custom AI agents, AI coaching and website design services in Detroit, Michigan.',
+        isPartOf: { '@id': url('/#website') },
+        about: { '@id': url('/#brand') }
+      },
+      ...SERVICES,
+      crumbs(['Services', '/services'])
+    ],
     sitemap: { changefreq: 'monthly', priority: '0.9' },
-    llms: 'Services from Reach Akash, a one-person software and AI studio for teams that build and test hardware.'
+    llms: 'Services from Akash Reddy (Reach Akash) in Detroit, Michigan: custom software (including test data and workflow tools for teams that build and test hardware), custom AI agents, AI coaching (one-on-one or team) and website design starting at $499 for a fully functioning website. Contact: https://reachakash.com/contact'
   },
   {
     slug: 'lab', path: '/lab', out: 'lab.html', source: 'pages/lab.html', nav: 'lab', draft: true,
@@ -368,7 +414,7 @@ const routes = [
     llms: 'The Lab: tools Reach Akash is building for manufacturing and test teams.'
   },
   {
-    slug: 'notes', path: '/notes', out: 'notes.html', source: 'pages/notes.html', nav: 'notes', draft: true,
+    slug: 'notes', path: '/notes', out: 'notes.html', source: 'pages/notes.html', nav: 'notes',
     title: 'Notes | Reach Akash',
     description: 'Notes from Reach Akash on test data, manufacturing software and building tools with AI.',
     ogType: 'website',
@@ -379,7 +425,7 @@ const routes = [
     llms: 'Notes: writing on test data, manufacturing software and building tools with AI.'
   },
   {
-    slug: 'privacy', path: '/privacy', out: 'privacy.html', source: 'pages/privacy.html', nav: 'privacy', draft: true,
+    slug: 'privacy', path: '/privacy', out: 'privacy.html', source: 'pages/privacy.html', nav: 'privacy',
     title: 'Privacy | Reach Akash',
     description: 'What the forms on reachakash.com collect, why, where it is stored and how to ask for it to be deleted.',
     ogType: 'website',
@@ -395,7 +441,7 @@ const routes = [
   {
     slug: 'not-found', path: null, out: '404.html', source: 'pages/404.html', notFound: true,
     title: 'Page not found | Reach Akash',
-    description: 'This page does not exist. Try Services, the Lab or About.',
+    description: 'This page does not exist. Try Services, Referrals or About.',
     ogType: 'website',
     ogTitle: 'Page not found | Reach Akash',
     ogDesc: 'This page does not exist.',
@@ -410,7 +456,7 @@ const routes = [
 
 const llms = {
   title: 'Vurenuka Akash Reddy',
-  summary: 'Vurenuka Akash Reddy (also known as Akash Reddy, V Akash Reddy, V Akash, Reach Akash, Vurenuka) is an AI software developer at Molex based in Detroit, MI, USA. Originally from Hyderabad, India. His personal website is reachakash.com.',
+  summary: 'Vurenuka Akash Reddy (also known as Akash Reddy, V Akash Reddy, V Akash, Reach Akash, Vurenuka) is an AI software developer at Molex based in Detroit, MI, USA. Originally from Hyderabad, India. Through Reach Akash (reachakash.com) he offers custom software, custom AI agents, AI coaching and website design (from $499) in Detroit, Michigan.',
   sections: [
     ['Identity', [
       'Full legal name: Vurenuka Akash Reddy',
@@ -421,6 +467,15 @@ const llms = {
       'Location: Detroit, Michigan, USA',
       'Origin: Hyderabad, Telangana, India',
       'Website: https://reachakash.com'
+    ]],
+    ['Services', [
+      'Business name: Reach Akash (reachakash.com), run by Akash Reddy in Detroit, Michigan',
+      'Software services: custom software and automation, including test data and workflow tools for teams that build and test hardware',
+      'Website design services: starting at $499 for a fully functioning website',
+      'Custom AI agents: agents built around a client’s documents, tools and repeat tasks',
+      'AI coaching: one-on-one or team coaching on using AI tools in everyday work',
+      'Details: https://reachakash.com/services',
+      'Contact: https://reachakash.com/contact'
     ]],
     ['Social Profiles', [
       'LinkedIn: https://www.linkedin.com/in/akashreddyv/',

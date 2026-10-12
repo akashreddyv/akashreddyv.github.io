@@ -70,14 +70,16 @@ function card(e) {
     `        <p class="ref-for"><strong>For you:</strong> ${esc(sentence(e.forYou))}` +
       (e.asOf ? ` <span class="ref-asof">As of ${human(e.asOf)}</span>` : '') + '</p>',
     e.note ? `        <p class="ref-note">${esc(e.note)}</p>` : null,
+    // Visible "<name> referral code / link" wording matches what people search for.
     e.code
       ? [
+          `        <p class="ref-code-label">${name} referral code</p>`,
           '        <div class="ref-code-row">',
-          `          <code class="ref-code" aria-label="${name} code">${esc(e.code)}</code>`,
-          `          <button class="btn btn-outline ref-copy" type="button" data-copy="${esc(e.code)}" data-copy-label="${name} code" hidden>Copy${hidden}</button>`,
+          `          <code class="ref-code" aria-label="${name} referral code">${esc(e.code)}</code>`,
+          `          <button class="btn btn-outline ref-copy" type="button" data-copy="${esc(e.code)}" data-copy-label="${name} referral code" hidden>Copy${hidden}</button>`,
           '        </div>'
         ].join('\n')
-      : '        <p class="ref-nocode">No code needed. Sign up through the link.</p>',
+      : `        <p class="ref-nocode">No code needed. Sign up through my ${name} referral link.</p>`,
     '        <div class="ref-actions">',
     `          <a class="btn btn-primary" href="${esc(e.url)}" target="_blank" rel="sponsored nofollow noopener">Sign up${hidden}</a>`,
     `          <a class="ref-terms" href="${esc(e.termsUrl)}" target="_blank" rel="nofollow noopener">Official terms${hidden}</a>`,

@@ -146,6 +146,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // ── Contact Form ────────────────────────────────────────────────
   const form = document.getElementById('contact-form');
+
+  // /contact?topic=… (from the Services tiles) starts the message for the visitor.
+  const TOPICS = {
+    'software': 'software services',
+    'website': 'website design',
+    'ai-agents': 'a custom AI agent',
+    'ai-coaching': 'AI coaching'
+  };
+  const topic = TOPICS[new URLSearchParams(location.search).get('topic')];
+  const msgBox = document.getElementById('form-msg');
+  if (form && topic && msgBox && !msgBox.value) {
+    msgBox.value = 'Hi Akash, I’d like to ask about ' + topic + '. ';
+  }
+
   if (form) {
     form.addEventListener('submit', async function (e) {
       e.preventDefault();
