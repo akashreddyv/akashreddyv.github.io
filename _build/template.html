@@ -24,6 +24,14 @@
         localStorage.removeItem('retro-theme');
       } catch (e) {}
       if (t === 'light' || t === 'retro' || t === 'space') d.classList.add('theme-' + t);
+      // Header logo intro: once per visit (the first page you land on), never with reduced motion.
+      // Set before first paint so the finished logo never flashes before the animation starts.
+      try {
+        if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !sessionStorage.getItem('logo-intro-played')) {
+          d.classList.add('logo-intro');
+          sessionStorage.setItem('logo-intro-played', '1');
+        }
+      } catch (e) {}
       if (t === 'retro') {
         var l = document.createElement('link');
         l.rel = 'stylesheet';
@@ -84,7 +92,8 @@
 
   <nav aria-label="Main navigation">
     <a class="nav-brand" href="/" aria-label="reachAkash.com, home">
-      <svg class="brand-lockup" viewBox="0 0 1785.7 526.3" aria-hidden="true" focusable="false"><use href="/images/brand/lockup.svg#lockup"/></svg>
+      <!-- Inline (not <use>) so the steps and curve can animate: see "LOGO INTRO" in css/styles.css -->
+      {{logoHeader}}
     </a>
 
     <ul class="nav-links" id="navLinks">

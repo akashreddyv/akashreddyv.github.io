@@ -19,6 +19,7 @@
    16. Interactive terminal
    17. About, stub pages and 404
    18. Referrals
+   19. Logo intro
 ================================================================ */
 
 
@@ -2198,4 +2199,60 @@ a.project-card { display: block; color: inherit; text-decoration: none; }
   .service-tiles { grid-template-columns: 1fr; }
   .service-tile,
   .service-tile:nth-child(n + 4) { grid-column: auto; }
+}
+
+
+/* ----------------------------------------------------------------
+   19. LOGO INTRO (header logo)
+   Plays once per visit: the <head> script adds html.logo-intro on the
+   first page of a visit, unless reduced motion is on. Phase 1: the
+   steps appear bottom to top. Phase 2: the curve draws upward.
+   Phase 3: each step pops, bottom to top. Everything ends on the exact
+   static logo. Replay for testing: window.replayLogoIntro().
+   Timing lives in this one block. Lengths are logo units: the logo is
+   526 units tall, so in the 52px header 10 units is about 1px.
+---------------------------------------------------------------- */
+.logo-anim {
+  --intro-steps: 8;
+  --intro-step-stagger: 120ms;    /* gap between steps appearing   */
+  --intro-step-duration: 450ms;   /* each step's fade and rise     */
+  --intro-step-rise: 40px;        /* rise distance (logo units)    */
+  --intro-curve-duration: 900ms;  /* the curve drawing upward      */
+  --intro-pop-stagger: 90ms;      /* gap between pops              */
+  --intro-pop-duration: 350ms;    /* each pop                      */
+  --intro-pop-scale: 1.08;        /* how big a pop gets            */
+  /* derived: the curve starts when the last step lands; pops start when the curve is done */
+  --intro-curve-start: calc((var(--intro-steps) - 1) * var(--intro-step-stagger) + var(--intro-step-duration));
+  --intro-pop-start: calc(var(--intro-curve-start) + var(--intro-curve-duration));
+}
+.logo-anim .logo-step { transform-box: fill-box; transform-origin: center; }
+.logo-anim .logo-curve-wipe { transform-box: fill-box; transform-origin: 50% 100%; }
+
+html.logo-intro .logo-anim .logo-step {
+  animation:
+    logo-step-in var(--intro-step-duration) cubic-bezier(0.22, 1, 0.36, 1) calc(var(--i) * var(--intro-step-stagger)) backwards,
+    logo-step-pop var(--intro-pop-duration) ease-out calc(var(--intro-pop-start) + var(--i) * var(--intro-pop-stagger));
+}
+html.logo-intro .logo-anim .logo-curve-wipe {
+  animation: logo-curve-draw var(--intro-curve-duration) cubic-bezier(0.65, 0, 0.35, 1) var(--intro-curve-start) backwards;
+}
+
+@keyframes logo-step-in {
+  from { opacity: 0; transform: translateY(var(--intro-step-rise)); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes logo-curve-draw {
+  from { transform: scaleY(0); }
+  to   { transform: scaleY(1); }
+}
+@keyframes logo-step-pop {
+  0%   { transform: scale(1); }
+  45%  { transform: scale(var(--intro-pop-scale)); }
+  75%  { transform: scale(0.985); }
+  100% { transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.logo-intro .logo-anim .logo-step,
+  html.logo-intro .logo-anim .logo-curve-wipe { animation: none; }
 }

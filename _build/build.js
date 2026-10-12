@@ -5,7 +5,7 @@
      node _build/build.js           write every generated file
      node _build/build.js --check   exit 1 if any generated file is stale
 
-   Inputs:  _build/template.html, _build/routes.js, pages/*.html,
+   Inputs:  _build/template.html, _build/routes.js, pages/*.html, images/brand/lockup.svg,
             _build/data/referrals.json (via _build/referrals.js),
             js/site-config.js (CTA text/links, same rules as the browser)
    Outputs: one HTML file per route at the repo root (GitHub Pages serves
@@ -50,6 +50,23 @@ function fill(tpl, values) {
     return values[key];
   });
 }
+
+// The header logo, inlined from images/brand/lockup.svg so its layers (logo-curve, logo-step-01..08)
+// can animate. The curve sits under a clip whose rect grows upward during the intro.
+function logoHeader() {
+  const src = read('images/brand/lockup.svg');
+  const m = src.match(/<symbol id="lockup" viewBox="([^"]+)">([\s\S]*?)<\/symbol>/);
+  if (!m || !/id="logo-step-08"/.test(m[2])) throw new Error('images/brand/lockup.svg is not layered (expected logo-curve and logo-step-01..08)');
+  const body = m[2].replace(/<title>[\s\S]*?<\/title>\n?/, '').trim()
+    .replace('<g id="logo-curve" class="logo-curve">', '<g id="logo-curve" class="logo-curve" clip-path="url(#logo-curve-clip)">');
+  return [
+    `<svg class="brand-lockup logo-anim" viewBox="${m[1]}" aria-hidden="true" focusable="false">`,
+    '<defs><clipPath id="logo-curve-clip" clipPathUnits="userSpaceOnUse"><rect class="logo-curve-wipe" x="500" y="340" width="380" height="560"/></clipPath></defs>',
+    body,
+    '</svg>'
+  ].join('\n');
+}
+const LOGO_HEADER = logoHeader();
 
 // FAQPage JSON-LD built from the page's own questions (<div class="faq-item"><h3>Q</h3><p>A</p></div>),
 // so the markup always matches what visitors read.
@@ -129,7 +146,8 @@ function renderPage(route) {
     content,
     year: YEAR,
     ctaPrimaryText: escAttr(cta.text),
-    ctaPrimaryHref: escAttr(cta.href)
+    ctaPrimaryHref: escAttr(cta.href),
+    logoHeader: LOGO_HEADER
   });
 
   // Mark the current page in the nav.

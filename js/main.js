@@ -49,6 +49,15 @@ document.addEventListener("DOMContentLoaded", function () {
   });
   syncThemeControls();
 
+  // ── Header logo intro (css/styles.css, "LOGO INTRO"): replay for testing ──
+  window.replayLogoIntro = function () {
+    const logo = document.querySelector('.logo-anim');
+    if (!logo || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    root.classList.remove('logo-intro');
+    void logo.getBoundingClientRect();   // flush styles so the animations start over
+    root.classList.add('logo-intro');
+  };
+
   // ── CTAs read SITE_CONFIG (the generator already rendered the same values) ──
   if (window.siteCta) {
     document.querySelectorAll('[data-cta]').forEach(function (el) {
