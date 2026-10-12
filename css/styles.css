@@ -972,14 +972,14 @@ footer p      { font-size: 13px; color: var(--muted); }
   --on-accent:    #ffffff;
   --nav-bg:       #000080;
   --btn-bg:       #000080;
-  /* Logo: the kit's one-colour white on the navy title bar */
+  /* Logo: white on the blue title bar; the curve and 2nd step stay red */
   --logo-word:    #ffffff;
   --logo-mark:    #ffffff;
-  --logo-ember:   #ffffff;
+  --logo-ember:   var(--brand-ember);
   background: #008080;
 }
-/* …and one-colour black on the grey footer */
-.theme-retro body footer { --logo-word: #000000; --logo-mark: #000000; --logo-ember: #000000; --logo-mark-shade: #FFFFFF; --logo-ember-shade: #FFFFFF; }
+/* …and black on the grey footer, still with the red curve and 2nd step */
+.theme-retro body footer { --logo-word: #000000; --logo-mark: #000000; --logo-ember: var(--brand-ember); --logo-mark-shade: #FFFFFF; --logo-ember-shade: #000000; }
 
 /* Remove gold grain, add CRT scanlines */
 .theme-retro body::before { display: none; }
