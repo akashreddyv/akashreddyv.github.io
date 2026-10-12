@@ -78,7 +78,7 @@ const BRAND = {
   '@id': url('/#brand'),
   name: 'Reach Akash',
   url: url('/'),
-  logo: { '@type': 'ImageObject', url: url('/images/brand/reachakash-symbol.png'), width: 2400, height: 1626 },
+  logo: { '@type': 'ImageObject', url: url('/images/brand/reachakash-symbol.png'), width: 2400, height: 1681 },
   founder: { '@id': url('/#person') }
 };
 
