@@ -168,7 +168,7 @@ controls.update();
 // ╚════════════════════════════════════════════════════════╝
 // Same timings as the intro on reachakash.com (ms; rise in logo units).
 const INTRO = { stagger: 120, step: 450, rise: 40, curve: 900, popStagger: 90, pop: 350, popScale: 1.08 };
-const WHITE = 0xffffff, RED = 0x600000;
+const WHITE = 0xffffff, RED = 0xF00534;   // Akash Red — hsl(348, 96%, 48%), same as the site's --brand-ember
 const CURVE_DEPTH = 28;   // shared with the steps' own depth scale, so both sit at the same angle
 const DEFAULT_YAW = -0.35;                       // a three-quarter view, like the 2D logo
 
@@ -205,7 +205,9 @@ async function buildRak() {
         const mat = new THREE.MeshStandardMaterial({ color: red ? RED : WHITE, metalness: 0.15, roughness: 0.35, transparent: true });
         rakMats.push(mat);
         const mesh = new THREE.Mesh(new THREE.BoxGeometry(w, h, depth), mat);
-        mesh.position.set((BL[0] + BR[0]) / 2, -(BL[1] + FTL[1]) / 2, -depth / 2);
+        // Back face (not front) shares the curve's plane at z=0; each step's own depth then
+        // comes forward from there, toward the camera — the mirror of the previous arrangement.
+        mesh.position.set((BL[0] + BR[0]) / 2, -(BL[1] + FTL[1]) / 2, depth / 2);
         rakTilt.add(mesh);
         steps.push(mesh);
     }
@@ -222,9 +224,9 @@ async function buildRak() {
     rakMats.push(curveMat);
     curveMesh = new THREE.Mesh(geo, curveMat);
     curveMesh.scale.y = -1;
-    // Front face flush with the steps' front face (z=0, extending back to -CURVE_DEPTH) — previously
-    // offset to z=-50, which sat the curve well behind the steps and read as a mismatched angle.
-    curveMesh.position.z = -CURVE_DEPTH;
+    // The curve's true flat shape (not its extruded far cap) sits at z=0 — in line with the steps'
+    // back face — so the steps' own depth is what comes forward of it, mirroring the old arrangement.
+    curveMesh.position.z = 0;
     rakTilt.add(curveMesh);
 
     // Centre on the origin (before tilting), then tilt.
