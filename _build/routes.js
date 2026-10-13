@@ -120,8 +120,11 @@ const routes = [
     title: 'Akash Reddy (Reach Akash) | AI Software Developer',
     description: 'Personal site of Vurenuka Akash Reddy (Reach Akash, Akash Reddy), AI software developer in Detroit, MI. Services, projects, work history and contact.',
     ogType: 'profile',
-    ogTitle: 'Akash Reddy, AI Software Developer',
-    ogDesc: 'Akash Reddy (V Akash Reddy) is an AI software developer at Molex based in Detroit, MI. Explore his work, projects, and background at reachakash.com.',
+    // Kept short and name-only on purpose: this is the card people see when the link itself
+    // is shared (iMessage, WhatsApp, Slack...). The job-title-rich text above is for search
+    // engines and stays in <title>/description, which this doesn't touch.
+    ogTitle: 'Reach Akash (Akash Reddy)',
+    ogDesc: 'reachAkash.com',
     jsonld: [
       {
         '@context': 'https://schema.org',
@@ -491,8 +494,10 @@ const llms = {
 module.exports = {
   site: {
     origin: ORIGIN,
-    ogImage: PHOTO,
-    ogImageAlt: 'Akash Reddy, AI Software Developer'
+    // The logo, not a photo, is what should show up when any page on this site is shared
+    // as a link preview (iMessage, WhatsApp, Slack, etc.) — see images/brand/og-image.png.
+    ogImage: url('/images/brand/og-image.png'),
+    ogImageAlt: 'reachAkash.com — Reach Akash (Akash Reddy)'
   },
   routes,
   llms
