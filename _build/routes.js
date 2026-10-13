@@ -266,7 +266,7 @@ const routes = [
           },
           {
             '@type': 'CreativeWork',
-            name: 'Raptor Consultants Group, 3D Interactive Logo',
+            name: 'Logo Designs, 3D Interactive Viewer',
             description: '3D interactive logo viewer built with Three.js, featuring crystal and SVG extrusion modes with real-time controls.',
             creator: { '@type': 'Person', name: 'Vurenuka Akash Reddy' }
           }
@@ -275,7 +275,7 @@ const routes = [
       crumbs(['Projects', '/projects'])
     ],
     sitemap: { changefreq: 'monthly', priority: '0.8' },
-    llms: 'Software portfolio, including personal website reachakash.com (HTML/CSS/JS, GitHub Pages) and a 3D interactive logo viewer for Raptor Consultants Group (Three.js, SVG).'
+    llms: 'Software portfolio, including personal website reachakash.com (HTML/CSS/JS, GitHub Pages) and a 3D interactive logo viewer (Three.js, SVG).'
   },
 
   {
