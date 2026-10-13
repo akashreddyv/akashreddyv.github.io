@@ -426,11 +426,11 @@ const routes = [
   },
   {
     slug: 'privacy', path: '/privacy', out: 'privacy.html', source: 'pages/privacy.html', nav: 'privacy',
-    title: 'Privacy | Reach Akash',
-    description: 'What the forms on reachakash.com collect, why, where it is stored and how to ask for it to be deleted.',
+    title: 'Privacy & Cookies | Reach Akash',
+    description: 'What reachakash.com collects, what it stores in your browser (cookies and local storage), and how to ask for your data to be deleted.',
     ogType: 'website',
-    ogTitle: 'Privacy | Reach Akash',
-    ogDesc: 'What the forms on reachakash.com collect and how to ask for deletion.',
+    ogTitle: 'Privacy & Cookies | Reach Akash',
+    ogDesc: 'What this site collects, what it stores in your browser, and how to ask for deletion.',
     jsonld: [crumbs(['Privacy', '/privacy'])],
     sitemap: { changefreq: 'yearly', priority: '0.3' },
     llms: null

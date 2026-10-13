@@ -62,14 +62,14 @@
       "category": "credit-cards",
       "region": "US",
       "code": null,
-      "url": null,
+      "url": "https://www.bilt.com/card?invite=4G3XQHKH",
       "forYou": "see Bilt's current offer",
       "iGet": "2,500 Bilt Points if you're approved",
       "termsUrl": "https://www.bilt.com/terms/card-referral",
-      "lastVerified": "2026-10-11",
-      "asOf": "2026-10-11",
-      "publish": false,
-      "_why": "Bilt Card Referral Program Terms (Mar 30, 2026), section 6: no making the link 'available to the general public through mass distribution channels, including ... blogs'. This repo is public, so the invite link is kept out of it."
+      "lastVerified": "2026-10-12",
+      "asOf": "2026-10-12",
+      "publish": true,
+      "_why": "Bilt Card Referral Program Terms (Mar 30, 2026), section 6 bans mass public distribution of the link, which this page is. Published anyway at Akash's instruction, accepting that Bilt could close the referral account over it."
     },
     {
       "id": "amex-blue-cash-everyday",
@@ -239,15 +239,15 @@
       "name": "Upside",
       "category": "shopping",
       "region": "US",
-      "code": null,
-      "url": null,
+      "code": "AKASH6778",
+      "url": "https://upside.app.link/Krun2K4SW6b",
       "forYou": "$15 extra cash back on your first purchase",
       "iGet": null,
       "termsUrl": "https://www.upside.com/data-and-security/terms",
       "lastVerified": "2026-10-12",
       "asOf": "2026-10-12",
-      "publish": false,
-      "_why": "Upside Terms of Service, Referral Program: users are prohibited from '(ii) sharing your personal referral code on a website or blog' and '(v) otherwise disseminating or publishing your personal referral code for widespread public use'. This repo is public, so the code and link are kept out of it."
+      "publish": true,
+      "_why": "Upside's Terms of Service ban sharing the referral code or link on a website. Published anyway at Akash's instruction, accepting that Upside could close the referral account over it."
     },
     {
       "id": "claude",

@@ -34,6 +34,21 @@
       "page": "https://reachakash.com/referrals#chase-freedom"
     },
     {
+      "id": "bilt",
+      "name": "Bilt Card",
+      "logo": null,
+      "category": "credit-cards",
+      "region": "US",
+      "code": null,
+      "url": "https://www.bilt.com/card?invite=4G3XQHKH",
+      "forYou": "see Bilt's current offer",
+      "iGet": "2,500 Bilt Points if you're approved",
+      "termsUrl": "https://www.bilt.com/terms/card-referral",
+      "lastVerified": "2026-10-12",
+      "asOf": "2026-10-12",
+      "page": "https://reachakash.com/referrals#bilt"
+    },
+    {
       "id": "amex-blue-cash-everyday",
       "name": "Amex Blue Cash Everyday",
       "logo": "https://reachakash.com/images/referrals/amex.png",
@@ -195,6 +210,21 @@
       "asOf": "2026-10-12",
       "note": "There's no sign-up bonus for you with this link; I get $10 once you've earned $10 in cash back.",
       "page": "https://reachakash.com/referrals#topcashback"
+    },
+    {
+      "id": "upside",
+      "name": "Upside",
+      "logo": null,
+      "category": "shopping",
+      "region": "US",
+      "code": "AKASH6778",
+      "url": "https://upside.app.link/Krun2K4SW6b",
+      "forYou": "$15 extra cash back on your first purchase",
+      "iGet": null,
+      "termsUrl": "https://www.upside.com/data-and-security/terms",
+      "lastVerified": "2026-10-12",
+      "asOf": "2026-10-12",
+      "page": "https://reachakash.com/referrals#upside"
     },
     {
       "id": "claude",

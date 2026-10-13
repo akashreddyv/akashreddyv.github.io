@@ -2060,6 +2060,17 @@ a.project-card { display: block; color: inherit; text-decoration: none; }
 
 .socials-more { margin-top: 48px; font-size: 15px; color: var(--muted); }
 
+/* Plain-prose policy pages (Privacy & Cookies) */
+.legal { max-width: 760px; margin-top: 48px; }
+.legal-section + .legal-section { margin-top: 36px; }
+.legal-section h2 { font-size: 19px; font-weight: 700; color: var(--white); margin-bottom: 10px; scroll-margin-top: calc(var(--nav-h) + 16px); }
+.legal-section p { font-size: 15px; line-height: 1.75; color: var(--muted); }
+.legal-section p + p { margin-top: 12px; }
+.legal-section ul { margin: 12px 0 0 20px; }
+.legal-section li { font-size: 15px; line-height: 1.75; color: var(--muted); }
+.legal-section li + li { margin-top: 6px; }
+.legal-updated { margin-top: 48px; font-size: 13px; color: var(--muted); }
+
 
 /* ----------------------------------------------------------------
    18. REFERRALS  (cards generated from _build/data/referrals.json)
