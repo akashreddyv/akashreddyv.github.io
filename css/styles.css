@@ -2066,16 +2066,6 @@ a.project-card { display: block; color: inherit; text-decoration: none; }
 ---------------------------------------------------------------- */
 .referrals-page .page-header { margin-bottom: 32px; }
 
-.ref-disclosure {
-  max-width: 760px;
-  padding: 18px 22px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-left: 3px solid var(--accent);
-  border-radius: 4px;
-}
-.ref-disclosure p { font-size: 15px; line-height: 1.7; color: var(--text); }
-
 .ref-jump { margin: 28px 0 8px; }
 .ref-jump ul { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; }
 .ref-jump a {
@@ -2226,9 +2216,9 @@ a.project-card { display: block; color: inherit; text-decoration: none; }
 
 
 /* ----------------------------------------------------------------
-   19. LOGO INTRO (header logo)
-   Plays once per visit: the <head> script adds html.logo-intro on the
-   first page of a visit, unless reduced motion is on. Phase 1: the
+   19. LOGO INTRO (header logo; the big mark beside the name on Home)
+   The <head> script adds html.logo-intro (never with reduced motion):
+   every time on Home, once per visit on other pages. Phase 1: the
    steps appear bottom to top. Phase 2: the curve draws upward.
    Phase 3: each step pops, bottom to top. Everything ends on the exact
    static logo. Replay for testing: window.replayLogoIntro().
@@ -2236,6 +2226,8 @@ a.project-card { display: block; color: inherit; text-decoration: none; }
    526 units tall, so in the 52px header 10 units is about 1px.
 ---------------------------------------------------------------- */
 .logo-anim {
+  --intro-delay: 0ms;             /* wait before it starts         */
+  --intro-speed: 1;               /* 0.8 = 80% speed (1.25x longer)*/
   --intro-steps: 8;
   --intro-step-stagger: 120ms;    /* gap between steps appearing   */
   --intro-step-duration: 450ms;   /* each step's fade and rise     */
@@ -2244,20 +2236,31 @@ a.project-card { display: block; color: inherit; text-decoration: none; }
   --intro-pop-stagger: 90ms;      /* gap between pops              */
   --intro-pop-duration: 350ms;    /* each pop                      */
   --intro-pop-scale: 1.08;        /* how big a pop gets            */
-  /* derived: the curve starts when the last step lands; pops start when the curve is done */
-  --intro-curve-start: calc((var(--intro-steps) - 1) * var(--intro-step-stagger) + var(--intro-step-duration));
-  --intro-pop-start: calc(var(--intro-curve-start) + var(--intro-curve-duration));
+  /* derived: every time divided by the speed; the curve starts when the last step lands,
+     the pops start when the curve is done */
+  --i-stagger: calc(var(--intro-step-stagger) / var(--intro-speed));
+  --i-step: calc(var(--intro-step-duration) / var(--intro-speed));
+  --i-curve: calc(var(--intro-curve-duration) / var(--intro-speed));
+  --i-pop-stagger: calc(var(--intro-pop-stagger) / var(--intro-speed));
+  --i-pop: calc(var(--intro-pop-duration) / var(--intro-speed));
+  --intro-curve-start: calc(var(--intro-delay) + (var(--intro-steps) - 1) * var(--i-stagger) + var(--i-step));
+  --intro-pop-start: calc(var(--intro-curve-start) + var(--i-curve));
+}
+/* Home: the big mark beside the name waits 1s, then plays at 80% speed */
+.logo-anim.home-mark {
+  --intro-delay: 1s;
+  --intro-speed: 0.8;
 }
 .logo-anim .logo-step { transform-box: fill-box; transform-origin: center; }
 .logo-anim .logo-curve-wipe { transform-box: fill-box; transform-origin: 50% 100%; }
 
 html.logo-intro .logo-anim .logo-step {
   animation:
-    logo-step-in var(--intro-step-duration) cubic-bezier(0.22, 1, 0.36, 1) calc(var(--i) * var(--intro-step-stagger)) backwards,
-    logo-step-pop var(--intro-pop-duration) ease-out calc(var(--intro-pop-start) + var(--i) * var(--intro-pop-stagger));
+    logo-step-in var(--i-step) cubic-bezier(0.22, 1, 0.36, 1) calc(var(--intro-delay) + var(--i) * var(--i-stagger)) backwards,
+    logo-step-pop var(--i-pop) ease-out calc(var(--intro-pop-start) + var(--i) * var(--i-pop-stagger));
 }
 html.logo-intro .logo-anim .logo-curve-wipe {
-  animation: logo-curve-draw var(--intro-curve-duration) cubic-bezier(0.65, 0, 0.35, 1) var(--intro-curve-start) backwards;
+  animation: logo-curve-draw var(--i-curve) cubic-bezier(0.65, 0, 0.35, 1) var(--intro-curve-start) backwards;
 }
 
 @keyframes logo-step-in {
