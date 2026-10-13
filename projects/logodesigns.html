@@ -169,6 +169,7 @@ controls.update();
 // Same timings as the intro on reachakash.com (ms; rise in logo units).
 const INTRO = { stagger: 120, step: 450, rise: 40, curve: 900, popStagger: 90, pop: 350, popScale: 1.08 };
 const WHITE = 0xffffff, RED = 0x600000;
+const CURVE_DEPTH = 28;   // shared with the steps' own depth scale, so both sit at the same angle
 const DEFAULT_YAW = -0.35;                       // a three-quarter view, like the 2D logo
 
 const rak = new THREE.Group();                   // spins (Y) and moves up/down (Height)
@@ -196,7 +197,11 @@ async function buildRak() {
         const TRb = P.filter(q => near(q[1], minY)).sort(byX)[1];
         const FTL = P.filter(q => !near(q[1], maxY) && !near(q[1], minY)).sort(byX)[0];
         const w = BR[0] - BL[0], h = BL[1] - FTL[1];
-        const depth = Math.hypot(TRb[0] - BR[0], FTL[1] - TRb[1]) * 2.2;
+        // Depth scales down with each step (matching the brand mark's own forced-perspective shrink),
+        // but much less steeply than a literal reading of the flat art's oblique offset would give —
+        // that read made the bottom step's slab far deeper than its own height, so it looked like it
+        // jutted toward the camera instead of sitting flush with the rest of the mark.
+        const depth = Math.hypot(TRb[0] - BR[0], FTL[1] - TRb[1]) * 1.0;
         const mat = new THREE.MeshStandardMaterial({ color: red ? RED : WHITE, metalness: 0.15, roughness: 0.35, transparent: true });
         rakMats.push(mat);
         const mesh = new THREE.Mesh(new THREE.BoxGeometry(w, h, depth), mat);
@@ -210,14 +215,16 @@ async function buildRak() {
     const d = svg.querySelector('#logo-curve path').getAttribute('d');
     const data = new SVGLoader().parse(`<svg xmlns="http://www.w3.org/2000/svg"><path d="${d}"/></svg>`);
     const shapes = data.paths.flatMap(p => SVGLoader.createShapes(p));
-    const geo = new THREE.ExtrudeGeometry(shapes, { depth: 28, bevelEnabled: true, bevelThickness: 2, bevelSize: 1.5, bevelSegments: 2, curveSegments: 24 });
+    const geo = new THREE.ExtrudeGeometry(shapes, { depth: CURVE_DEPTH, bevelEnabled: true, bevelThickness: 2, bevelSize: 1.5, bevelSegments: 2, curveSegments: 24 });
     geo.computeBoundingBox();
     curveTop = geo.boundingBox.min.y; curveBottom = geo.boundingBox.max.y;
     const curveMat = new THREE.MeshStandardMaterial({ color: RED, metalness: 0.15, roughness: 0.35, side: THREE.DoubleSide, clippingPlanes: [curvePlane] });
     rakMats.push(curveMat);
     curveMesh = new THREE.Mesh(geo, curveMat);
     curveMesh.scale.y = -1;
-    curveMesh.position.z = -50;
+    // Front face flush with the steps' front face (z=0, extending back to -CURVE_DEPTH) — previously
+    // offset to z=-50, which sat the curve well behind the steps and read as a mismatched angle.
+    curveMesh.position.z = -CURVE_DEPTH;
     rakTilt.add(curveMesh);
 
     // Centre on the origin (before tilting), then tilt.
