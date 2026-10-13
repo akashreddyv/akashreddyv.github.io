@@ -59,6 +59,7 @@
     {
       "id": "bilt",
       "name": "Bilt Card",
+      "logo": "/images/referrals/bilt.png",
       "category": "credit-cards",
       "region": "US",
       "code": null,
@@ -237,6 +238,7 @@
     {
       "id": "upside",
       "name": "Upside",
+      "logo": "/images/referrals/upside.png",
       "category": "shopping",
       "region": "US",
       "code": "AKASH6778",

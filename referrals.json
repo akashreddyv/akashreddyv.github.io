@@ -36,7 +36,7 @@
     {
       "id": "bilt",
       "name": "Bilt Card",
-      "logo": null,
+      "logo": "https://reachakash.com/images/referrals/bilt.png",
       "category": "credit-cards",
       "region": "US",
       "code": null,
@@ -214,7 +214,7 @@
     {
       "id": "upside",
       "name": "Upside",
-      "logo": null,
+      "logo": "https://reachakash.com/images/referrals/upside.png",
       "category": "shopping",
       "region": "US",
       "code": "AKASH6778",
