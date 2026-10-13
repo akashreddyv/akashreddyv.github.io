@@ -36,7 +36,8 @@
 :root {
   /* Brand palette */
   --brand-navy:       #181A29;  /* text on light, app icon             */
-  --brand-ember:      #600000;  /* the logo's curve and 2nd step       */
+  /* Akash Red — hsl(348, 96%, 48%): a personal recipe (96/48), not a copy of anyone else's "iconic red" */
+  --brand-ember:      #F00534;  /* the logo's curve and 2nd step       */
   --brand-cream:      #F1EAE0;  /* body text on dark                   */
 
   /* Dark theme (default) — black page, white accents (no gold) */
@@ -52,8 +53,8 @@
   --btn-bg:    #FFFFFF;
   --on-accent: #000000;             /* button labels: 21:1 */
   --nav-bg:    rgba(0, 0, 0, 0.92);
-  --accent-red: #FF5555;            /* hover/current/selection accent: 6.68:1 on --bg, 5.86:1 on --card */
-  --accent-red-rgb: 255, 85, 85;
+  --accent-red: var(--brand-ember);  /* Akash Red: 4.78:1 on --bg */
+  --accent-red-rgb: 240, 5, 52;
 
   /* Logo colour roles: white on dark, with the red curve and 2nd step.
      The shades darken (black) or lighten (white) each step's front and side for the 3D look. */
@@ -85,8 +86,8 @@
   --btn-bg:    #000000;
   --on-accent: #FFFFFF;                 /* button labels: 21:1 */
   --nav-bg:    rgba(255, 255, 255, 0.92);
-  --accent-red: var(--brand-ember);     /* 14.02:1 on white — the ember reads fine at text size here */
-  --accent-red-rgb: 96, 0, 0;
+  --accent-red: var(--brand-ember);  /* Akash Red: 4.40:1 on white */
+  --accent-red-rgb: 240, 5, 52;
 
   /* Logo: black on white, same red; white lightens the black steps' faces */
   --logo-word:        #000000;
@@ -126,9 +127,6 @@ p a:not(.btn) { text-decoration: underline; text-underline-offset: 3px; text-dec
   outline: 2px solid var(--accent-red);
   outline-offset: 3px;
 }
-
-/* Selected text picks up the brand red instead of the browser default */
-::selection { background: var(--brand-ember); color: #FFFFFF; }
 
 /* Grain texture overlay */
 body::before {
@@ -512,7 +510,7 @@ html:not(.js) .footer-term-wrap { display: none; }
   transition: background 0.4s;
 }
 
-.ss-dot.active { background: var(--accent-red); }
+.ss-dot.active { background: var(--accent); }
 
 
 .home-bg {
