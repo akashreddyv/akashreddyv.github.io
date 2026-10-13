@@ -31,7 +31,7 @@
     ],
     projects: [
       ['reachakash.com', 'This site — multi-page SPA in vanilla JS, History API routing, hosted on GitHub Pages.'],
-      ['RCG 3D Logo',    'Interactive 3D logo viewer built with Three.js (crystal + SVG extrusion modes).']
+      ['Logo Designs',   'Interactive 3D logo viewer built with Three.js: the reachAkash mark and a crystal variant.']
     ],
     socials: [
       ['LinkedIn',  'https://www.linkedin.com/in/akashreddyv/'],
