@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Raptor Logo Viewer</title>
+    <title>Logo designs · 3D viewer</title>
+    <!-- Logo 1: the reachAkash logo in 3D (built from /images/brand/lockup.svg), with Play, views and height.
+         Logo 2: the crystal logo. The previous version of this viewer is kept at /pages/archive/logo-viewer-v1.html. -->
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { overflow: hidden; background: #000; }
@@ -31,7 +33,7 @@
             background: rgba(0,0,0,0.75); padding: 14px 16px;
             border-radius: 8px; color: #ccc; font: 12px/1.6 'SF Mono', 'Consolas', monospace;
             backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.08);
-            min-width: 210px;
+            min-width: 210px; max-width: calc(100vw - 24px);
         }
         #controls label { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
         #controls input[type=range] { flex: 1; max-width: 110px; accent-color: #c33; }
@@ -39,23 +41,45 @@
         #controls .row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
         .val { color: #f66; min-width: 32px; text-align: right; font-size: 11px; }
         #controls h3 { color: #f44; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px; border-bottom: 1px solid rgba(255,60,60,0.2); padding-bottom: 6px; }
+        #controls .sub { color: #888; font-size: 11px; margin: 2px 0 4px; }
+        #controls .btns { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+        #controls button.c {
+            font: inherit; color: #ddd; background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.14); border-radius: 6px; padding: 5px 10px; cursor: pointer;
+        }
+        #controls button.c:hover { border-color: #c33; color: #fff; }
+        #controls button.play { width: 100%; padding: 8px; font-weight: 700; color: #fff; background: rgba(180,34,34,0.85); border-color: transparent; }
 
-        /* Crystal-only controls */
-        .crystal-only { display: none; }
-        body.mode-crystal .crystal-only { display: flex; }
+        /* Per-logo controls (id-level selectors so they beat the label/row rules above) */
+        #controls .rak-only, #controls .crystal-only { display: none; }
+        body.mode-rak #controls .rak-only, body.mode-crystal #controls .crystal-only { display: flex; }
+        body.mode-rak #controls .sub.rak-only { display: block; }
+
+        #hint {
+            position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%); z-index: 100;
+            color: #777; font: 12px 'SF Mono', 'Consolas', monospace; white-space: nowrap;
+        }
     </style>
 </head>
-<body class="mode-flat">
+<body class="mode-rak">
 
 <div id="toggle">
-    <button id="btnFlat" class="active">Logo 1</button>
-    <button id="btnCrystal">Logo 2</button>
-    
+    <button id="btnRak" class="active" type="button">Logo 1</button>
+    <button id="btnCrystal" type="button">Logo 2</button>
 </div>
 
 <div id="controls">
     <h3>Controls</h3>
-    <div class="row">
+    <div class="btns rak-only"><button class="c play" id="play" type="button">&#9654; Play</button></div>
+    <div class="sub rak-only">View</div>
+    <div class="btns rak-only">
+        <button class="c" type="button" data-view="front">Front</button>
+        <button class="c" type="button" data-view="back">Back</button>
+        <button class="c" type="button" data-view="top">Top</button>
+        <button class="c" type="button" data-view="bottom">Bottom</button>
+    </div>
+    <label class="rak-only">Height <input type="range" id="height" min="-250" max="250" step="1" value="0"> <span class="val" id="heightV">0</span></label>
+    <div class="row crystal-only">
         <span>Color</span>
         <input type="color" id="colorPicker" value="#B22222">
     </div>
@@ -65,6 +89,8 @@
     <label class="crystal-only">Opacity <input type="range" id="opacity" min="0.3" max="1" step="0.01" value="0.88"> <span class="val" id="opacityV">0.88</span></label>
     <label>Speed <input type="range" id="rotSpeed" min="0" max="5" step="0.1" value="1.0"> <span class="val" id="rotSpeedV">1.0</span></label>
 </div>
+
+<div id="hint">Drag to turn · scroll to zoom</div>
 
 <script type="importmap">
 {
@@ -81,13 +107,17 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { SVGLoader } from 'three/addons/loaders/SVGLoader.js';
 
 const $ = id => document.getElementById(id);
+const clamp01 = v => Math.min(1, Math.max(0, v));
+const easeOut = p => 1 - Math.pow(1 - p, 4);
+const easeInOut = p => (p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2);
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 //  Shared Scene
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 const scene = new THREE.Scene();
 
-const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 1, 3000);
+const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 1, 4000);
 camera.position.set(0, 0, 1000);
 camera.lookAt(0, 0, 0);
 
@@ -96,6 +126,7 @@ renderer.setPixelRatio(devicePixelRatio);
 renderer.setSize(innerWidth, innerHeight);
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.4;
+renderer.localClippingEnabled = true;          // the curve "draws" upward behind a moving clip plane
 document.body.appendChild(renderer.domElement);
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -118,22 +149,134 @@ for (const l of lightDefs) {
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-//  Controls
+//  Camera controls: drag to turn, scroll to zoom, no panning
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// Lock the camera to a fixed axis pointing at the origin. The user
-// cannot pan or orbit — the object stays centered on screen and spins
-// in place around the world Y axis. Zoom is still allowed.
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.target.set(0, 0, 0);
 controls.enableDamping = true;
 controls.dampingFactor = 0.06;
 controls.enablePan = false;
-controls.enableRotate = false;
+controls.minDistance = 300;
+controls.maxDistance = 2200;
 controls.update();
 
 
 // ╔════════════════════════════════════════════════════════╗
-// ║  LOGO 1 — 3-CRYSTAL OCTAHEDRON                        ║
+// ║  LOGO 1 — reachAkash, 8 steps and the curve, in 3D     ║
+// ╚════════════════════════════════════════════════════════╝
+// Same timings as the intro on reachakash.com (ms; rise in logo units).
+const INTRO = { stagger: 120, step: 450, rise: 40, curve: 900, popStagger: 90, pop: 350, popScale: 1.08 };
+const WHITE = 0xffffff, RED = 0x600000;
+const DEFAULT_YAW = -0.35;                       // a three-quarter view, like the 2D logo
+
+const rak = new THREE.Group();                   // spins (Y) and moves up/down (Height)
+const rakTilt = new THREE.Group();               // a fixed tilt so the tops of the steps show
+rak.add(rakTilt);
+scene.add(rak);
+
+const curvePlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 1e9);   // world-space clip; 1e9 = clip nothing
+const rakMats = [];
+let steps = [], curveMesh = null, curveTop = 0, curveBottom = 0;
+
+async function buildRak() {
+    const text = await (await fetch('/images/brand/lockup.svg')).text();
+    const svg = new DOMParser().parseFromString(text, 'image/svg+xml');
+
+    // Each .logo-step's first path is its outline: a box drawn in oblique 3D (front face, top, right side).
+    for (const g of svg.querySelectorAll('.logo-step')) {
+        const path = g.querySelector('path');
+        const red = /logo-ember/.test(path.getAttribute('style') || '');
+        const n = path.getAttribute('d').match(/-?[0-9.]+/g).map(Number);
+        const P = []; for (let i = 0; i < n.length; i += 2) P.push([n[i], n[i + 1]]);
+        const maxY = Math.max(...P.map(q => q[1])), minY = Math.min(...P.map(q => q[1]));
+        const near = (a, b) => Math.abs(a - b) < 0.6, byX = (a, b) => a[0] - b[0];
+        const [BL, BR] = P.filter(q => near(q[1], maxY)).sort(byX);
+        const TRb = P.filter(q => near(q[1], minY)).sort(byX)[1];
+        const FTL = P.filter(q => !near(q[1], maxY) && !near(q[1], minY)).sort(byX)[0];
+        const w = BR[0] - BL[0], h = BL[1] - FTL[1];
+        const depth = Math.hypot(TRb[0] - BR[0], FTL[1] - TRb[1]) * 2.2;
+        const mat = new THREE.MeshStandardMaterial({ color: red ? RED : WHITE, metalness: 0.15, roughness: 0.35, transparent: true });
+        rakMats.push(mat);
+        const mesh = new THREE.Mesh(new THREE.BoxGeometry(w, h, depth), mat);
+        mesh.position.set((BL[0] + BR[0]) / 2, -(BL[1] + FTL[1]) / 2, -depth / 2);
+        rakTilt.add(mesh);
+        steps.push(mesh);
+    }
+    steps.sort((a, b) => a.position.y - b.position.y);              // bottom first
+
+    // The curve: the SVG path extruded into a solid. Geometry stays in SVG units (y down); the mesh flips it.
+    const d = svg.querySelector('#logo-curve path').getAttribute('d');
+    const data = new SVGLoader().parse(`<svg xmlns="http://www.w3.org/2000/svg"><path d="${d}"/></svg>`);
+    const shapes = data.paths.flatMap(p => SVGLoader.createShapes(p));
+    const geo = new THREE.ExtrudeGeometry(shapes, { depth: 28, bevelEnabled: true, bevelThickness: 2, bevelSize: 1.5, bevelSegments: 2, curveSegments: 24 });
+    geo.computeBoundingBox();
+    curveTop = geo.boundingBox.min.y; curveBottom = geo.boundingBox.max.y;
+    const curveMat = new THREE.MeshStandardMaterial({ color: RED, metalness: 0.15, roughness: 0.35, side: THREE.DoubleSide, clippingPlanes: [curvePlane] });
+    rakMats.push(curveMat);
+    curveMesh = new THREE.Mesh(geo, curveMat);
+    curveMesh.scale.y = -1;
+    curveMesh.position.z = -50;
+    rakTilt.add(curveMesh);
+
+    // Centre on the origin (before tilting), then tilt.
+    const box = new THREE.Box3().setFromObject(rakTilt);
+    const centre = box.getCenter(new THREE.Vector3());
+    for (const m of rakTilt.children) m.position.sub(centre);
+    for (const s of steps) s.userData.baseY = s.position.y;
+    rakTilt.rotation.x = 0.32;
+    rak.scale.setScalar(0.85);
+    rak.rotation.y = DEFAULT_YAW;
+}
+
+// 0 = curve hidden, 1 = fully drawn; revealed from its bottom end to its top end.
+function setCurveReveal(f) {
+    if (!curveMesh) return;
+    if (f >= 1) { curvePlane.set(new THREE.Vector3(0, 1, 0), 1e9); return; }
+    const yCut = curveBottom - f * (curveBottom - curveTop);           // SVG units, y down
+    const local = new THREE.Plane(new THREE.Vector3(0, 1, 0), -yCut);   // keep y >= yCut
+    curveMesh.updateMatrixWorld(true);
+    curvePlane.copy(local).applyMatrix4(curveMesh.matrixWorld);
+}
+
+// Pop: 1 -> popScale -> 0.985 -> 1
+function popScale(q) {
+    if (q <= 0 || q >= 1) return 1;
+    const k = [[0, 1], [0.45, INTRO.popScale], [0.75, 0.985], [1, 1]];
+    for (let i = 1; i < k.length; i++) {
+        if (q <= k[i][0]) {
+            const u = (q - k[i - 1][0]) / (k[i][0] - k[i - 1][0]), s = u * u * (3 - 2 * u);
+            return k[i - 1][1] + (k[i][1] - k[i - 1][1]) * s;
+        }
+    }
+    return 1;
+}
+
+// Intro at time t (ms): steps build bottom to top, the curve draws upward, then each step pops.
+function introAt(t) {
+    const n = steps.length;
+    const curveStart = (n - 1) * INTRO.stagger + INTRO.step, popStart = curveStart + INTRO.curve;
+    steps.forEach((s, i) => {
+        const e = easeOut(clamp01((t - i * INTRO.stagger) / INTRO.step));
+        s.material.opacity = e;
+        s.position.y = s.userData.baseY - (1 - e) * INTRO.rise;
+        s.scale.setScalar(popScale(clamp01((t - popStart - i * INTRO.popStagger) / INTRO.pop)));
+    });
+    setCurveReveal(easeInOut(clamp01((t - curveStart) / INTRO.curve)));
+    return popStart + (n - 1) * INTRO.popStagger + INTRO.pop;           // total length
+}
+
+let playStart = -1, spinBeforePlay = 1;
+function play() {
+    if (!steps.length) return;
+    if (playStart < 0) spinBeforePlay = rotSpeed;
+    setSpin(0);
+    rak.rotation.y = DEFAULT_YAW;
+    playStart = performance.now();
+}
+
+
+// ╔════════════════════════════════════════════════════════╗
+// ║  LOGO 2 — 3-CRYSTAL OCTAHEDRON                        ║
 // ╚════════════════════════════════════════════════════════╝
 
 const MX = 245, EQ_Y = 310;
@@ -207,114 +350,80 @@ function rebuildCrystal() {
         [R.eqL, sy(EQ_Y), 0], [R.eqMidX, sy(EQ_Y), -R.baseHalfZ*ds]
     ), crystalMat));
 
-    // Center at world origin (0,0,0) - same as Logo 2
+    // Centre at the world origin
     const box = new THREE.Box3().setFromObject(crystalGroup);
     const cen = box.getCenter(new THREE.Vector3());
-    // Move meshes so the group center is at origin
-    for (const mesh of crystalGroup.children) { 
-        mesh.position.sub(cen);
-    }
+    for (const mesh of crystalGroup.children) mesh.position.sub(cen);
     crystalGroup.position.set(0, 0, 0);
     crystalGroup.scale.set(1, 1, 1);
 }
 rebuildCrystal();
 
 
-// ╔════════════════════════════════════════════════════════╗
-// ║  LOGO 2 — FLAT SVG EXTRUSION                          ║
-// ╚════════════════════════════════════════════════════════╝
-
-const svgString = `
-<svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
-    <polygon points="238,422 103,310 177,60 133,310 238,422" fill="#D61600" opacity="0.95"/>
-    <polygon points="238,422 133,310 177,60 166,310 238,422" fill="#1E0000" opacity="0.95"/>
-    <polygon points="212,310 246,310 246,73 212,310" fill="#F81300" opacity="0.95"/>
-    <polygon points="212,310 246,422 278,310 212,310" fill="#731604" opacity="0.95"/>
-    <polygon points="246,310 278,310 246,73 246,310" fill="#C91900" opacity="0.95"/>
-    <polygon points="252,422 357,310 310,60 325,310 252,422" fill="#1E0000" opacity="0.95"/>
-    <polygon points="252,422 387,310 310,60 357,310 252,422" fill="#D61600" opacity="0.95"/>
-</svg>`;
-
-const extrudeMat = new THREE.MeshStandardMaterial({
-    color: 0xB22222, emissive: 0x441111, metalness: 0.33, roughness: 0.1,
-    transmission: 1, opacity: 0.8, ior: 3, side: THREE.DoubleSide
-});
-
-const extrudeGroup = new THREE.Group();
-// Start with no position offset - we'll center it after loading
-extrudeGroup.scale.y = -1;
-
-const loader = new SVGLoader();
-const svgData = loader.parse(svgString);
-
-const extrudeSettings = {
-    depth: 25, bevelEnabled: true, bevelThickness: 0.3, bevelSize: 0.2, bevelSegments: 1
-};
-
-for (const path of svgData.paths) {
-    const shapes = SVGLoader.createShapes(path);
-    for (const shape of shapes) {
-        extrudeGroup.add(new THREE.Mesh(
-            new THREE.ExtrudeGeometry(shape, extrudeSettings), extrudeMat
-        ));
-    }
-}
-
-scene.add(extrudeGroup);
-
-// Properly center the group at world origin (0,0,0) - same as Logo 1
-const extBox = new THREE.Box3().setFromObject(extrudeGroup);
-const extCenter = extBox.getCenter(new THREE.Vector3());
-// Move meshes so the group center is at origin
-for (const mesh of extrudeGroup.children) {
-    mesh.position.sub(extCenter);
-}
-extrudeGroup.position.set(0, 0, 0);
-
-// Start hidden
-crystalGroup.visible = false;
-
-
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-//  Toggle logic
+//  Logo switch
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-let activeMode = 'flat';
-
 function setMode(mode) {
-    activeMode = mode;
+    rak.visible = mode === 'rak';
     crystalGroup.visible = mode === 'crystal';
-    extrudeGroup.visible = mode === 'flat';
-
+    $('btnRak').classList.toggle('active', mode === 'rak');
     $('btnCrystal').classList.toggle('active', mode === 'crystal');
-    $('btnFlat').classList.toggle('active', mode === 'flat');
-
-    document.body.className = mode === 'crystal' ? 'mode-crystal' : 'mode-flat';
+    document.body.className = 'mode-' + mode;
 }
-
+$('btnRak').onclick = () => setMode('rak');
 $('btnCrystal').onclick = () => setMode('crystal');
-$('btnFlat').onclick = () => setMode('flat');
+setMode('rak');
 
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-//  UI wiring (shared + per-mode)
+//  Views: swing the camera round the logo (front, back, top, bottom)
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-$('colorPicker').oninput = e => {
-    const c = new THREE.Color(e.target.value);
-    crystalMat.color.set(c);
-    extrudeMat.color.set(c);
+// "Front" reuses the idle pose's camera/object relationship (proven to frame the mark well,
+// since it's what plays on load) rather than an arbitrary world angle; the others are relative to it.
+const VIEW_YAW = -DEFAULT_YAW;
+const VIEWS = {
+    front:  { theta: VIEW_YAW,              phi: Math.PI / 2 },
+    back:   { theta: VIEW_YAW + Math.PI,    phi: Math.PI / 2 },
+    top:    { theta: VIEW_YAW,              phi: 0.02 },
+    bottom: { theta: VIEW_YAW,              phi: Math.PI - 0.02 },
 };
+let camTween = null;
+function goView(name) {
+    setSpin(0);
+    rak.rotation.y = 0;
+    crystalGroup.rotation.y = 0;
+    const from = new THREE.Spherical().setFromVector3(camera.position.clone().sub(controls.target));
+    const v = VIEWS[name];
+    let dTheta = v.theta - from.theta;
+    dTheta = Math.atan2(Math.sin(dTheta), Math.cos(dTheta));            // shortest way round
+    camTween = { from, to: { radius: from.radius, phi: v.phi, theta: from.theta + dTheta }, t0: performance.now(), dur: 800 };
+}
+document.querySelectorAll('[data-view]').forEach(b => { b.onclick = () => goView(b.dataset.view); });
+
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//  UI wiring
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+$('play').onclick = play;
+
+$('height').oninput = e => {
+    rak.position.y = +e.target.value;
+    $('heightV').textContent = e.target.value;
+};
+
+$('colorPicker').oninput = e => crystalMat.color.set(new THREE.Color(e.target.value));
 
 $('metalness').oninput = e => {
     const v = +e.target.value;
     crystalMat.metalness = v;
-    extrudeMat.metalness = v;
+    rakMats.forEach(m => { m.metalness = v; });
     $('metalnessV').textContent = v.toFixed(2);
 };
 
 $('roughness').oninput = e => {
     const v = +e.target.value;
     crystalMat.roughness = v;
-    extrudeMat.roughness = v;
+    rakMats.forEach(m => { m.roughness = Math.max(v, 0.2); });
     $('roughnessV').textContent = v.toFixed(2);
 };
 
@@ -330,10 +439,12 @@ $('opacity').oninput = e => {
 };
 
 let rotSpeed = 1.0;
-$('rotSpeed').oninput = e => {
-    rotSpeed = +e.target.value;
-    $('rotSpeedV').textContent = rotSpeed.toFixed(1);
-};
+function setSpin(v) {
+    rotSpeed = v;
+    $('rotSpeed').value = v;
+    $('rotSpeedV').textContent = (+v).toFixed(1);
+}
+$('rotSpeed').oninput = e => setSpin(+e.target.value);
 
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -341,21 +452,45 @@ $('rotSpeed').oninput = e => {
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 function animate() {
     requestAnimationFrame(animate);
-    controls.update();
+    const now = performance.now();
 
-    // Spin objects 360 degrees around their center point (at world origin)
-    const delta = rotSpeed * 0.01;
+    if (camTween) {
+        const k = clamp01((now - camTween.t0) / camTween.dur), e = easeInOut(k);
+        const s = new THREE.Spherical(
+            camTween.from.radius + (camTween.to.radius - camTween.from.radius) * e,
+            camTween.from.phi + (camTween.to.phi - camTween.from.phi) * e,
+            camTween.from.theta + (camTween.to.theta - camTween.from.theta) * e
+        );
+        camera.position.setFromSpherical(s).add(controls.target);
+        camera.lookAt(controls.target);
+        if (k === 1) camTween = null;
+    } else {
+        controls.update();
+    }
+
+    if (playStart >= 0) {
+        const total = introAt(now - playStart);
+        if (now - playStart >= total) { introAt(1e9); playStart = -1; setSpin(spinBeforePlay); }
+    }
+
+    // Spin both logos around their own vertical axis
+    const delta = rotSpeed * 0.01, TAU = Math.PI * 2;
+    rak.rotation.y += delta;
     crystalGroup.rotation.y += delta;
-    extrudeGroup.rotation.y += delta;
-    
-    // Normalize rotation to prevent floating-point overflow over long periods
-    const TAU = Math.PI * 2;
+    if (rak.rotation.y > TAU) rak.rotation.y -= TAU;
     if (crystalGroup.rotation.y > TAU) crystalGroup.rotation.y -= TAU;
-    if (extrudeGroup.rotation.y > TAU) extrudeGroup.rotation.y -= TAU;
-    
+
     renderer.render(scene, camera);
 }
 animate();
+
+buildRak().then(() => {
+    if (reducedMotion) setSpin(0);
+    else play();
+}).catch(err => { $('hint').textContent = 'Could not load the logo: ' + err.message; });
+
+// Testing hooks: play from code, or freeze the intro at a moment (ms).
+window.logoViewer = { play, goView, setMode, introAt: t => { playStart = -1; setSpin(0); rak.rotation.y = DEFAULT_YAW; introAt(t); } };
 
 addEventListener('resize', () => {
     camera.aspect = innerWidth / innerHeight;

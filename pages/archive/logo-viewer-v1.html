@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
+    <title>Logo viewer (archived version 1)</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { overflow: hidden; background: #000; }
+        canvas { display: block; }
+
+        #toggle {
+            position: absolute; top: 14px; left: 50%; transform: translateX(-50%); z-index: 200;
+            display: flex; gap: 0; border-radius: 8px; overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.12);
+            backdrop-filter: blur(12px); background: rgba(0,0,0,0.6);
+            font: 600 13px/1 'SF Mono', 'Consolas', monospace;
+        }
+        #toggle button {
+            padding: 10px 22px; border: none; cursor: pointer;
+            background: transparent; color: #888; transition: all 0.25s;
+            letter-spacing: 0.5px;
+        }
+        #toggle button.active {
+            background: rgba(180, 34, 34, 0.85); color: #fff;
+        }
+        #toggle button:hover:not(.active) { color: #ccc; background: rgba(255,255,255,0.05); }
+
+        #controls {
+            position: absolute; top: 60px; left: 12px; z-index: 100;
+            background: rgba(0,0,0,0.75); padding: 14px 16px;
+            border-radius: 8px; color: #ccc; font: 12px/1.6 'SF Mono', 'Consolas', monospace;
+            backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.08);
+            min-width: 210px;
+        }
+        #controls label { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+        #controls input[type=range] { flex: 1; max-width: 110px; accent-color: #c33; }
+        #controls input[type=color] { border: none; background: none; width: 28px; height: 22px; cursor: pointer; }
+        #controls .row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+        .val { color: #f66; min-width: 32px; text-align: right; font-size: 11px; }
+        #controls h3 { color: #f44; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px; border-bottom: 1px solid rgba(255,60,60,0.2); padding-bottom: 6px; }
+
+        /* Crystal-only controls */
+        .crystal-only { display: none; }
+        body.mode-crystal .crystal-only { display: flex; }
+    </style>
+</head>
+<body class="mode-flat">
+
+<div id="toggle">
+    <button id="btnFlat" class="active">Logo 1</button>
+    <button id="btnCrystal">Logo 2</button>
+    
+</div>
+
+<div id="controls">
+    <h3>Controls</h3>
+    <div class="row">
+        <span>Color</span>
+        <input type="color" id="colorPicker" value="#B22222">
+    </div>
+    <label>Metalness <input type="range" id="metalness" min="0" max="1" step="0.01" value="0.15"> <span class="val" id="metalnessV">0.15</span></label>
+    <label>Roughness <input type="range" id="roughness" min="0" max="1" step="0.01" value="0.03"> <span class="val" id="roughnessV">0.03</span></label>
+    <label class="crystal-only">Depth <input type="range" id="depth" min="0.3" max="3" step="0.05" value="1.0"> <span class="val" id="depthV">1.00</span></label>
+    <label class="crystal-only">Opacity <input type="range" id="opacity" min="0.3" max="1" step="0.01" value="0.88"> <span class="val" id="opacityV">0.88</span></label>
+    <label>Speed <input type="range" id="rotSpeed" min="0" max="5" step="0.1" value="1.0"> <span class="val" id="rotSpeedV">1.0</span></label>
+</div>
+
+<script type="importmap">
+{
+    "imports": {
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    }
+}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { SVGLoader } from 'three/addons/loaders/SVGLoader.js';
+
+const $ = id => document.getElementById(id);
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//  Shared Scene
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const scene = new THREE.Scene();
+
+const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 1, 3000);
+camera.position.set(0, 0, 1000);
+camera.lookAt(0, 0, 0);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(devicePixelRatio);
+renderer.setSize(innerWidth, innerHeight);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.4;
+document.body.appendChild(renderer.domElement);
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//  Lighting
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+scene.add(new THREE.AmbientLight(0xffffff, 0.45));
+
+const lightDefs = [
+    { color: 0xffffff, intensity: 3.5, pos: [300, 400, 500] },
+    { color: 0x8888ff, intensity: 1.5, pos: [-400, -100, 300] },
+    { color: 0xff4422, intensity: 2.0, pos: [0, 0, -500] },
+    { color: 0xffddcc, intensity: 2.0, pos: [0, 500, 100] },
+    { color: 0xff6633, intensity: 1.5, pos: [-200, -300, 50] },
+    { color: 0xffffff, intensity: 1.8, pos: [400, -200, 200] },
+];
+for (const l of lightDefs) {
+    const d = new THREE.DirectionalLight(l.color, l.intensity);
+    d.position.set(...l.pos);
+    scene.add(d);
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//  Controls
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Lock the camera to a fixed axis pointing at the origin. The user
+// cannot pan or orbit — the object stays centered on screen and spins
+// in place around the world Y axis. Zoom is still allowed.
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(0, 0, 0);
+controls.enableDamping = true;
+controls.dampingFactor = 0.06;
+controls.enablePan = false;
+controls.enableRotate = false;
+controls.update();
+
+
+// ╔════════════════════════════════════════════════════════╗
+// ║  LOGO 1 — 3-CRYSTAL OCTAHEDRON                        ║
+// ╚════════════════════════════════════════════════════════╝
+
+const MX = 245, EQ_Y = 310;
+
+const L = { topX: 177, topY: 60, botX: 238, botY: 422, eqL: 103, eqR: 166 };
+L.eqMidX = (L.eqL + L.eqR) / 2;
+L.baseHalfZ = (L.eqR - L.eqL) / 2;
+
+const C = { topX: 246, topY: 73, botX: 246, botY: 422, eqL: 212, eqR: 278 };
+C.baseHalfZ = (C.eqR - C.eqL) / 2;
+
+const R = {
+    topX: 2*MX - L.topX, topY: L.topY, botX: 2*MX - L.botX, botY: L.botY,
+    eqL: 2*MX - L.eqR, eqR: 2*MX - L.eqL
+};
+R.eqMidX = (R.eqL + R.eqR) / 2;
+R.baseHalfZ = L.baseHalfZ;
+
+function buildOctahedron(top, bot, eq0, eq1, eq2, eq3) {
+    const v = [];
+    const push = (a,b,c) => v.push(...a,...b,...c);
+    push(top,eq0,eq1); push(top,eq1,eq2); push(top,eq2,eq3); push(top,eq3,eq0);
+    push(bot,eq1,eq0); push(bot,eq2,eq1); push(bot,eq3,eq2); push(bot,eq0,eq3);
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.Float32BufferAttribute(v, 3));
+    geo.computeVertexNormals();
+    return geo;
+}
+
+const crystalMat = new THREE.MeshPhysicalMaterial({
+    color: 0xB22222, emissive: 0x220404, emissiveIntensity: 0.6,
+    metalness: 0.15, roughness: 0.03, clearcoat: 1.0, clearcoatRoughness: 0.04,
+    reflectivity: 1.0, transparent: true, opacity: 0.88,
+    flatShading: true, side: THREE.DoubleSide, depthWrite: true,
+});
+
+const crystalGroup = new THREE.Group();
+scene.add(crystalGroup);
+
+let depthScale = 1.0;
+function sy(y) { return -y; }
+
+function rebuildCrystal() {
+    while (crystalGroup.children.length) {
+        crystalGroup.children[0].geometry.dispose();
+        crystalGroup.remove(crystalGroup.children[0]);
+    }
+    const ds = depthScale;
+
+    // Left
+    crystalGroup.add(new THREE.Mesh(buildOctahedron(
+        [L.topX, sy(L.topY), 0], [L.botX, sy(L.botY), 0],
+        [L.eqL, sy(EQ_Y), 0], [L.eqMidX, sy(EQ_Y), L.baseHalfZ*ds],
+        [L.eqR, sy(EQ_Y), 0], [L.eqMidX, sy(EQ_Y), -L.baseHalfZ*ds]
+    ), crystalMat));
+
+    // Center (45° rotated — edge forward)
+    const cHZ = C.baseHalfZ * ds;
+    const cMidX = (C.eqL + C.eqR) / 2;
+    const cHX = (C.eqR - C.eqL) / 2;
+    crystalGroup.add(new THREE.Mesh(buildOctahedron(
+        [C.topX, sy(C.topY), 0], [C.botX, sy(C.botY), 0],
+        [cMidX, sy(EQ_Y), cHZ], [cMidX+cHX, sy(EQ_Y), 0],
+        [cMidX, sy(EQ_Y), -cHZ], [cMidX-cHX, sy(EQ_Y), 0]
+    ), crystalMat));
+
+    // Right (mirror)
+    crystalGroup.add(new THREE.Mesh(buildOctahedron(
+        [R.topX, sy(R.topY), 0], [R.botX, sy(R.botY), 0],
+        [R.eqR, sy(EQ_Y), 0], [R.eqMidX, sy(EQ_Y), R.baseHalfZ*ds],
+        [R.eqL, sy(EQ_Y), 0], [R.eqMidX, sy(EQ_Y), -R.baseHalfZ*ds]
+    ), crystalMat));
+
+    // Center at world origin (0,0,0) - same as Logo 2
+    const box = new THREE.Box3().setFromObject(crystalGroup);
+    const cen = box.getCenter(new THREE.Vector3());
+    // Move meshes so the group center is at origin
+    for (const mesh of crystalGroup.children) { 
+        mesh.position.sub(cen);
+    }
+    crystalGroup.position.set(0, 0, 0);
+    crystalGroup.scale.set(1, 1, 1);
+}
+rebuildCrystal();
+
+
+// ╔════════════════════════════════════════════════════════╗
+// ║  LOGO 2 — FLAT SVG EXTRUSION                          ║
+// ╚════════════════════════════════════════════════════════╝
+
+const svgString = `
+<svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+    <polygon points="238,422 103,310 177,60 133,310 238,422" fill="#D61600" opacity="0.95"/>
+    <polygon points="238,422 133,310 177,60 166,310 238,422" fill="#1E0000" opacity="0.95"/>
+    <polygon points="212,310 246,310 246,73 212,310" fill="#F81300" opacity="0.95"/>
+    <polygon points="212,310 246,422 278,310 212,310" fill="#731604" opacity="0.95"/>
+    <polygon points="246,310 278,310 246,73 246,310" fill="#C91900" opacity="0.95"/>
+    <polygon points="252,422 357,310 310,60 325,310 252,422" fill="#1E0000" opacity="0.95"/>
+    <polygon points="252,422 387,310 310,60 357,310 252,422" fill="#D61600" opacity="0.95"/>
+</svg>`;
+
+const extrudeMat = new THREE.MeshStandardMaterial({
+    color: 0xB22222, emissive: 0x441111, metalness: 0.33, roughness: 0.1,
+    transmission: 1, opacity: 0.8, ior: 3, side: THREE.DoubleSide
+});
+
+const extrudeGroup = new THREE.Group();
+// Start with no position offset - we'll center it after loading
+extrudeGroup.scale.y = -1;
+
+const loader = new SVGLoader();
+const svgData = loader.parse(svgString);
+
+const extrudeSettings = {
+    depth: 25, bevelEnabled: true, bevelThickness: 0.3, bevelSize: 0.2, bevelSegments: 1
+};
+
+for (const path of svgData.paths) {
+    const shapes = SVGLoader.createShapes(path);
+    for (const shape of shapes) {
+        extrudeGroup.add(new THREE.Mesh(
+            new THREE.ExtrudeGeometry(shape, extrudeSettings), extrudeMat
+        ));
+    }
+}
+
+scene.add(extrudeGroup);
+
+// Properly center the group at world origin (0,0,0) - same as Logo 1
+const extBox = new THREE.Box3().setFromObject(extrudeGroup);
+const extCenter = extBox.getCenter(new THREE.Vector3());
+// Move meshes so the group center is at origin
+for (const mesh of extrudeGroup.children) {
+    mesh.position.sub(extCenter);
+}
+extrudeGroup.position.set(0, 0, 0);
+
+// Start hidden
+crystalGroup.visible = false;
+
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//  Toggle logic
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+let activeMode = 'flat';
+
+function setMode(mode) {
+    activeMode = mode;
+    crystalGroup.visible = mode === 'crystal';
+    extrudeGroup.visible = mode === 'flat';
+
+    $('btnCrystal').classList.toggle('active', mode === 'crystal');
+    $('btnFlat').classList.toggle('active', mode === 'flat');
+
+    document.body.className = mode === 'crystal' ? 'mode-crystal' : 'mode-flat';
+}
+
+$('btnCrystal').onclick = () => setMode('crystal');
+$('btnFlat').onclick = () => setMode('flat');
+
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//  UI wiring (shared + per-mode)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+$('colorPicker').oninput = e => {
+    const c = new THREE.Color(e.target.value);
+    crystalMat.color.set(c);
+    extrudeMat.color.set(c);
+};
+
+$('metalness').oninput = e => {
+    const v = +e.target.value;
+    crystalMat.metalness = v;
+    extrudeMat.metalness = v;
+    $('metalnessV').textContent = v.toFixed(2);
+};
+
+$('roughness').oninput = e => {
+    const v = +e.target.value;
+    crystalMat.roughness = v;
+    extrudeMat.roughness = v;
+    $('roughnessV').textContent = v.toFixed(2);
+};
+
+$('depth').oninput = e => {
+    depthScale = +e.target.value;
+    $('depthV').textContent = depthScale.toFixed(2);
+    rebuildCrystal();
+};
+
+$('opacity').oninput = e => {
+    crystalMat.opacity = +e.target.value;
+    $('opacityV').textContent = (+e.target.value).toFixed(2);
+};
+
+let rotSpeed = 1.0;
+$('rotSpeed').oninput = e => {
+    rotSpeed = +e.target.value;
+    $('rotSpeedV').textContent = rotSpeed.toFixed(1);
+};
+
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//  Render
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function animate() {
+    requestAnimationFrame(animate);
+    controls.update();
+
+    // Spin objects 360 degrees around their center point (at world origin)
+    const delta = rotSpeed * 0.01;
+    crystalGroup.rotation.y += delta;
+    extrudeGroup.rotation.y += delta;
+    
+    // Normalize rotation to prevent floating-point overflow over long periods
+    const TAU = Math.PI * 2;
+    if (crystalGroup.rotation.y > TAU) crystalGroup.rotation.y -= TAU;
+    if (extrudeGroup.rotation.y > TAU) extrudeGroup.rotation.y -= TAU;
+    
+    renderer.render(scene, camera);
+}
+animate();
+
+addEventListener('resize', () => {
+    camera.aspect = innerWidth / innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(innerWidth, innerHeight);
+});
+</script>
+</body>
+</html>

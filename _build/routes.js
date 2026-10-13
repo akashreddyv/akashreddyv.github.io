@@ -267,7 +267,7 @@ const routes = [
           {
             '@type': 'CreativeWork',
             name: 'Logo Designs, 3D Interactive Viewer',
-            description: '3D interactive logo viewer built with Three.js, featuring crystal and SVG extrusion modes with real-time controls.',
+            description: '3D interactive logo viewer built with Three.js: the reachAkash mark and a crystal variant, with a play button, front/back/top/bottom views, and real-time material controls.',
             creator: { '@type': 'Person', name: 'Vurenuka Akash Reddy' }
           }
         ]
