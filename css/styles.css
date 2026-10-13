@@ -528,6 +528,7 @@ html:not(.js) .footer-term-wrap { display: none; }
 }
 
 .home-inner {
+  --home-name-size: clamp(58px, 10vw, 118px);
   position: relative;
   z-index: 1;
   min-height: calc(100vh - 72px);
@@ -540,8 +541,30 @@ html:not(.js) .footer-term-wrap { display: none; }
 }
 
 .home-eyebrow  { font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); margin-bottom: 28px; opacity: 0; animation: fadeUp 0.8s ease 0.1s forwards; }
-.home-name     { font-family: var(--font-display); font-size: clamp(58px, 10vw, 118px); font-weight: 900; line-height: 0.92; letter-spacing: -0.02em; color: var(--white); opacity: 0; animation: fadeUp 0.9s ease 0.25s forwards; }
+.home-name     { font-family: var(--font-display); font-size: var(--home-name-size); font-weight: 900; line-height: 0.92; letter-spacing: -0.02em; color: var(--white); opacity: 0; animation: fadeUp 0.9s ease 0.25s forwards; }
 .home-name span { color: var(--accent); font-style: italic; }
+
+/* The logo mark to the left of the name, sized from the name's font size so it matches the two lines */
+.home-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.26em;
+  font-size: var(--home-name-size);
+}
+.home-title .home-name { text-align: left; }
+.home-mark {
+  flex-shrink: 0;
+  display: block;
+  height: 1.62em;
+  width: auto;
+  aspect-ratio: 789.2 / 542.2;
+  overflow: visible;
+}
+@media (max-width: 480px) {
+  .home-title { gap: 0.18em; }
+  .home-mark  { height: 1.2em; }
+}
 .home-tagline  { margin-top: 34px; font-size: 17px; color: var(--muted); line-height: 1.75; max-width: 480px; opacity: 0; animation: fadeUp 0.9s ease 0.4s forwards; }
 .home-cta      { margin-top: 48px; display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; opacity: 0; animation: fadeUp 0.9s ease 0.55s forwards; }
 
@@ -2251,6 +2274,10 @@ html.logo-intro .logo-anim .logo-curve-wipe {
   75%  { transform: scale(0.985); }
   100% { transform: scale(1); }
 }
+
+.logo-anim { overflow: visible; }          /* rising steps aren't clipped at the edges */
+.page-home .nav-brand .logo-anim .logo-step,
+.page-home .nav-brand .logo-anim .logo-curve-wipe { animation: none; }
 
 @media (prefers-reduced-motion: reduce) {
   html.logo-intro .logo-anim .logo-step,

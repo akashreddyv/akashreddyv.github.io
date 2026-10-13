@@ -51,22 +51,29 @@ function fill(tpl, values) {
   });
 }
 
-// The header logo, inlined from images/brand/lockup.svg so its layers (logo-curve, logo-step-01..08)
-// can animate. The curve sits under a clip whose rect grows upward during the intro.
-function logoHeader() {
-  const src = read('images/brand/lockup.svg');
-  const m = src.match(/<symbol id="lockup" viewBox="([^"]+)">([\s\S]*?)<\/symbol>/);
+// Inline copies of images/brand/lockup.svg so its layers (logo-curve, logo-step-01..08) can animate
+// (css/styles.css, "LOGO INTRO"). The curve sits under a clip whose rect grows upward during the intro.
+//   header: the full lockup in the nav (keeps the layer ids)
+//   mark:   just the steps and curve, beside the name on Home (ids dropped so they stay unique on the page)
+const LOCKUP = (() => {
+  const m = read('images/brand/lockup.svg').match(/<symbol id="lockup" viewBox="([^"]+)">([\s\S]*?)<\/symbol>/);
   if (!m || !/id="logo-step-08"/.test(m[2])) throw new Error('images/brand/lockup.svg is not layered (expected logo-curve and logo-step-01..08)');
-  const body = m[2].replace(/<title>[\s\S]*?<\/title>\n?/, '').trim()
-    .replace('<g id="logo-curve" class="logo-curve">', '<g id="logo-curve" class="logo-curve" clip-path="url(#logo-curve-clip)">');
+  return { viewBox: m[1], body: m[2].replace(/<title>[\s\S]*?<\/title>\n?/, '').trim() };
+})();
+function inlineLogo({ cls, viewBox, clipId, word, keepIds }) {
+  let body = LOCKUP.body.replace('<g id="logo-curve" class="logo-curve">', `<g id="logo-curve" class="logo-curve" clip-path="url(#${clipId})">`);
+  if (!word) body = body.replace(/\n?<g class="logo-word"[\s\S]*?<\/g>/, '');
+  if (!keepIds) body = body.replace(/ id="logo-(?:curve|step-\d\d)"/g, '');
   return [
-    `<svg class="brand-lockup logo-anim" viewBox="${m[1]}" aria-hidden="true" focusable="false">`,
-    '<defs><clipPath id="logo-curve-clip" clipPathUnits="userSpaceOnUse"><rect class="logo-curve-wipe" x="500" y="340" width="380" height="560"/></clipPath></defs>',
+    `<svg class="${cls}" viewBox="${viewBox}" aria-hidden="true" focusable="false">`,
+    `<defs><clipPath id="${clipId}" clipPathUnits="userSpaceOnUse"><rect class="logo-curve-wipe" x="500" y="340" width="380" height="560"/></clipPath></defs>`,
     body,
     '</svg>'
   ].join('\n');
 }
-const LOGO_HEADER = logoHeader();
+const LOGO_HEADER = inlineLogo({ cls: 'brand-lockup logo-anim', viewBox: LOCKUP.viewBox, clipId: 'logo-curve-clip', word: true, keepIds: true });
+// Mark bounds x 83.8..833.0, y 370.4..872.6, plus 20 units so a popping bottom step isn't clipped.
+const LOGO_MARK = inlineLogo({ cls: 'home-mark logo-anim', viewBox: '63.8 350.4 789.2 542.2', clipId: 'home-mark-curve-clip', word: false, keepIds: false });
 
 // FAQPage JSON-LD built from the page's own questions (<div class="faq-item"><h3>Q</h3><p>A</p></div>),
 // so the markup always matches what visitors read.
@@ -101,7 +108,8 @@ function renderPage(route) {
     ctaPrimaryText: escAttr(cta.text),
     ctaPrimaryHref: escAttr(cta.href),
     referralJump: referrals.renderJump(REF.groups),
-    referralSections: referrals.renderSections(REF.groups)
+    referralSections: referrals.renderSections(REF.groups),
+    logoMark: LOGO_MARK
   });
 
   const canonical = route.notFound ? null : site.origin + route.path;

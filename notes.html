@@ -24,12 +24,14 @@
         localStorage.removeItem('retro-theme');
       } catch (e) {}
       if (t === 'light' || t === 'retro' || t === 'space') d.classList.add('theme-' + t);
-      // Header logo intro: once per visit (the first page you land on), never with reduced motion.
-      // Set before first paint so the finished logo never flashes before the animation starts.
+      // Logo intro, never with reduced motion: on Home it plays every time (the big mark beside the
+      // name); on other pages the header logo plays once per visit. Set before first paint so the
+      // finished logo never flashes before the animation starts.
       try {
-        if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !sessionStorage.getItem('logo-intro-played')) {
-          d.classList.add('logo-intro');
-          sessionStorage.setItem('logo-intro-played', '1');
+        if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          var home = location.pathname === '/' || location.pathname === '/index.html', seen = false;
+          try { seen = !!sessionStorage.getItem('logo-intro-played'); sessionStorage.setItem('logo-intro-played', '1'); } catch (e) {}
+          if (home || !seen) d.classList.add('logo-intro');
         }
       } catch (e) {}
       if (t === 'retro') {
