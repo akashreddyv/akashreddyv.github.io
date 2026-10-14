@@ -36,8 +36,7 @@
 :root {
   /* Brand palette */
   --brand-navy:       #181A29;  /* text on light, app icon             */
-  /* Akash Red — hsl(348, 96%, 48%): a personal recipe (96/48), not a copy of anyone else's "iconic red" */
-  --brand-ember:      #F00534;  /* the logo's curve and 2nd step       */
+  --brand-ember:      #FF0000;  /* the logo's curve and 2nd step       */
   --brand-cream:      #F1EAE0;  /* body text on dark                   */
 
   /* Dark theme (default) — black page, white accents (no gold) */
@@ -53,7 +52,7 @@
   --btn-bg:    #FFFFFF;
   --on-accent: #000000;             /* button labels: 21:1 */
   --nav-bg:    rgba(0, 0, 0, 0.92);
-  --accent-red: var(--brand-ember);  /* Akash Red: 4.78:1 on --bg */
+  --accent-red: var(--brand-ember);  /* 5.25:1 on --bg */
   --accent-red-rgb: 240, 5, 52;
 
   /* Logo colour roles: white on dark, with the red curve and 2nd step.
@@ -86,7 +85,7 @@
   --btn-bg:    #000000;
   --on-accent: #FFFFFF;                 /* button labels: 21:1 */
   --nav-bg:    rgba(255, 255, 255, 0.92);
-  --accent-red: var(--brand-ember);  /* Akash Red: 4.40:1 on white */
+  --accent-red: var(--brand-ember);  /* 4.00:1 on white */
   --accent-red-rgb: 240, 5, 52;
 
   /* Logo: black on white, same red; white lightens the black steps' faces */
