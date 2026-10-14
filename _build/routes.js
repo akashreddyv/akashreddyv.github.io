@@ -243,7 +243,7 @@ const routes = [
   },
 
   {
-    slug: 'projects', path: '/projects', out: 'projects.html', source: 'pages/projects.html', nav: 'projects', navGroup: 'about',
+    slug: 'projects', path: '/projects', out: 'projects.html', source: 'pages/projects.html', nav: 'projects',
     title: 'Akash Reddy | Projects',
     description: 'Software projects by V Akash Reddy (Vurenuka Akash Reddy): this website, generated from one template with vanilla JS, a 3D logo viewer and more.',
     ogType: 'website',
@@ -279,7 +279,7 @@ const routes = [
   },
 
   {
-    slug: 'socials', path: '/socials', out: 'socials.html', source: 'pages/socials.html', nav: 'socials', navGroup: 'about',
+    slug: 'socials', path: '/socials', out: 'socials.html', source: 'pages/socials.html', nav: 'socials',
     title: 'Akash Reddy | Socials',
     description: 'Social media profiles of Akash Reddy (V Akash Reddy / Vurenuka Akash Reddy): Instagram, LinkedIn, X, YouTube, Snapchat, Discord, Threads, and Facebook.',
     ogType: 'website',
@@ -417,7 +417,7 @@ const routes = [
     llms: 'The Lab: tools Reach Akash is building for manufacturing and test teams.'
   },
   {
-    slug: 'notes', path: '/notes', out: 'notes.html', source: 'pages/notes.html', nav: 'notes',
+    slug: 'notes', path: '/notes', out: 'notes.html', source: 'pages/notes.html', nav: 'notes', draft: true,
     title: 'Notes | Reach Akash',
     description: 'Notes from Reach Akash on test data, manufacturing software and building tools with AI.',
     ogType: 'website',
@@ -426,6 +426,17 @@ const routes = [
     jsonld: [crumbs(['Notes', '/notes'])],
     sitemap: { changefreq: 'weekly', priority: '0.7' },
     llms: 'Notes: writing on test data, manufacturing software and building tools with AI.'
+  },
+  {
+    slug: 'suggestions', path: '/suggestions', out: 'suggestions.html', source: 'pages/suggestions.html', nav: 'suggestions',
+    title: 'Suggestion Box | Reach Akash',
+    description: 'Got an idea for reachakash.com, a project or a referral to add? Drop it in Akash Reddy\'s suggestion box. Your name and email are optional.',
+    ogType: 'website',
+    ogTitle: 'Suggestion Box | Reach Akash',
+    ogDesc: 'Drop an idea in the box. Your name and email are optional.',
+    jsonld: [crumbs(['Suggestions', '/suggestions'])],
+    sitemap: { changefreq: 'yearly', priority: '0.4' },
+    llms: 'Suggestion box: send Akash Reddy an idea for the site, a project, a service or a referral to add. Name and email are optional.'
   },
   {
     slug: 'privacy', path: '/privacy', out: 'privacy.html', source: 'pages/privacy.html', nav: 'privacy',

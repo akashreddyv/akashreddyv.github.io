@@ -16,6 +16,7 @@ window.SITE_CONFIG = {
     "workflow-sprint": ""
   },
   waitlistEndpoint: "",    // Phase 4 Worker URL; empty -> /contact
+  formEndpoint: "https://api.reachakash.com/contact", // the contact Worker; the suggestion box and the terminal's `suggest` post here too
   contactEmail: "",        // [EDIT] e.g. mail@reachakash.com once Email Routing is verified
   analyticsToken: ""       // Phase 4: Cloudflare Web Analytics
 };

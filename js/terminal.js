@@ -30,7 +30,7 @@
       ['',                     'Associate Software Developer', 'Persistent Systems Ltd.',   '']
     ],
     projects: [
-      ['reachakash.com', 'This site — multi-page SPA in vanilla JS, History API routing, hosted on GitHub Pages.'],
+      ['reachakash.com', 'This site: static pages built from one template by a small build script, vanilla JS, hosted on GitHub Pages.'],
       ['Logo Designs',   'Interactive 3D logo viewer built with Three.js: the reachAkash mark and a crystal variant.']
     ],
     socials: [
@@ -45,7 +45,15 @@
     ]
   };
 
-  const PAGES = ['home', 'services', 'referrals', 'lab', 'notes', 'about', 'personal', 'professional', 'projects', 'socials', 'contact', 'gallery', 'privacy'];
+  // Every place `cd` can go (and `ls` lists), in the same order as the site's nav, then the rest.
+  const PAGES = {
+    home: '/', services: '/services', projects: '/projects', referrals: '/referrals', socials: '/socials',
+    about: '/about', personal: '/personal', professional: '/professional', contact: '/contact',
+    suggestions: '/suggestions', brand: '/about#brand', logo: '/projects/logodesigns', gallery: '/gallery', privacy: '/privacy'
+  };
+  const PAGE_NAMES = Object.keys(PAGES);
+  // The opening menu: commands worth one click, so nobody has to type `help` first.
+  const QUICK = ['whoami', 'work', 'projects', 'skills', 'socials', 'suggest', 'theme', 'play', 'matrix', 'help'];
 
   // The current brand accent, read from the theme tokens (CSS custom properties).
   function accent() {
@@ -134,29 +142,45 @@
   // ── Command implementations ──
   const COMMANDS = {
     help() {
-      write('Available commands:', 'term-head');
+      write('Available commands (click one, or type it):', 'term-head');
+      // [what to show, what a click runs (null: needs an argument, so it can't be one click), description]
       const rows = [
-        ['help',            'show this list'],
-        ['whoami / about',  'who is Akash?'],
-        ['ls',              'list site sections'],
-        ['cd &lt;page&gt;',       'open a page (e.g. cd projects)'],
-        ['work',            'where I have worked'],
-        ['skills',          'tech I work with'],
-        ['projects',        'things I have built'],
-        ['edu',             'education'],
-        ['social',          'find me online'],
-        ['contact',         'how to reach me'],
-        ['theme &lt;name&gt;',    'dark | light | retro | space'],
-        ['banner',          'show the ASCII banner'],
-        ['play',            'shoot down the 404s 👾'],
-        ['matrix',          'enter the matrix 🟢'],
-        ['date',            'current date'],
-        ['clear',           'clear the screen'],
-        ['exit',            'close the terminal']
+        ['help',               'help',     'show this list'],
+        ['whoami / about',     'whoami',   'who is Akash?'],
+        ['ls',                 'ls',       'list every page'],
+        ['cd &lt;page&gt;',          null,       'open a page (e.g. cd projects)'],
+        ['work',               'work',     'where I have worked'],
+        ['skills',             'skills',   'tech I work with'],
+        ['projects',           'projects', 'things I have built'],
+        ['edu',                'edu',      'education'],
+        ['socials',            'socials',  'find me online'],
+        ['contact',            'contact',  'how to reach me'],
+        ['suggest [idea]',     'suggest',  'send an idea (on its own: open the suggestion box)'],
+        ['theme &lt;name&gt;',       'theme',    'dark | light | retro | space'],
+        ['banner',             'banner',   'show the ASCII banner'],
+        ['play',               'play',     'shoot down the 404s 👾'],
+        ['matrix',             'matrix',   'enter the matrix 🟢'],
+        ['date',               'date',     'current date'],
+        ['clear',              'clear',    'clear the screen'],
+        ['exit',               'exit',     'close the terminal']
       ];
-      rows.forEach(([c, d]) => write(`<span class="term-cmd">${c}</span><span class="term-cmddesc">${d}</span>`, 'term-help-row'));
+      rows.forEach(([label, cmd, d]) => write(
+        (cmd ? `<span class="term-cmd term-run" data-cmd="${cmd}" role="button" tabindex="0">${label}</span>`
+             : `<span class="term-cmd">${label}</span>`) +
+        `<span class="term-cmddesc">${d}</span>`, 'term-help-row'));
       gap();
       write('Tip: <span class="term-kbd">Tab</span> completes, <span class="term-kbd">↑/↓</span> recalls history, <span class="term-kbd">Esc</span> closes.', 'term-dim');
+    },
+
+    // The opening screen: every page and the most-used commands, one click each.
+    menu() {
+      write('Go to', 'term-head');
+      write(PAGE_NAMES.map(p => `<span class="term-link" data-page="${p}" role="button" tabindex="0">${p}</span>`).join(''), 'term-menu');
+      gap();
+      write('Try', 'term-head');
+      write(QUICK.map(c => `<span class="term-run" data-cmd="${c}" role="button" tabindex="0">${c}</span>`).join(''), 'term-menu');
+      gap();
+      write('Click any of these, or type. <span class="term-cmd">suggest your idea</span> sends an idea straight to Akash.', 'term-dim');
     },
 
     whoami() { this.about(); },
@@ -169,19 +193,19 @@
     },
 
     ls() {
-      write('sections/', 'term-dim');
-      write(PAGES.map(p => `<span class="term-link" data-page="${p}">${p}</span>`).join('   '));
+      write('pages/', 'term-dim');
+      write(PAGE_NAMES.map(p => `<span class="term-link" data-page="${p}" role="button" tabindex="0">${p}</span>`).join(''), 'term-menu');
       write('Use <span class="term-cmd">cd &lt;name&gt;</span> or just click one.', 'term-dim');
     },
 
     cd(arg) {
-      if (!arg) { write('cd: missing page. Try: ' + PAGES.join(', '), 'term-err'); return; }
+      if (!arg) { write('cd: missing page. Try: ' + PAGE_NAMES.join(', '), 'term-err'); return; }
       const target = arg.replace(/^\/+/, '').toLowerCase();
-      if (!PAGES.includes(target)) {
+      if (!Object.prototype.hasOwnProperty.call(PAGES, target)) {
         write(`cd: no such page: ${esc(arg)}`, 'term-err');
         return;
       }
-      const dest = target === 'home' ? '/' : '/' + target;
+      const dest = PAGES[target];
       write(`→ opening ${dest} …`, 'term-accent');
       setTimeout(function () { location.href = dest; }, 250);
     },
@@ -225,6 +249,27 @@
       write('Or the form: <span class="term-cmd">cd contact</span>', 'term-dim');
     },
     email() { this.contact(); },
+
+    // `suggest` on its own opens the suggestion box; `suggest <idea>` sends it from here,
+    // anonymously, through the same sender as the page (window.sendSuggestion in main.js).
+    suggest(a, raw) {
+      const idea = (raw || '').trim();
+      if (!idea) { this.cd('suggestions'); return; }
+      if (idea.length < 3) { write('suggest: write a few words, e.g. <span class="term-cmd">suggest add a dark mode to the 3D logo viewer</span>', 'term-err'); return; }
+      if (typeof window.sendSuggestion !== 'function') {
+        write('→ opening the suggestion box with your idea filled in …', 'term-accent');
+        setTimeout(function () { location.href = '/suggestions?idea=' + encodeURIComponent(idea.slice(0, 4000)); }, 250);
+        return;
+      }
+      write('dropping it in the box …', 'term-dim');
+      window.sendSuggestion({ idea: idea.slice(0, 4000), via: 'the terminal' }).then(
+        function () { write('✓ Sent. Thanks for the idea! (It went anonymously; <span class="term-cmd">cd suggestions</span> if you want to add your name or email.)', 'term-accent'); },
+        function (err) { write('suggest: ' + esc(err.message) + ' You can also use <span class="term-cmd">cd suggestions</span>.', 'term-err'); }
+      );
+    },
+    suggestion(a, raw) { this.suggest(a, raw); },
+    suggestions(a, raw) { this.suggest(a, raw); },
+    idea(a, raw) { this.suggest(a, raw); },
 
     theme(arg) {
       const name = (arg || '').toLowerCase();
@@ -321,7 +366,7 @@
       if (hits.length === 1) input.value = hits[0] + ' ';
       else if (hits.length > 1) { write(hits.join('   '), 'term-dim'); }
     } else if (/^(cd|open|goto)$/.test(parts[0])) {
-      const hits = PAGES.filter(p => p.startsWith((parts[1] || '').toLowerCase()));
+      const hits = PAGE_NAMES.filter(p => p.startsWith((parts[1] || '').toLowerCase()));
       if (hits.length === 1) input.value = parts[0] + ' ' + hits[0];
       else if (hits.length > 1) write(hits.join('   '), 'term-dim');
     } else if (parts[0] === 'theme') {
@@ -552,7 +597,8 @@
       out.dataset.greeted = '1';
       BANNER.forEach(l => write(esc(l), 'term-banner'));
       write(`Welcome — you found the terminal. ${ME.role}.`, 'term-accent');
-      write("Type <span class='term-cmd'>help</span> to get started.", 'term-dim');
+      gap();
+      COMMANDS.menu();
       gap();
     }
     setTimeout(() => { input.focus(); fitViewport(); }, 60);
@@ -585,12 +631,24 @@
     }
   });
 
-  // Click on a page link printed inside the terminal output
+  // Click (or Enter/Space on) a page link or a command printed in the terminal output.
+  // A command runs as if typed, so it shows up in the output and the history.
+  function activate(el) {
+    if (el.dataset.page) COMMANDS.cd(el.dataset.page);
+    else if (el.dataset.cmd) { run(el.dataset.cmd); input.focus(); }
+  }
   document.addEventListener('click', function (e) {
-    const link = e.target.closest('#terminal .term-link[data-page]');
-    if (!link) return;
+    const el = e.target.closest('#terminal .term-link[data-page], #terminal .term-run[data-cmd]');
+    if (!el) return;
     e.preventDefault();
-    COMMANDS.cd(link.dataset.page);
+    activate(el);
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const el = e.target.closest && e.target.closest('#terminal .term-link[data-page], #terminal .term-run[data-cmd]');
+    if (!el) return;
+    e.preventDefault();
+    activate(el);
   });
 
   // Optional footer launcher hook (added in index.html)

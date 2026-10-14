@@ -206,4 +206,90 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
+
+  // ── Suggestion box (/suggestions, and the terminal's `suggest <idea>`) ──
+  // Sends through the contact Worker, which requires a name and a valid email: a blank
+  // name goes out as "Anonymous" and a blank email as a no-reply address. The subject
+  // then reads "New message from <name> · suggestion".
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  window.sendSuggestion = async function (s) {
+    const fd = new FormData();
+    fd.set('name', (s.name || 'Anonymous').slice(0, 70) + ' · suggestion');
+    fd.set('email', s.email || 'no-reply@reachakash.com');
+    fd.set('message',
+      'Suggestion · ' + (s.topic || 'Something else') + '\n' +
+      'Sent from ' + (s.via || 'the suggestion box') + ' on reachakash.com' +
+      (s.email ? '' : '\n(No email given, so there is no reply address.)') +
+      '\n\n' + s.idea);
+    if (s.website) fd.set('website', s.website);
+    if (s.botcheck) fd.set('botcheck', s.botcheck);
+    const endpoint = (window.SITE_CONFIG && window.SITE_CONFIG.formEndpoint) || 'https://api.reachakash.com/contact';
+    const res = await fetch(endpoint, { method: 'POST', body: fd });
+    let data = {};
+    try { data = await res.json(); } catch (e) { /* handled below */ }
+    if (!res.ok || !data.success) throw new Error(data.error || 'Could not reach the server. Please try again in a minute.');
+  };
+
+  const sForm = document.getElementById('suggest-form');
+  if (sForm) {
+    const text   = document.getElementById('suggest-text');
+    const count  = document.getElementById('suggest-count');
+    const status = document.getElementById('suggest-status');
+    const btn    = document.getElementById('suggest-submit');
+    const thanks = document.getElementById('suggest-thanks');
+    const again  = document.getElementById('suggest-again');
+    const emailIn = document.getElementById('suggest-email');
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const say = (msg, isError) => { status.textContent = msg; status.classList.toggle('is-error', !!isError); };
+
+    // A ?idea=… link (the terminal uses one when it can't send directly) prefills the box.
+    const pre = new URLSearchParams(location.search).get('idea');
+    if (pre && !text.value) text.value = pre.slice(0, 4000);
+    const recount = () => { count.textContent = text.value.length; };
+    text.addEventListener('input', recount);
+    recount();
+
+    sForm.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const fd = new FormData(sForm);
+      const idea  = String(fd.get('message') || '').trim();
+      const email = String(fd.get('email') || '').trim();
+      if (idea.length < 3) { say('Write a few words first.', true); text.focus(); return; }
+      if (email && !EMAIL_RE.test(email)) { say("That email doesn't look right. Fix it, or leave it blank.", true); emailIn.focus(); return; }
+
+      btn.disabled = true;
+      btn.textContent = 'Dropping it in…';
+      say('');
+      try {
+        await window.sendSuggestion({
+          idea, email,
+          name: String(fd.get('name') || '').trim(),
+          topic: String(fd.get('topic') || 'Something else'),
+          website: fd.get('website'), botcheck: fd.get('botcheck')
+        });
+        const done = () => {
+          sForm.hidden = true;
+          sForm.classList.remove('is-dropping');
+          thanks.hidden = false;
+          thanks.focus();
+        };
+        if (reduced) done();
+        else { sForm.classList.add('is-dropping'); setTimeout(done, 720); }
+      } catch (err) {
+        say(err.message, true);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Drop it in the box';
+      }
+    });
+
+    again.addEventListener('click', function () {
+      sForm.reset();
+      recount();
+      say('');
+      thanks.hidden = true;
+      sForm.hidden = false;
+      text.focus();
+    });
+  }
 });

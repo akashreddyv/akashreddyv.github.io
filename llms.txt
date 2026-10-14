@@ -13,7 +13,7 @@
 - [Contact](https://reachakash.com/contact): Contact Akash Reddy via LinkedIn, Instagram, or the contact form. Located in Detroit, MI, USA.
 - [Referrals](https://reachakash.com/referrals): Referral codes and links of Akash Reddy (credit cards, investing and trading, payments, sending money to India, shopping and cash back, AI tools), with a disclosure that he earns a reward and links to official terms. Machine-readable copy: https://reachakash.com/referrals.json
 - [Services](https://reachakash.com/services): Services from Akash Reddy (Reach Akash) in Detroit, Michigan: custom software (including test data and workflow tools for teams that build and test hardware), custom AI agents, AI coaching (one-on-one or team) and website design starting at $499 for a fully functioning website. Contact: https://reachakash.com/contact
-- [Notes](https://reachakash.com/notes): Notes: writing on test data, manufacturing software and building tools with AI.
+- [Suggestions](https://reachakash.com/suggestions): Suggestion box: send Akash Reddy an idea for the site, a project, a service or a referral to add. Name and email are optional.
 
 ## Identity
 

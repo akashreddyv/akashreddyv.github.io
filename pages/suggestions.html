@@ -1,0 +1,69 @@
+<!-- pages/suggestions.html — the suggestion box. js/main.js sends it through the same Worker as the
+     contact form (SITE_CONFIG.formEndpoint); a blank name goes out as "Anonymous" and a blank email
+     as a no-reply address, so the Worker's required fields are always filled. The terminal's
+     `suggest <idea>` command sends through the same function. -->
+<div class="page-inner suggest-page">
+
+  <div class="page-header">
+    <p class="page-eyebrow">Suggestion box</p>
+    <h1 class="page-title">Got an idea? <em>Drop it in.</em></h1>
+    <p class="page-subtitle">Something for this site, a project you'd like to see, a referral I should add, or anything else. Your name is optional, and so is your email unless you'd like a reply.</p>
+  </div>
+
+  <div class="suggest-box" id="suggest-box">
+    <div class="suggest-slot" aria-hidden="true"></div>
+    <p class="suggest-slot-label" aria-hidden="true">Ideas go here</p>
+
+    <form id="suggest-form" class="suggest-card" action="https://api.reachakash.com/contact" method="POST" novalidate aria-label="Suggestion box">
+      <!-- Honeypots, as on the contact form: hidden from people, filled by bots, dropped by the Worker. -->
+      <input type="checkbox" name="botcheck" style="display:none;" tabindex="-1" aria-hidden="true"/>
+      <div class="suggest-trap" aria-hidden="true">
+        <label for="suggest-website">Website (leave this empty)</label>
+        <input type="text" id="suggest-website" name="website" tabindex="-1" autocomplete="off"/>
+      </div>
+
+      <fieldset class="suggest-topics">
+        <legend>What's it about?</legend>
+        <div class="suggest-chips">
+          <label class="suggest-chip"><input type="radio" name="topic" value="This website" checked/><span>This website</span></label>
+          <label class="suggest-chip"><input type="radio" name="topic" value="A project idea"/><span>A project idea</span></label>
+          <label class="suggest-chip"><input type="radio" name="topic" value="Services"/><span>Services</span></label>
+          <label class="suggest-chip"><input type="radio" name="topic" value="Referrals"/><span>Referrals</span></label>
+          <label class="suggest-chip"><input type="radio" name="topic" value="Something else"/><span>Something else</span></label>
+        </div>
+      </fieldset>
+
+      <div class="suggest-field">
+        <label for="suggest-text">Your suggestion</label>
+        <textarea id="suggest-text" name="message" rows="6" maxlength="4000" placeholder="It would be cool if…" required></textarea>
+        <span class="suggest-count" aria-hidden="true"><span id="suggest-count">0</span> / 4000</span>
+      </div>
+
+      <div class="suggest-row">
+        <div class="suggest-field">
+          <label for="suggest-name">Name <span class="suggest-opt">optional</span></label>
+          <input type="text" id="suggest-name" name="name" maxlength="70" autocomplete="name" placeholder="Leave blank to stay anonymous"/>
+        </div>
+        <div class="suggest-field">
+          <label for="suggest-email">Email <span class="suggest-opt">optional, for a reply</span></label>
+          <input type="email" id="suggest-email" name="email" maxlength="254" autocomplete="email" placeholder="you@example.com"/>
+        </div>
+      </div>
+
+      <p class="suggest-status" id="suggest-status" role="status" aria-live="polite"></p>
+
+      <div class="suggest-actions">
+        <button type="submit" class="btn btn-primary" id="suggest-submit">Drop it in the box</button>
+        <span class="suggest-hint">Or open the terminal and type <code>suggest your idea</code></span>
+      </div>
+    </form>
+
+    <div class="suggest-thanks" id="suggest-thanks" tabindex="-1" hidden>
+      <p class="suggest-thanks-mark" aria-hidden="true">✓</p>
+      <p class="suggest-thanks-title">In the box. Thank you.</p>
+      <p class="suggest-thanks-text">It's on its way to me. If you left an email, that's where any reply will go.</p>
+      <button type="button" class="btn btn-outline" id="suggest-again">Drop in another</button>
+    </div>
+  </div>
+
+</div>
