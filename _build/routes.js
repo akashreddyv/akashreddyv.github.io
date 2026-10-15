@@ -20,6 +20,22 @@
 
 const ORIGIN = 'https://reachakash.com';
 const url = (p) => ORIGIN + p;
+// Brand gallery images (images/brand/gallery/): [file, name, width, height]
+const GALLERY = [
+  ['cover.webp', 'reachAkash.com cover banner', 1500, 500],
+  ['logo-dark.webp', 'reachAkash.com logo on black', 900, 675],
+  ['logo-light.webp', 'reachAkash.com logo on white', 900, 675],
+  ['symbol.webp', 'reachAkash mark', 900, 675],
+  ['red-mark.webp', 'reachAkash red-only mark', 900, 675],
+  ['website-name.webp', 'reachAkash.com website name', 900, 675],
+  ['website-name-red.webp', 'reachAkash.com website name on red', 900, 675],
+  ['t-shirt.webp', 'reachAkash t-shirt', 900, 675],
+  ['polo.webp', 'reachAkash polo shirt', 900, 675],
+  ['cap.webp', 'reachAkash cap', 900, 675],
+  ['bumper-sticker.webp', 'reachAkash.com bumper sticker', 900, 675],
+  ['mug.webp', 'reachAkash.com mug', 900, 675],
+  ['business-cards.webp', 'reachAkash business cards', 900, 675]
+];
 const PHOTO = url('/images/home/vurenuka-akash-reddy-professional.jpg');
 const PORTRAIT = url('/images/home/akash-reddy-portrait.jpg');
 
@@ -323,31 +339,39 @@ const routes = [
   },
 
   {
-    slug: 'gallery', path: '/gallery', out: 'gallery.html', source: 'pages/gallery.html', nav: 'gallery',
-    title: 'Akash Reddy | Gallery',
-    description: 'Photos of Akash Reddy (Vurenuka Akash Reddy, V Akash Reddy), software developer based in Detroit, MI, originally from Hyderabad, India.',
+    slug: 'gallery', path: '/gallery', out: 'gallery.html', source: 'pages/gallery.html', nav: 'gallery', navGroup: 'about',
+    title: 'Gallery: reachAkash Logos, Merch & Photos | Reach Akash',
+    description: 'The reachAkash logo in every version, the brand on a t-shirt, polo, cap, bumper sticker, mug and business cards, and photos of Akash Reddy.',
     ogType: 'website',
-    ogTitle: 'Akash Reddy Photo Gallery',
-    ogDesc: 'Photo gallery of Vurenuka Akash Reddy (Akash Reddy, V Akash Reddy), software developer in Detroit, MI.',
+    ogTitle: 'reachAkash Gallery: Logos, Merch & Photos',
+    ogDesc: 'Every version of the reachAkash logo, the brand on merch, and photos of Akash Reddy.',
     jsonld: [
       {
         '@context': 'https://schema.org',
         '@type': 'ImageGallery',
-        name: 'Akash Reddy Photo Gallery',
-        description: 'Photos of Vurenuka Akash Reddy (Akash Reddy, V Akash Reddy), software developer in Detroit, MI, originally from Hyderabad, India.',
+        name: 'reachAkash Gallery',
+        description: 'Logos and brand mockups for reachAkash.com, and photos of Vurenuka Akash Reddy (Akash Reddy), software developer in Detroit, MI.',
         url: url('/gallery'),
         author: { '@type': 'Person', name: 'Vurenuka Akash Reddy', url: ORIGIN },
         image: [
+          ...GALLERY.map(([file, name, w, h]) => ({ '@type': 'ImageObject', contentUrl: url('/images/brand/gallery/' + file), name, width: w, height: h })),
           { '@type': 'ImageObject', contentUrl: PHOTO, name: 'Vurenuka Akash Reddy, Professional Portrait',
             description: 'Akash Reddy in professional attire outdoors, AI software developer at Molex, Detroit MI', width: 1200, height: 847 },
           { '@type': 'ImageObject', contentUrl: PORTRAIT, name: 'Akash Reddy Portrait',
             description: 'V Akash Reddy, candid outdoor portrait, smiling', width: 1200, height: 1600 }
         ]
       },
-      crumbs(['Gallery', '/gallery'])
+      crumbs(['About', '/about'], ['Gallery', '/gallery'])
     ],
-    sitemap: { changefreq: 'yearly', priority: '0.5' },
-    llms: null
+    sitemap: {
+      changefreq: 'monthly', priority: '0.6',
+      images: [
+        ...GALLERY.map(([file, name]) => [url('/images/brand/gallery/' + file), name]),
+        [PHOTO, 'Vurenuka Akash Reddy Professional Portrait'],
+        [PORTRAIT, 'Akash Reddy Portrait']
+      ]
+    },
+    llms: 'Gallery: the reachAkash logo in every version (cover banner, logo on black and on white, the mark, a red-only mark, the website name) and the brand on a t-shirt, polo, cap, bumper sticker, mug and business cards, plus photos of Akash Reddy.'
   },
 
   // ── Referral codes. Cards come from _build/data/referrals.json (see

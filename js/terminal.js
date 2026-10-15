@@ -49,7 +49,8 @@
   const PAGES = {
     home: '/', services: '/services', projects: '/projects', referrals: '/referrals', socials: '/socials',
     about: '/about', personal: '/personal', professional: '/professional', contact: '/contact',
-    suggestions: '/suggestions', brand: '/about#brand', logo: '/projects/logodesigns', gallery: '/gallery', privacy: '/privacy'
+    gallery: '/gallery', logos: '/gallery#logos', merch: '/gallery#merch', suggestions: '/suggestions',
+    'logo-viewer': '/projects/logodesigns', privacy: '/privacy'
   };
   const PAGE_NAMES = Object.keys(PAGES);
   // The opening menu: commands worth one click, so nobody has to type `help` first.

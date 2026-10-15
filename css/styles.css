@@ -1800,6 +1800,7 @@ footer p      { font-size: 13px; color: var(--muted); }
   .home-slideshow     { margin-bottom: 60px; }
 
   .about-cards        { grid-template-columns: 1fr 1fr; }
+  .about-cards > :last-child:nth-child(odd) { grid-column: 1 / -1; }
 
   footer {
     flex-direction: column;
@@ -2037,7 +2038,7 @@ body.term-active { overflow: hidden; }
 ---------------------------------------------------------------- */
 .about-cards {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 16px;
   margin-top: 48px;
 }

@@ -47,8 +47,68 @@
   </url>
   <url>
     <loc>https://reachakash.com/gallery</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <image:image>
+      <image:loc>https://reachakash.com/images/brand/gallery/cover.webp</image:loc>
+      <image:title>reachAkash.com cover banner</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://reachakash.com/images/brand/gallery/logo-dark.webp</image:loc>
+      <image:title>reachAkash.com logo on black</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://reachakash.com/images/brand/gallery/logo-light.webp</image:loc>
+      <image:title>reachAkash.com logo on white</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://reachakash.com/images/brand/gallery/symbol.webp</image:loc>
+      <image:title>reachAkash mark</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://reachakash.com/images/brand/gallery/red-mark.webp</image:loc>
+      <image:title>reachAkash red-only mark</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://reachakash.com/images/brand/gallery/website-name.webp</image:loc>
+      <image:title>reachAkash.com website name</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://reachakash.com/images/brand/gallery/website-name-red.webp</image:loc>
+      <image:title>reachAkash.com website name on red</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://reachakash.com/images/brand/gallery/t-shirt.webp</image:loc>
+      <image:title>reachAkash t-shirt</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://reachakash.com/images/brand/gallery/polo.webp</image:loc>
+      <image:title>reachAkash polo shirt</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://reachakash.com/images/brand/gallery/cap.webp</image:loc>
+      <image:title>reachAkash cap</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://reachakash.com/images/brand/gallery/bumper-sticker.webp</image:loc>
+      <image:title>reachAkash.com bumper sticker</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://reachakash.com/images/brand/gallery/mug.webp</image:loc>
+      <image:title>reachAkash.com mug</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://reachakash.com/images/brand/gallery/business-cards.webp</image:loc>
+      <image:title>reachAkash business cards</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://reachakash.com/images/home/vurenuka-akash-reddy-professional.jpg</image:loc>
+      <image:title>Vurenuka Akash Reddy Professional Portrait</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://reachakash.com/images/home/akash-reddy-portrait.jpg</image:loc>
+      <image:title>Akash Reddy Portrait</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://reachakash.com/referrals</loc>
