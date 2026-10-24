@@ -56,11 +56,23 @@
   // The opening menu: commands worth one click, so nobody has to type `help` first.
   const QUICK = ['whoami', 'work', 'projects', 'skills', 'socials', 'suggest', 'theme', 'play', 'matrix', 'help'];
 
-  // The current brand accent, read from the theme tokens (CSS custom properties).
-  function accent() {
-    return getComputedStyle(document.body).getPropertyValue('--accent').trim() || '#FFFFFF';
+  // What `matrix` and `play` draw with on their dark canvases: --term-fx in css/styles.css,
+  // which stays light in every theme (the page accent is black in light mode).
+  function fxColor() {
+    return getComputedStyle(term || document.body).getPropertyValue('--term-fx').trim() || '#FFFFFF';
   }
   const THEMES = ['dark', 'light', 'retro', 'space'];
+  function currentTheme() {
+    const cur = document.documentElement.className.match(/\btheme-(\w+)/);
+    return cur && THEMES.includes(cur[1]) ? cur[1] : 'dark';
+  }
+  // The themes as one-click choices (each runs `theme <name>`), with the current one ticked.
+  function themeChoices() {
+    const cur = currentTheme();
+    write(THEMES.map(t => t === cur
+      ? `<span class="term-run is-current" data-cmd="theme ${t}" role="button" tabindex="0" aria-current="true">${t}</span>`
+      : `<span class="term-run" data-cmd="theme ${t}" role="button" tabindex="0">${t}</span>`).join(''), 'term-menu');
+  }
 
   const BANNER = [
     '    _    _  __     _    ____  _   _ ',
@@ -157,7 +169,7 @@
         ['socials',            'socials',  'find me online'],
         ['contact',            'contact',  'how to reach me'],
         ['suggest [idea]',     'suggest',  'send an idea (on its own: open the suggestion box)'],
-        ['theme &lt;name&gt;',       'theme',    'dark | light | retro | space'],
+        ['theme &lt;name&gt;',       'theme',    'dark | light | retro | space (click to pick one)'],
         ['banner',             'banner',   'show the ASCII banner'],
         ['play',               'play',     'shoot down the 404s 👾'],
         ['matrix',             'matrix',   'enter the matrix 🟢'],
@@ -272,15 +284,16 @@
     suggestions(a, raw) { this.suggest(a, raw); },
     idea(a, raw) { this.suggest(a, raw); },
 
+    // `theme` on its own lists the themes to click; `theme <name>` (typed or clicked) switches.
     theme(arg) {
       const name = (arg || '').toLowerCase();
       if (!name) {
-        const cur = document.documentElement.className.match(/theme-(\w+)/);
-        write('current theme: ' + (cur ? cur[1] : 'dark'));
-        write('options: ' + THEMES.join(', '), 'term-dim');
+        write(`current theme: <span class="term-accent">${currentTheme()}</span>`);
+        themeChoices();
+        write('Click one, or type <span class="term-cmd">theme &lt;name&gt;</span>.', 'term-dim');
         return;
       }
-      if (!THEMES.includes(name)) { write(`theme: unknown "${esc(arg)}". Try: ${THEMES.join(', ')}`, 'term-err'); return; }
+      if (!THEMES.includes(name)) { write(`theme: unknown "${esc(arg)}". Pick one:`, 'term-err'); themeChoices(); return; }
       if (typeof window.setSiteTheme === 'function') {
         window.setSiteTheme(name);
       } else {
@@ -289,6 +302,7 @@
         try { localStorage.setItem('theme', name); localStorage.removeItem('retro-theme'); } catch (e) {}
       }
       write(`theme set to <span class="term-accent">${name}</span> ✨`);
+      themeChoices();
     },
 
     banner() { BANNER.forEach(l => write(esc(l), 'term-banner')); write(`${ME.role}`, 'term-accent'); },
@@ -380,7 +394,7 @@
   // ── Matrix rain easter egg ──
   function startMatrix() {
     if (matrixStop) return;
-    const ACC = accent();
+    const ACC = fxColor();
     const cv = document.createElement('canvas');
     cv.id = 'term-matrix';
     document.body.appendChild(cv);
@@ -426,7 +440,7 @@
   // ── Mini-game: shoot down the 404s 👾 ──
   function startGame() {
     if (gameStop) return;
-    const ACC = accent();
+    const ACC = fxColor();
     input.blur();
     const cv = document.createElement('canvas');
     cv.id = 'term-game';

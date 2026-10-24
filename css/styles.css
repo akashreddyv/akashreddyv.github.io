@@ -1255,6 +1255,8 @@ footer p      { font-size: 13px; color: var(--muted); }
 .theme-retro body input:focus,
 .theme-retro body textarea:focus { outline: 1px dotted #000080; outline-offset: 2px; box-shadow: none; }
 .theme-retro body label { font-family: 'Arial', sans-serif; color: #000000; font-size: 12px; font-weight: bold; }
+/* …but the terminal's input line stays a bare DOS prompt, not a white form field */
+.theme-retro body #terminal .term-input { background: none; border: none; color: var(--term-strong); outline: none; }
 
 /* ── CONTACT ── */
 .theme-retro body .contact-list a  { color: #000080; font-family: 'Arial', sans-serif; }
@@ -1868,7 +1870,30 @@ body.term-active #term-launcher { transform: translateY(160%); opacity: 0; point
 /* Retro's nav colour is a navy title bar; give the launcher the Win95 grey instead */
 .theme-retro body #term-launcher { background: #c0c0c0; border: 2px outset #ffffff; border-radius: 0; }
 
+/* The terminal's own colours, so text always reads on its window in every theme
+   (the page tokens alone gave light mode black text on the dark window).
+   Dark and space: dark window, theme accent. Light: light window, dark text.
+   Retro: an MS-DOS prompt. --term-fx is what `matrix` and `play` draw with on their dark canvases. */
 #terminal {
+  --term-overlay:    rgba(0, 0, 0, 0.55);
+  --term-shadow:     rgba(0, 0, 0, 0.65);
+  --term-bg:         #0b0d10;
+  --term-bar:        #15181c;
+  --term-rule:       rgba(255, 255, 255, 0.06);
+  --term-title:      #8a929b;
+  --term-text:       #cfd6dd;
+  --term-strong:     #f0ece4;
+  --term-muted:      #8a929b;
+  --term-dim:        #6c747d;
+  --term-echo:       #9aa3ac;
+  --term-err:        #ff7b72;
+  --term-accent:     var(--accent);
+  --term-accent-rgb: var(--accent-rgb);
+  --term-hover:      #ffffff;
+  --term-kbd-bg:     rgba(255, 255, 255, 0.08);
+  --term-kbd-line:   rgba(255, 255, 255, 0.14);
+  --term-fx:         var(--accent);
+
   position: fixed;
   inset: 0;
   z-index: 1000;
@@ -1876,10 +1901,49 @@ body.term-active #term-launcher { transform: translateY(160%); opacity: 0; point
   align-items: center;
   justify-content: center;
   padding: 24px;
-  background: rgba(0,0,0,0.55);
+  background: var(--term-overlay);
   backdrop-filter: blur(3px);
   animation: termFade 0.18s ease;
 }
+.theme-light #terminal {
+  --term-overlay:    rgba(24, 26, 41, 0.35);
+  --term-shadow:     rgba(24, 26, 41, 0.28);
+  --term-bg:         #FFFFFF;
+  --term-bar:        #F1EEE8;
+  --term-rule:       rgba(0, 0, 0, 0.08);
+  --term-title:      #5F5B55;   /* 6.1:1 on the bar */
+  --term-text:       var(--brand-navy);
+  --term-strong:     #000000;
+  --term-muted:      #5F5B55;   /* 6.7:1 */
+  --term-dim:        #6B675F;   /* 5.6:1 */
+  --term-echo:       #5F5B55;
+  --term-err:        #B42318;   /* 6.6:1 */
+  --term-accent:     #000000;
+  --term-accent-rgb: 0, 0, 0;
+  --term-hover:      #000000;
+  --term-kbd-bg:     rgba(0, 0, 0, 0.05);
+  --term-kbd-line:   rgba(0, 0, 0, 0.16);
+  --term-fx:         #FFFFFF;
+}
+.theme-retro #terminal {
+  --term-bg:         #000000;
+  --term-bar:        #000080;   /* Win95 title bar */
+  --term-rule:       #808080;
+  --term-title:      #FFFFFF;
+  --term-text:       #C0C0C0;
+  --term-strong:     #FFFFFF;
+  --term-muted:      #A8A8A8;
+  --term-dim:        #A8A8A8;
+  --term-echo:       #A8A8A8;
+  --term-err:        #FF5555;
+  --term-accent:     #FFFFFF;
+  --term-accent-rgb: 255, 255, 255;
+  --term-hover:      #FFFF55;
+  --term-kbd-bg:     #000000;
+  --term-kbd-line:   #808080;
+  --term-fx:         #FFFFFF;
+}
+#terminal :focus-visible { outline-color: var(--term-accent); }
 #terminal.open { display: flex; }
 body.term-active { overflow: hidden; }
 @keyframes termFade { from { opacity: 0; } to { opacity: 1; } }
@@ -1889,11 +1953,11 @@ body.term-active { overflow: hidden; }
   height: min(560px, 82vh);
   display: flex;
   flex-direction: column;
-  background: #0b0d10;
-  border: 1px solid rgba(var(--accent-rgb), 0.28);
+  background: var(--term-bg);
+  border: 1px solid rgba(var(--term-accent-rgb), 0.28);
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 24px 70px rgba(0,0,0,0.65);
+  box-shadow: 0 24px 70px var(--term-shadow);
   animation: termPop 0.22s cubic-bezier(0.2, 0.9, 0.3, 1.2);
 }
 @keyframes termPop { from { transform: translateY(14px) scale(0.98); opacity: 0; } to { transform: none; opacity: 1; } }
@@ -1903,8 +1967,8 @@ body.term-active { overflow: hidden; }
   align-items: center;
   gap: 8px;
   padding: 10px 14px;
-  background: #15181c;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
+  background: var(--term-bar);
+  border-bottom: 1px solid var(--term-rule);
   flex-shrink: 0;
 }
 .term-dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
@@ -1915,19 +1979,19 @@ body.term-active { overflow: hidden; }
   margin-left: 10px;
   font-family: 'Courier New', monospace;
   font-size: 12.5px;
-  color: #8a929b;
+  color: var(--term-title);
   letter-spacing: 0.02em;
 }
 .term-close {
   margin-left: auto;
   background: none;
   border: none;
-  color: #6c747d;
+  color: var(--term-title);
   font-size: 15px;
   cursor: pointer;
   line-height: 1;
 }
-.term-close:hover { color: var(--accent); }
+.term-close:hover { color: var(--term-hover); }
 
 .term-body {
   flex: 1;
@@ -1936,65 +2000,69 @@ body.term-active { overflow: hidden; }
   font-family: 'Courier New', ui-monospace, monospace;
   font-size: 14px;
   line-height: 1.65;
-  color: #cfd6dd;
+  color: var(--term-text);
   outline: none;
 }
 .term-body::-webkit-scrollbar { width: 8px; }
-.term-body::-webkit-scrollbar-thumb { background: rgba(var(--accent-rgb), 0.25); border-radius: 4px; }
+.term-body::-webkit-scrollbar-thumb { background: rgba(var(--term-accent-rgb), 0.25); border-radius: 4px; }
 
 .term-line { white-space: pre-wrap; word-break: break-word; }
-.term-banner { color: var(--accent); white-space: pre; font-size: 12px; line-height: 1.15; letter-spacing: 0; }
-.term-accent { color: var(--accent); }
-.term-dim    { color: #6c747d; }
-.term-err    { color: #ff7b72; }
-.term-head   { color: #cfd6dd; margin-bottom: 4px; text-decoration: underline; text-underline-offset: 3px; }
-.term-echo   { color: #9aa3ac; margin-top: 6px; }
-.term-prompt-sm { color: var(--accent); }
+.term-banner { color: var(--term-accent); white-space: pre; font-size: 12px; line-height: 1.15; letter-spacing: 0; }
+.term-accent { color: var(--term-accent); }
+.term-dim    { color: var(--term-dim); }
+.term-err    { color: var(--term-err); }
+.term-head   { color: var(--term-text); margin-bottom: 4px; text-decoration: underline; text-underline-offset: 3px; }
+.term-echo   { color: var(--term-echo); margin-top: 6px; }
+.term-prompt-sm { color: var(--term-accent); }
 
 .term-help-row { display: flex; gap: 14px; }
-.term-cmd     { color: var(--accent); }
-.term-cmddesc { color: #8a929b; }
+.term-cmd     { color: var(--term-accent); }
+.term-cmddesc { color: var(--term-muted); }
 .term-help-row .term-cmd { min-width: 150px; display: inline-block; }
 .term-kbd {
   font-family: 'Courier New', monospace;
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.14);
+  background: var(--term-kbd-bg);
+  border: 1px solid var(--term-kbd-line);
   border-radius: 4px;
   padding: 0 5px;
-  color: #cfd6dd;
+  color: var(--term-text);
   font-size: 12px;
 }
 .term-tag {
   display: inline-block;
-  background: rgba(var(--accent-rgb), 0.1);
-  border: 1px solid rgba(var(--accent-rgb), 0.28);
+  background: rgba(var(--term-accent-rgb), 0.1);
+  border: 1px solid rgba(var(--term-accent-rgb), 0.28);
   border-radius: 3px;
   padding: 1px 8px;
   margin: 2px 3px 2px 0;
-  color: var(--accent);
+  color: var(--term-accent);
   font-size: 12.5px;
 }
-.term-link { color: var(--accent); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
-.term-link:hover { color: #fff; }
-/* Clickable commands (the opening menu and the help list), so nobody has to type `help` first */
-.term-run { color: var(--accent); cursor: pointer; border-bottom: 1px dashed currentColor; }
-.term-run:hover, .term-run:focus-visible { color: #fff; outline: none; }
+.term-link { color: var(--term-accent); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+/* Clickable commands (the opening menu, the help list, the theme choices), so nobody has to type */
+.term-run { color: var(--term-accent); cursor: pointer; border-bottom: 1px dashed currentColor; }
+/* Hover tints the background as well as the text, since in light mode the accent is already black */
+.term-link:hover, .term-link:focus-visible,
+.term-run:hover, .term-run:focus-visible { color: var(--term-hover); background: rgba(var(--term-accent-rgb), 0.12); border-radius: 3px; outline: none; }
+/* The theme you're on, in the `theme` choices */
+.term-run.is-current { border-bottom-style: solid; font-weight: 700; }
+.term-run.is-current::before { content: '✓ '; }
 .term-menu { display: flex; flex-wrap: wrap; gap: 6px 18px; }
-.term-href { color: var(--accent); text-decoration: none; border-bottom: 1px dotted rgba(var(--accent-rgb), 0.5); }
-.term-href:hover { color: #fff; }
+.term-href { color: var(--term-accent); text-decoration: none; border-bottom: 1px dotted rgba(var(--term-accent-rgb), 0.5); }
+.term-href:hover { color: var(--term-hover); background: rgba(var(--term-accent-rgb), 0.12); }
 
 .term-inputline {
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 10px 18px 14px;
-  border-top: 1px solid rgba(255,255,255,0.06);
+  border-top: 1px solid var(--term-rule);
   flex-shrink: 0;
 }
 .term-prompt {
   font-family: 'Courier New', monospace;
   font-size: 14px;
-  color: var(--accent);
+  color: var(--term-accent);
   white-space: nowrap;
 }
 .term-input {
@@ -2002,10 +2070,10 @@ body.term-active { overflow: hidden; }
   background: none;
   border: none;
   outline: none;
-  color: #f0ece4;
+  color: var(--term-strong);
   font-family: 'Courier New', ui-monospace, monospace;
   font-size: 14px;
-  caret-color: var(--accent);
+  caret-color: var(--term-accent);
 }
 
 #term-matrix { position: fixed; inset: 0; z-index: 1100; background: #000; cursor: pointer; }
