@@ -1,0 +1,21 @@
+{
+  "_readme": "Photos of Akash Reddy for the Photos section of /gallery, newest first. Each one also goes into the Gallery page's ImageGallery JSON-LD, the Person entity's images and the image sitemap, so search engines tie the photo to his name. Fields: file (site path), width and height (the real pixel size; the build checks), title (short, name first), alt (what the photo shows, with his name), caption (shown under the photo). To add photos: drop them in photos-inbox/ (git-ignored, never published) and ask Claude to add them. They get resized to 1600px on the long side, stripped of camera and GPS data, tagged with node _build/photo-meta.js, saved in images/photos/ with a name-first filename, and listed here.",
+  "photos": [
+    {
+      "file": "/images/home/vurenuka-akash-reddy-professional.jpg",
+      "width": 1200,
+      "height": 847,
+      "title": "Vurenuka Akash Reddy, professional portrait",
+      "alt": "Vurenuka Akash Reddy (Akash Reddy), AI software developer, in professional attire outdoors in Detroit, MI",
+      "caption": "Akash Reddy · Professional · Detroit, MI"
+    },
+    {
+      "file": "/images/home/akash-reddy-portrait.jpg",
+      "width": 1200,
+      "height": 1600,
+      "title": "Akash Reddy, portrait",
+      "alt": "Akash Reddy (V Akash Reddy) smiling outdoors, candid portrait",
+      "caption": "V Akash Reddy · Portrait"
+    }
+  ]
+}

@@ -2110,6 +2110,16 @@ body.term-active { overflow: hidden; }
   gap: 16px;
   margin-top: 48px;
 }
+/* About: the name and bio beside a portrait; the portrait goes under the text on phones */
+.about-hero { display: grid; grid-template-columns: minmax(0, 1fr) 240px; gap: 48px; align-items: center; }
+.about-hero .page-header { margin-bottom: 0; }
+.about-photo { margin: 0; }
+.about-photo img { display: block; width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--border); }
+.about-photo figcaption { margin-top: 8px; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+@media (max-width: 760px) {
+  .about-hero { grid-template-columns: 1fr; gap: 24px; }
+  .about-photo { max-width: 220px; }
+}
 /* Repeated here, after the base rule: the earlier breakpoint rules lose to it in source order */
 @media (max-width: 900px) { .about-cards { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 480px) { .about-cards { grid-template-columns: 1fr; } }
@@ -2154,6 +2164,12 @@ a.project-card { display: block; color: inherit; text-decoration: none; }
 
 /* Brand gallery (About page, #brand) */
 .brand-gallery { margin-top: 88px; scroll-margin-top: calc(var(--nav-h) + 16px); }
+.brand-gallery-first { margin-top: 48px; }
+/* A group inside a section (the merch shots inside Logos) */
+.brand-gallery-group { margin-top: 56px; scroll-margin-top: calc(var(--nav-h) + 16px); }
+.brand-gallery-sub { font-family: var(--font-display); font-size: clamp(20px, 2.4vw, 26px); font-weight: 700; color: var(--white); line-height: 1.2; margin-bottom: 8px; }
+.gallery-item a { display: block; }
+.brand-gallery .gallery-grid { margin-top: 0; }
 .brand-gallery-title { font-family: var(--font-display); font-size: clamp(26px, 3.4vw, 38px); font-weight: 800; color: var(--white); line-height: 1.15; margin-bottom: 10px; }
 .brand-gallery-intro { font-size: 15px; line-height: 1.75; color: var(--muted); max-width: 640px; margin-bottom: 32px; }
 .brand-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }

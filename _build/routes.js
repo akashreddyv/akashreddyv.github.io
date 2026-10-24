@@ -39,6 +39,28 @@ const GALLERY = [
 const PHOTO = url('/images/home/vurenuka-akash-reddy-professional.jpg');
 const PORTRAIT = url('/images/home/akash-reddy-portrait.jpg');
 
+// Photos of Akash (_build/data/photos.json): shown on /gallery, and described everywhere as
+// images *about* the Person entity, with a credit line (no creator or copyright claim).
+const PHOTOS = require('./data/photos.json').photos;
+const CREDIT = 'Akash Reddy (reachakash.com)';
+const photoObject = (p, extra = {}) => ({
+  '@type': 'ImageObject',
+  contentUrl: url(p.file),
+  url: url(p.file),
+  name: p.title,
+  caption: p.alt,
+  width: p.width,
+  height: p.height,
+  creditText: CREDIT,
+  about: { '@id': url('/#person') },
+  ...extra
+});
+const photoByFile = (file) => {
+  const p = PHOTOS.find((x) => x.file === file);
+  if (!p) throw new Error(`${file} is not in _build/data/photos.json`);
+  return p;
+};
+
 const SAME_AS = [
   'https://www.linkedin.com/in/akashreddyv/',
   'https://github.com/akashreddyv',
@@ -78,7 +100,7 @@ const PERSON = {
   additionalName: 'Vurenuka',
   alternateName: ['Akash Reddy', 'Reddy Akash', 'V Akash Reddy', 'V Akash', 'Akash', 'Reach Akash', 'Vurenuka', 'Reddy'],
   url: ORIGIN,
-  image: [PHOTO, PORTRAIT],
+  image: PHOTOS.map((p) => photoObject(p)),
   jobTitle: 'AI Software Developer',
   worksFor: { '@type': 'Organization', name: 'Molex', url: 'https://www.molex.com' },
   alumniOf: [
@@ -162,7 +184,7 @@ const routes = [
         '@id': url('/#webpage'),
         url: url('/'),
         name: 'Akash Reddy (Reach Akash) | AI Software Developer',
-        primaryImageOfPage: { '@type': 'ImageObject', url: PHOTO }
+        primaryImageOfPage: photoObject(photoByFile('/images/home/vurenuka-akash-reddy-professional.jpg'), { representativeOfPage: true })
       },
       BRAND,
       PERSON
@@ -199,12 +221,13 @@ const routes = [
         '@type': 'ProfilePage',
         url: url('/about'),
         name: 'About Akash Reddy (V Akash Reddy)',
-        mainEntity: { '@id': url('/#person') }
+        mainEntity: { '@id': url('/#person') },
+        primaryImageOfPage: photoObject(photoByFile('/images/home/akash-reddy-portrait.jpg'), { representativeOfPage: true })
       },
       PERSON,
       crumbs(['About', '/about'])
     ],
-    sitemap: { changefreq: 'monthly', priority: '0.9' },
+    sitemap: { changefreq: 'monthly', priority: '0.9', images: [[PORTRAIT, 'Akash Reddy Portrait']] },
     llms: 'About Akash Reddy (V Akash Reddy): short bio, with links to his personal background, professional history, projects and social profiles.'
   },
 
@@ -345,38 +368,36 @@ const routes = [
 
   {
     slug: 'gallery', path: '/gallery', out: 'gallery.html', source: 'pages/gallery.html', nav: 'gallery',
-    title: 'Gallery: reachAkash Logos, Merch & Photos | Reach Akash',
-    description: 'The reachAkash logo in every version, the brand on a t-shirt, polo, cap, bumper sticker, mug and business cards, and photos of Akash Reddy.',
+    title: 'Akash Reddy Photos & reachAkash Logos | Gallery',
+    description: 'Photos of Vurenuka Akash Reddy (Akash Reddy), software developer in Detroit, MI, and every version of the reachAkash logo, including on merch.',
     ogType: 'website',
-    ogTitle: 'reachAkash Gallery: Logos, Merch & Photos',
-    ogDesc: 'Every version of the reachAkash logo, the brand on merch, and photos of Akash Reddy.',
+    ogTitle: 'Akash Reddy: Photos & Logos',
+    ogDesc: 'Photos of Akash Reddy, and every version of the reachAkash logo.',
     jsonld: [
       {
         '@context': 'https://schema.org',
         '@type': 'ImageGallery',
-        name: 'reachAkash Gallery',
-        description: 'Logos and brand mockups for reachAkash.com, and photos of Vurenuka Akash Reddy (Akash Reddy), software developer in Detroit, MI.',
+        '@id': url('/gallery#gallery'),
+        name: 'Akash Reddy: photos and logos',
+        description: 'Photos of Vurenuka Akash Reddy (Akash Reddy), software developer in Detroit, MI, and the reachAkash logos and brand mockups.',
         url: url('/gallery'),
-        author: { '@type': 'Person', name: 'Vurenuka Akash Reddy', url: ORIGIN },
+        about: { '@id': url('/#person') },
+        author: { '@id': url('/#person') },
         image: [
-          ...GALLERY.map(([file, name, w, h]) => ({ '@type': 'ImageObject', contentUrl: url('/images/brand/gallery/' + file), name, width: w, height: h })),
-          { '@type': 'ImageObject', contentUrl: PHOTO, name: 'Vurenuka Akash Reddy, Professional Portrait',
-            description: 'Akash Reddy in professional attire outdoors, AI software developer at Molex, Detroit MI', width: 1200, height: 847 },
-          { '@type': 'ImageObject', contentUrl: PORTRAIT, name: 'Akash Reddy Portrait',
-            description: 'V Akash Reddy, candid outdoor portrait, smiling', width: 1200, height: 1600 }
+          ...PHOTOS.map((p) => photoObject(p)),
+          ...GALLERY.map(([file, name, w, h]) => ({ '@type': 'ImageObject', contentUrl: url('/images/brand/gallery/' + file), name, width: w, height: h, creditText: CREDIT }))
         ]
       },
       crumbs(['Gallery', '/gallery'])
     ],
     sitemap: {
-      changefreq: 'monthly', priority: '0.6',
+      changefreq: 'monthly', priority: '0.7',
       images: [
-        ...GALLERY.map(([file, name]) => [url('/images/brand/gallery/' + file), name]),
-        [PHOTO, 'Vurenuka Akash Reddy Professional Portrait'],
-        [PORTRAIT, 'Akash Reddy Portrait']
+        ...PHOTOS.map((p) => [url(p.file), p.title]),
+        ...GALLERY.map(([file, name]) => [url('/images/brand/gallery/' + file), name])
       ]
     },
-    llms: 'Gallery: the reachAkash logo in every version (cover banner, logo on black and on white, the mark, a red-only mark, the website name) and the brand on a t-shirt, polo, cap, bumper sticker, mug and business cards, plus photos of Akash Reddy.'
+    llms: 'Gallery: photos of Akash Reddy (Vurenuka Akash Reddy), and the reachAkash logo in every version (cover banner, logo on black and on white, the mark, a red-only mark, the website name), including on a t-shirt, polo, cap, bumper sticker, mug and business cards.'
   },
 
   // ── Referral codes. Cards come from _build/data/referrals.json (see
