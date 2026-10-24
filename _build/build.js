@@ -9,9 +9,9 @@
             _build/data/referrals.json (via _build/referrals.js),
             js/site-config.js (CTA text/links, same rules as the browser)
    Outputs: one HTML file per route at the repo root (GitHub Pages serves
-            /about from about.html with a 200), 404.html, sitemap.xml,
-            llms.txt, referrals.json. Outputs are committed; edit the
-            inputs, never them.
+            /about from about.html with a 200), one page per referral offer
+            and category in referrals/, 404.html, sitemap.xml, llms.txt,
+            referrals.json. Outputs are committed; edit the inputs, never them.
    ============================================================ */
 'use strict';
 
@@ -100,8 +100,17 @@ for (const e of REF.live) {
   if (e.logo && !fs.existsSync(path.join(ROOT, e.logo))) throw new Error(`referrals.json "${e.id}": logo file ${e.logo} does not exist`);
 }
 
+// Every page: the hand-written routes plus one per referral offer and category
+// (those carry their HTML in `content` instead of a pages/ partial).
+const ALL = [...routes, ...referrals.pages(REF, site.origin)];
+const seen = new Set();
+for (const r of ALL) {
+  if (seen.has(r.out)) throw new Error(`two pages write ${r.out}`);
+  seen.add(r.out);
+}
+
 function renderPage(route) {
-  const source = read(route.source)
+  const source = (route.content != null ? route.content : read(route.source))
     .replace(/<script[\s\S]*?<\/script>/gi, '');           // partials never shipped scripts
 
   const content = fill(source, {
@@ -123,7 +132,7 @@ function renderPage(route) {
   let headExtra = route.headExtra || '';
   if (route.notFound) {
     // Old links sometimes add a trailing slash (/about/). Send known routes home.
-    const known = routes.filter((r) => r.path && r.path !== '/').map((r) => r.path);
+    const known = ALL.filter((r) => r.path && r.path !== '/').map((r) => r.path);
     headExtra += [
       '  <script>',
       `    (function () { var known = ${JSON.stringify(known)};`,
@@ -133,8 +142,16 @@ function renderPage(route) {
     ].join('\n') + '\n';
   }
 
+  // /referrals also lists every offer page as an ItemList.
+  let ld = route.slug === 'referrals'
+    ? [...route.jsonld, { '@context': 'https://schema.org', ...referrals.itemList(REF.live, site.origin) }]
+    : route.jsonld;
+  if (route.faq) ld = [...ld, faqJsonLd(content, route)];
+
   let html = fill(template, {
-    generatedNote: generatedNote(['_build/template.html', '_build/routes.js', route.source]),
+    generatedNote: generatedNote(route.source
+      ? ['_build/template.html', '_build/routes.js', route.source]
+      : ['_build/template.html', '_build/data/referrals.json', '_build/referrals.js']),
     title: escAttr(route.title),
     description: escAttr(route.description),
     robotsTag: noindex ? '  <meta name="robots" content="noindex">\n' : '',
@@ -149,7 +166,7 @@ function renderPage(route) {
       ? '  <meta property="profile:first_name" content="Akash">\n  <meta property="profile:last_name"  content="Reddy">\n'
       : '',
     headExtra,
-    jsonld: jsonLd(route.faq ? [...route.jsonld, faqJsonLd(content, route)] : route.jsonld),
+    jsonld: jsonLd(ld),
     slug: route.slug,
     content,
     year: YEAR,
@@ -158,9 +175,9 @@ function renderPage(route) {
     logoHeader: LOGO_HEADER
   });
 
-  // Mark the current page in the nav.
+  // Mark the current page in the nav ("true" rather than "page" on pages inside a section).
   if (route.nav) {
-    html = html.replace(`data-nav="${route.nav}"`, `data-nav="${route.nav}" aria-current="page"`);
+    html = html.replace(`data-nav="${route.nav}"`, `data-nav="${route.nav}" aria-current="${route.navCurrent || 'page'}"`);
   }
   if (route.navGroup) {
     html = html.replace(`<summary data-nav-group="${route.navGroup}">`,
@@ -191,12 +208,14 @@ function renderRedirect(route) {
 }
 
 function renderSitemap() {
-  const entries = routes
+  const entries = ALL
     .filter((r) => r.path && !r.draft && !r.redirectTo && !r.notFound && r.sitemap)
     .map((r) => {
       const lines = [
         '  <url>',
         `    <loc>${site.origin}${r.path}</loc>`,
+        // Only where the date is real (referral pages: the day the offer was last checked).
+        ...(r.sitemap.lastmod ? [`    <lastmod>${r.sitemap.lastmod}</lastmod>`] : []),
         `    <changefreq>${r.sitemap.changefreq}</changefreq>`,
         `    <priority>${r.sitemap.priority}</priority>`
       ];
@@ -226,8 +245,12 @@ function renderLlms() {
   for (const [heading, items] of llms.sections) out.push('', `## ${heading}`, '', ...items.map((i) => `- ${i}`));
   if (REF.live.length) {
     out.push('', '## Referral codes', '',
-      `Akash Reddy earns a reward when people sign up through these. Details, disclosure and official terms: ${site.origin}/referrals`, '',
-      ...referrals.llmsLines(REF).map((i) => `- ${i}`));
+      `Akash Reddy's referral codes and links, each with its own page (code, what you get, steps, official terms), last checked ${REF.updated}. ` +
+      `He earns a reward when people sign up through them. All of them: ${site.origin}/referrals. Machine-readable: ${site.origin}/referrals.json`, '',
+      '### By category', '',
+      ...referrals.llmsCategories(REF, site.origin).map((i) => `- ${i}`), '',
+      '### Every offer', '',
+      ...referrals.llmsLines(REF, site.origin).map((i) => `- ${i}`));
   }
   // llms.txt must open with its H1, so the generated notice goes at the end.
   out.push('', generatedNote(['_build/routes.js', '_build/data/referrals.json']), '');
@@ -236,8 +259,15 @@ function renderLlms() {
 
 // ── Build everything in memory ───────────────────────────────────
 const outputs = new Map();
-for (const route of routes) {
+for (const route of ALL) {
   outputs.set(route.out, route.redirectTo ? renderRedirect(route) : renderPage(route));
+}
+// A referrals/ page whose offer was unpublished would otherwise linger, live and stale.
+const refDir = path.join(ROOT, 'referrals');
+if (fs.existsSync(refDir)) {
+  for (const f of fs.readdirSync(refDir)) {
+    if (!outputs.has(`referrals/${f}`)) warnings.push(`referrals/${f} is no longer generated; delete it`);
+  }
 }
 outputs.set('sitemap.xml', renderSitemap());
 outputs.set('llms.txt', renderLlms());
@@ -256,6 +286,7 @@ for (const [file, body] of outputs) {
     stale++;
     console.error(`stale: ${file}${current === null ? ' (missing)' : ''}`);
   } else {
+    fs.mkdirSync(path.dirname(target), { recursive: true });
     fs.writeFileSync(target, body);
     console.log(`wrote ${file}`);
   }

@@ -1,29 +1,65 @@
 {
-  "_readme": "Source of truth for /referrals, /referrals.json and the 'Referral codes' section of llms.txt. Edit this file, then run: node _build/build.js. Only publish:true entries appear anywhere; entries past 'expires' (YYYY-MM-DD) are skipped. 'asOf' labels bonus amounts in forYou. 'note' adds a line to the card. 'logo' is a site path to the company's icon (128px PNG in images/referrals/). --check warns when lastVerified is more than 60 days old.",
+  "_readme": "Source of truth for /referrals, one page per offer (/referrals/<id>), one page per category (/referrals/<category id>), /referrals.json and the 'Referral codes' section of llms.txt. Edit this file, then run: node _build/build.js. Only publish:true entries appear anywhere; entries past 'expires' (YYYY-MM-DD) are skipped. 'asOf' labels bonus amounts in forYou. 'note' adds a line to the card. 'headline' is a short, factual hook for the offer page's title (keep it under 30 characters, or leave it out). 'logo' is a site path to the company's icon (128px PNG in images/referrals/). Categories: 'titleLead' starts the category page title, 'h1' is [plain text, emphasised text] for its heading, 'intro' is its opening line. --check warns when lastVerified is more than 60 days old.",
   "categories": [
     {
       "id": "credit-cards",
-      "label": "Credit cards"
+      "label": "Credit cards",
+      "titleLead": "Credit Card Referral Links",
+      "h1": [
+        "Credit card",
+        "referral links"
+      ],
+      "intro": "Referral links for credit cards. Each bank sets the welcome bonus and decides on approval, and the current offer is always on its own application page."
     },
     {
       "id": "investing",
-      "label": "Investing & trading"
+      "label": "Investing & trading",
+      "titleLead": "Investing & Trading Referral Codes",
+      "h1": [
+        "Investing & trading",
+        "referral codes"
+      ],
+      "intro": "Referral codes and links for investing, crypto and trading apps. Each platform sets its own sign-up reward, rewards change often, and investing carries risk."
     },
     {
       "id": "payments",
-      "label": "Payments"
+      "label": "Payments",
+      "titleLead": "Payment App Referral Codes",
+      "h1": [
+        "Payment app",
+        "referral codes"
+      ],
+      "intro": "Referral codes and links for payment apps in the US and in India, including apps for paying credit card bills."
     },
     {
       "id": "send-money-to-india",
-      "label": "Send money to India"
+      "label": "Send money to India",
+      "titleLead": "Send Money to India Referral Codes",
+      "h1": [
+        "Send money to India",
+        "referral codes"
+      ],
+      "intro": "Referral codes and links for apps that send money to India. Compare the first-transfer bonus with the fees and the exchange rate, since the bonus is only part of what you get."
     },
     {
       "id": "shopping",
-      "label": "Shopping & cash back"
+      "label": "Shopping & cash back",
+      "titleLead": "Cash Back Referral Codes",
+      "h1": [
+        "Cash back",
+        "referral codes"
+      ],
+      "intro": "Referral codes and links for cash back sites and apps in the US and in India. You earn cash back when you shop or buy gas through them."
     },
     {
       "id": "ai-tools",
-      "label": "AI tools"
+      "label": "AI tools",
+      "titleLead": "AI Tool Referral Links",
+      "h1": [
+        "AI tool",
+        "referral links"
+      ],
+      "intro": "Referral links for AI tools."
     }
   ],
   "entries": [
@@ -36,6 +72,7 @@
       "code": null,
       "url": "https://www.referyourchasecard.com/19y/R0FSK11OKU",
       "forYou": "100,000 bonus points with Sapphire Reserve or 75,000 with Sapphire Preferred if approved",
+      "headline": "up to 100,000 bonus points",
       "iGet": "referral points if you're approved",
       "termsUrl": "https://creditcards.chase.com/refer-a-friend",
       "lastVerified": "2026-10-11",
@@ -109,6 +146,7 @@
       "code": null,
       "url": "https://join.robinhood.com/akashrv-3b29f4",
       "forYou": "a free stock reward when you sign up",
+      "headline": "free stock when you sign up",
       "iGet": null,
       "termsUrl": "https://robinhood.com/us/en/support/articles/invite-friends-pick-stock/",
       "lastVerified": "2026-10-11",
@@ -123,6 +161,7 @@
       "code": "r9rh9tdr",
       "url": "https://proinvite.kraken.com/9f1e/m0oer0nw",
       "forYou": "sign-up rewards for both of us; see Kraken's terms",
+      "headline": "sign-up rewards",
       "iGet": null,
       "termsUrl": "https://www.kraken.com/legal/referrals",
       "lastVerified": "2026-10-11",
@@ -137,6 +176,7 @@
       "code": null,
       "url": "https://kalshi.com/sign-up/?referral=12577357-c5de-4e67-b5d6-a0374d053009",
       "forYou": "bonus trading credit; the amount varies, see Kalshi's terms",
+      "headline": "bonus trading credit",
       "iGet": null,
       "termsUrl": "https://kalshi.com/tc/500",
       "lastVerified": "2026-10-11",
@@ -152,6 +192,7 @@
       "code": "DLC673L",
       "url": "https://cash.app/refer/DLC673L",
       "forYou": "$5 when you send $5 or more; terms apply",
+      "headline": "$5 when you send $5",
       "iGet": null,
       "termsUrl": "https://cash.app/help/us/en-us/3136-referral-bonus",
       "lastVerified": "2026-10-11",
@@ -167,6 +208,7 @@
       "code": null,
       "url": "https://app.cred.club/spQx/3r0c3lt9",
       "forYou": "₹50 off any upcoming bill of ₹100 or more",
+      "headline": "₹50 off a bill",
       "iGet": null,
       "termsUrl": "https://cred.club/terms",
       "lastVerified": "2026-10-24",
@@ -197,6 +239,7 @@
       "code": null,
       "url": "https://www.remitly.com/r/2mhx0gv6",
       "forYou": "$10 off, no fees and a special exchange rate on your first transfer of $300 or more",
+      "headline": "$10 off your first transfer",
       "iGet": "$25 when your first transfer goes through",
       "termsUrl": "https://www.remitly.com/us/en/india/fx-plus-discount-referral-promo-tnc",
       "lastVerified": "2026-10-24",
@@ -213,6 +256,7 @@
       "code": "ZGDA4I",
       "url": "https://ddl.joinabound.com/Iiw9/jypoloim",
       "forYou": "$30 sign-up bonus on your first transfer, zero fees",
+      "headline": "$30 sign-up bonus",
       "iGet": null,
       "termsUrl": "https://accounts.joinabound.com/tnc",
       "lastVerified": "2026-10-11",
@@ -228,6 +272,7 @@
       "code": "H8NOD",
       "url": "https://www.mypursu.com/app/referral?referredBy=H8NOD",
       "forYou": "₹1,000 each once you complete KYC",
+      "headline": "₹1,000 each after KYC",
       "iGet": null,
       "termsUrl": "https://mypursu.com/terms-and-conditions.html",
       "lastVerified": "2026-10-11",
@@ -257,6 +302,7 @@
       "code": "ZMWMJR",
       "url": "https://unplex.money/referral/ZMWMJR",
       "forYou": "a $10 referral bonus on your second transfer",
+      "headline": "$10 on your second transfer",
       "iGet": "a $40 coupon once you sign up and finish your first transfer",
       "termsUrl": "https://unplex.money/terms/",
       "lastVerified": "2026-10-24",
@@ -273,6 +319,7 @@
       "code": null,
       "url": "https://www.rakuten.com/r/AKASHR229?eeid=44749",
       "forYou": "a $50 bonus when you spend $50 through Rakuten within 90 days of joining",
+      "headline": "$50 bonus after $50 spend",
       "iGet": "a $50 bonus when you qualify",
       "termsUrl": "https://www.rakuten.com/help/article/referral-program-terms",
       "lastVerified": "2026-10-11",
@@ -304,6 +351,7 @@
       "code": "AKASH6778",
       "url": "https://upside.app.link/Krun2K4SW6b",
       "forYou": "$15 extra cash back on your first purchase",
+      "headline": "$15 extra cash back",
       "iGet": null,
       "termsUrl": "https://www.upside.com/data-and-security/terms",
       "lastVerified": "2026-10-12",

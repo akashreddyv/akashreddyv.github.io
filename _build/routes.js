@@ -50,9 +50,14 @@ const SAME_AS = [
   'https://www.facebook.com/ak.r48'
 ];
 
-// Latest "checked" date across published referral entries, for the page's dateModified.
+// Latest "checked" date across published referral entries, for the page's dateModified,
+// its sitemap lastmod and the month in its title.
 const REFERRALS_UPDATED = require('./data/referrals.json').entries
   .filter((e) => e.publish).map((e) => e.lastVerified).sort().pop();
+const REFERRALS_MONTH = (() => {
+  const [y, m] = REFERRALS_UPDATED.split('-').map(Number);
+  return ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][m - 1] + ' ' + y;
+})();
 
 const crumbs = (...items) => ({
   '@context': 'https://schema.org',
@@ -339,7 +344,7 @@ const routes = [
   },
 
   {
-    slug: 'gallery', path: '/gallery', out: 'gallery.html', source: 'pages/gallery.html', nav: 'gallery', navGroup: 'about',
+    slug: 'gallery', path: '/gallery', out: 'gallery.html', source: 'pages/gallery.html', nav: 'gallery',
     title: 'Gallery: reachAkash Logos, Merch & Photos | Reach Akash',
     description: 'The reachAkash logo in every version, the brand on a t-shirt, polo, cap, bumper sticker, mug and business cards, and photos of Akash Reddy.',
     ogType: 'website',
@@ -361,7 +366,7 @@ const routes = [
             description: 'V Akash Reddy, candid outdoor portrait, smiling', width: 1200, height: 1600 }
         ]
       },
-      crumbs(['About', '/about'], ['Gallery', '/gallery'])
+      crumbs(['Gallery', '/gallery'])
     ],
     sitemap: {
       changefreq: 'monthly', priority: '0.6',
@@ -375,31 +380,32 @@ const routes = [
   },
 
   // ── Referral codes. Cards come from _build/data/referrals.json (see
-  //    _build/referrals.js). WebPage + BreadcrumbList only: no Offer,
-  //    Product or Review markup.
+  //    _build/referrals.js), which also generates a page per offer and per
+  //    category under /referrals/. WebPage, ItemList and BreadcrumbList only:
+  //    no Offer, Product, Review or rating markup.
   {
     slug: 'referrals', path: '/referrals', out: 'referrals.html', source: 'pages/referrals.html', nav: 'referrals',
-    title: "Akash Reddy's referral codes: Chase, Robinhood & more",
-    description: "Akash Reddy's referral codes and links for Chase, Amex, Robinhood, Kraken, Cash App, Remitly, Rakuten, Claude and more. He earns a reward if you sign up.",
+    title: `Referral Codes & Sign-Up Bonuses (${REFERRALS_MONTH}) | Akash Reddy`,
+    description: `Referral codes and sign-up links for Chase, Amex, Robinhood, Remitly, Abound, CRED, Rakuten and more, checked ${REFERRALS_MONTH}. Akash Reddy earns a reward.`,
     ogType: 'website',
-    ogTitle: "Akash Reddy's referral codes",
+    ogTitle: 'Referral codes & sign-up bonuses | Akash Reddy',
     ogDesc: 'All of Akash Reddy’s referral codes and links in one place, with official terms. He earns a reward when you sign up through them.',
     jsonld: [
       {
         '@context': 'https://schema.org',
-        '@type': 'WebPage',
+        '@type': 'CollectionPage',
         '@id': url('/referrals#webpage'),
         url: url('/referrals'),
-        name: "Akash Reddy's referral codes",
-        description: 'Referral codes and links from Akash Reddy, with a disclosure that he earns a reward and links to each program’s official terms.',
+        name: 'Referral codes and sign-up bonuses',
+        description: 'Referral codes and links from Akash Reddy for credit cards, investing, payments, sending money to India, cash back and AI tools, with a disclosure that he earns a reward and links to each program’s official terms.',
         isPartOf: { '@id': url('/#website') },
-        about: { '@id': url('/#person') },
+        author: { '@id': url('/#person') },
         dateModified: REFERRALS_UPDATED
       },
       crumbs(['Referrals', '/referrals'])
     ],
-    sitemap: { changefreq: 'weekly', priority: '0.6' },
-    llms: 'Referral codes and links of Akash Reddy (credit cards, investing and trading, payments, sending money to India, shopping and cash back, AI tools), with a disclosure that he earns a reward and links to official terms. Machine-readable copy: https://reachakash.com/referrals.json'
+    sitemap: { changefreq: 'weekly', priority: '0.9', lastmod: REFERRALS_UPDATED },
+    llms: 'Referral codes and links of Akash Reddy (credit cards, investing and trading, payments, sending money to India, shopping and cash back, AI tools), each with its own page, a disclosure that he earns a reward and links to official terms. Machine-readable copy: https://reachakash.com/referrals.json'
   },
 
   // ── Business routes. Lab is retired (no links point to it) and stays a noindex

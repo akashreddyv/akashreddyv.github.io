@@ -17,7 +17,7 @@
       "termsUrl": "https://creditcards.chase.com/refer-a-friend",
       "lastVerified": "2026-10-11",
       "asOf": "2026-10-11",
-      "page": "https://reachakash.com/referrals#chase-sapphire"
+      "page": "https://reachakash.com/referrals/chase-sapphire"
     },
     {
       "id": "chase-freedom",
@@ -31,7 +31,7 @@
       "iGet": "a referral reward if you're approved",
       "termsUrl": "https://creditcards.chase.com/refer-a-friend",
       "lastVerified": "2026-10-11",
-      "page": "https://reachakash.com/referrals#chase-freedom"
+      "page": "https://reachakash.com/referrals/chase-freedom"
     },
     {
       "id": "bilt",
@@ -46,7 +46,7 @@
       "termsUrl": "https://www.bilt.com/terms/card-referral",
       "lastVerified": "2026-10-12",
       "asOf": "2026-10-12",
-      "page": "https://reachakash.com/referrals#bilt"
+      "page": "https://reachakash.com/referrals/bilt"
     },
     {
       "id": "amex-blue-cash-everyday",
@@ -60,7 +60,7 @@
       "iGet": null,
       "termsUrl": "https://www.americanexpress.com/en-us/referral",
       "lastVerified": "2026-10-11",
-      "page": "https://reachakash.com/referrals#amex-blue-cash-everyday"
+      "page": "https://reachakash.com/referrals/amex-blue-cash-everyday"
     },
     {
       "id": "amex-delta-skymiles-blue",
@@ -74,7 +74,7 @@
       "iGet": null,
       "termsUrl": "https://www.americanexpress.com/en-us/referral",
       "lastVerified": "2026-10-11",
-      "page": "https://reachakash.com/referrals#amex-delta-skymiles-blue"
+      "page": "https://reachakash.com/referrals/amex-delta-skymiles-blue"
     },
     {
       "id": "robinhood",
@@ -88,7 +88,7 @@
       "iGet": null,
       "termsUrl": "https://robinhood.com/us/en/support/articles/invite-friends-pick-stock/",
       "lastVerified": "2026-10-11",
-      "page": "https://reachakash.com/referrals#robinhood"
+      "page": "https://reachakash.com/referrals/robinhood"
     },
     {
       "id": "kraken",
@@ -102,7 +102,7 @@
       "iGet": null,
       "termsUrl": "https://www.kraken.com/legal/referrals",
       "lastVerified": "2026-10-11",
-      "page": "https://reachakash.com/referrals#kraken"
+      "page": "https://reachakash.com/referrals/kraken"
     },
     {
       "id": "kalshi",
@@ -117,7 +117,7 @@
       "termsUrl": "https://kalshi.com/tc/500",
       "lastVerified": "2026-10-11",
       "note": "US only, 18+, not available in every state. Referral credits expire soon after they're issued.",
-      "page": "https://reachakash.com/referrals#kalshi"
+      "page": "https://reachakash.com/referrals/kalshi"
     },
     {
       "id": "cash-app",
@@ -132,7 +132,7 @@
       "termsUrl": "https://cash.app/help/us/en-us/3136-referral-bonus",
       "lastVerified": "2026-10-11",
       "asOf": "2026-10-11",
-      "page": "https://reachakash.com/referrals#cash-app"
+      "page": "https://reachakash.com/referrals/cash-app"
     },
     {
       "id": "cred",
@@ -148,7 +148,7 @@
       "lastVerified": "2026-10-24",
       "asOf": "2026-10-24",
       "note": "CRED's invite asks you to sign up within 10 days of getting it, so check the offer in the app.",
-      "page": "https://reachakash.com/referrals#cred"
+      "page": "https://reachakash.com/referrals/cred"
     },
     {
       "id": "cheq",
@@ -162,7 +162,7 @@
       "iGet": null,
       "termsUrl": "https://cheq.one/legal/terms-and-conditions",
       "lastVerified": "2026-10-24",
-      "page": "https://reachakash.com/referrals#cheq"
+      "page": "https://reachakash.com/referrals/cheq"
     },
     {
       "id": "remitly",
@@ -178,7 +178,7 @@
       "lastVerified": "2026-10-24",
       "asOf": "2026-10-24",
       "note": "Remitly promises on-time delivery or a refund of your fees. Terms apply.",
-      "page": "https://reachakash.com/referrals#remitly"
+      "page": "https://reachakash.com/referrals/remitly"
     },
     {
       "id": "abound",
@@ -193,7 +193,7 @@
       "termsUrl": "https://accounts.joinabound.com/tnc",
       "lastVerified": "2026-10-11",
       "asOf": "2026-10-11",
-      "page": "https://reachakash.com/referrals#abound"
+      "page": "https://reachakash.com/referrals/abound"
     },
     {
       "id": "mypursu",
@@ -208,7 +208,7 @@
       "termsUrl": "https://mypursu.com/terms-and-conditions.html",
       "lastVerified": "2026-10-11",
       "asOf": "2026-10-11",
-      "page": "https://reachakash.com/referrals#mypursu"
+      "page": "https://reachakash.com/referrals/mypursu"
     },
     {
       "id": "crobo",
@@ -222,7 +222,7 @@
       "iGet": null,
       "termsUrl": "https://www.crobo.money/legal",
       "lastVerified": "2026-10-24",
-      "page": "https://reachakash.com/referrals#crobo"
+      "page": "https://reachakash.com/referrals/crobo"
     },
     {
       "id": "unplex",
@@ -238,7 +238,7 @@
       "lastVerified": "2026-10-24",
       "asOf": "2026-10-24",
       "note": "Unplex advertises Google's exchange rate and zero fees, through WhatsApp or its app.",
-      "page": "https://reachakash.com/referrals#unplex"
+      "page": "https://reachakash.com/referrals/unplex"
     },
     {
       "id": "rakuten",
@@ -253,7 +253,7 @@
       "termsUrl": "https://www.rakuten.com/help/article/referral-program-terms",
       "lastVerified": "2026-10-11",
       "asOf": "2026-10-11",
-      "page": "https://reachakash.com/referrals#rakuten"
+      "page": "https://reachakash.com/referrals/rakuten"
     },
     {
       "id": "topcashback",
@@ -269,7 +269,7 @@
       "lastVerified": "2026-10-12",
       "asOf": "2026-10-12",
       "note": "There's no sign-up bonus for you with this link; I get $10 once you've earned $10 in cash back.",
-      "page": "https://reachakash.com/referrals#topcashback"
+      "page": "https://reachakash.com/referrals/topcashback"
     },
     {
       "id": "upside",
@@ -284,7 +284,7 @@
       "termsUrl": "https://www.upside.com/data-and-security/terms",
       "lastVerified": "2026-10-12",
       "asOf": "2026-10-12",
-      "page": "https://reachakash.com/referrals#upside"
+      "page": "https://reachakash.com/referrals/upside"
     },
     {
       "id": "cashkaro",
@@ -299,7 +299,7 @@
       "termsUrl": "https://cashkaro.com/terms-conditions",
       "lastVerified": "2026-10-24",
       "asOf": "2026-10-24",
-      "page": "https://reachakash.com/referrals#cashkaro"
+      "page": "https://reachakash.com/referrals/cashkaro"
     },
     {
       "id": "claude",
@@ -313,7 +313,7 @@
       "iGet": null,
       "termsUrl": "https://www.anthropic.com/legal/consumer-terms",
       "lastVerified": "2026-10-11",
-      "page": "https://reachakash.com/referrals#claude"
+      "page": "https://reachakash.com/referrals/claude"
     }
   ]
 }
