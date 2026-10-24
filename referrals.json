@@ -77,6 +77,22 @@
       "page": "https://reachakash.com/referrals/amex-delta-skymiles-blue"
     },
     {
+      "id": "discover",
+      "name": "Discover Card",
+      "logo": "https://reachakash.com/images/referrals/discover.png",
+      "category": "credit-cards",
+      "region": "US",
+      "code": null,
+      "url": "https://refer.discover.com/s/akashreddy48?advocate.partner_share_id=8678728108",
+      "forYou": "a $100 statement credit if you are approved and make a payment in your first 3 months",
+      "iGet": "a $100 statement credit",
+      "termsUrl": "https://www.capitalone.com/credit-cards/lp/referrals/discover/dfs-terms-and-conditions",
+      "lastVerified": "2026-10-24",
+      "asOf": "2026-10-24",
+      "note": "Discover is now part of Capital One, so the link opens Capital One’s Discover page. Approval is up to Capital One.",
+      "page": "https://reachakash.com/referrals/discover"
+    },
+    {
       "id": "robinhood",
       "name": "Robinhood",
       "logo": "https://reachakash.com/images/referrals/robinhood.png",
