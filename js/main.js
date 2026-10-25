@@ -159,7 +159,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // /contact?topic=… (from the Services tiles) starts the message for the visitor.
   const TOPICS = {
     'software': 'software services',
-    'website': 'website design',
+    'website': 'website development',
     'ai-agents': 'a custom AI agent',
     'ai-coaching': 'AI coaching'
   };

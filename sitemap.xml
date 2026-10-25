@@ -7,18 +7,9 @@
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
-      <image:loc>https://reachakash.com/images/home/vurenuka-akash-reddy-professional.jpg</image:loc>
-      <image:title>Vurenuka Akash Reddy Professional Portrait</image:title>
+      <image:loc>https://reachakash.com/images/home/akash-reddy-professional.jpg</image:loc>
+      <image:title>Akash Reddy Professional Portrait</image:title>
     </image:image>
-    <image:image>
-      <image:loc>https://reachakash.com/images/home/akash-reddy-portrait.jpg</image:loc>
-      <image:title>Akash Reddy Portrait</image:title>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://reachakash.com/about</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
     <image:image>
       <image:loc>https://reachakash.com/images/home/akash-reddy-portrait.jpg</image:loc>
       <image:title>Akash Reddy Portrait</image:title>
@@ -27,7 +18,11 @@
   <url>
     <loc>https://reachakash.com/personal</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://reachakash.com/images/home/akash-reddy-portrait.jpg</image:loc>
+      <image:title>Akash Reddy Portrait</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://reachakash.com/professional</loc>
@@ -54,8 +49,8 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <image:image>
-      <image:loc>https://reachakash.com/images/home/vurenuka-akash-reddy-professional.jpg</image:loc>
-      <image:title>Vurenuka Akash Reddy, professional portrait</image:title>
+      <image:loc>https://reachakash.com/images/home/akash-reddy-professional.jpg</image:loc>
+      <image:title>Akash Reddy, professional portrait</image:title>
     </image:image>
     <image:image>
       <image:loc>https://reachakash.com/images/home/akash-reddy-portrait.jpg</image:loc>

@@ -11,7 +11,7 @@
   // ── Static "filesystem" of facts, sourced from the site content ──
   const ME = {
     name:    'Akash Reddy',
-    full:    'Vurenuka Akash Reddy',
+    full:    'Akash Reddy',
     role:    'AI Software Developer @ Molex',
     where:   'Detroit, MI, USA',
     origin:  'Hyderabad, India',
@@ -48,11 +48,13 @@
   // Every place `cd` can go (and `ls` lists), in the same order as the site's nav, then the rest.
   const PAGES = {
     home: '/', services: '/services', projects: '/projects', referrals: '/referrals', socials: '/socials',
-    about: '/about', personal: '/personal', professional: '/professional', contact: '/contact',
-    gallery: '/gallery', logos: '/gallery#logos', merch: '/gallery#merch', suggestions: '/suggestions',
+    gallery: '/gallery', personal: '/personal', professional: '/professional', contact: '/contact',
+    logos: '/gallery#logos', merch: '/gallery#merch', suggestions: '/suggestions',
     'logo-viewer': '/projects/logodesigns', privacy: '/privacy'
   };
   const PAGE_NAMES = Object.keys(PAGES);
+  // Old names `cd` still understands (About and Personal are one page now).
+  const PAGE_ALIASES = { about: 'personal' };
   // The opening menu: commands worth one click, so nobody has to type `help` first.
   const QUICK = ['whoami', 'work', 'projects', 'skills', 'socials', 'suggest', 'theme', 'play', 'matrix', 'help'];
 
@@ -213,7 +215,8 @@
 
     cd(arg) {
       if (!arg) { write('cd: missing page. Try: ' + PAGE_NAMES.join(', '), 'term-err'); return; }
-      const target = arg.replace(/^\/+/, '').toLowerCase();
+      const typed = arg.replace(/^\/+/, '').toLowerCase();
+      const target = PAGE_ALIASES[typed] || typed;
       if (!Object.prototype.hasOwnProperty.call(PAGES, target)) {
         write(`cd: no such page: ${esc(arg)}`, 'term-err');
         return;

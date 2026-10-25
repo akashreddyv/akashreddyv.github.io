@@ -1,7 +1,9 @@
-<!-- pages/personal.html -->
+<!-- pages/personal.html — About and Personal in one page (/about redirects here). The photo beside the
+     name and bio ties this face to "Akash Reddy" for image search (same file and wording as
+     _build/data/photos.json). The Instagram feed goes on this page once it's set up. -->
 <div class="page-inner">
 
-  <div class="personal-new-layout">
+  <div class="about-hero personal-hero">
 
     <div class="personal-left">
 
@@ -11,9 +13,8 @@
       <div class="personal-divider"></div>
 
       <div class="personal-bio">
-        <p>Techie. Software Developer. AI Enthusiast.</p>
-        <p>Travel &amp; Adventure seeker.</p>
-        <p>Currently based in Detroit, MI. Originally from Hyderabad, India.</p>
+        <p>I'm Akash Reddy (V Akash Reddy), a software developer from Hyderabad, now in Metro Detroit. I build manufacturing test software, and I use AI to get from idea to working tool fast.</p>
+        <p>Techie. Software Developer. AI Enthusiast. Travel &amp; Adventure seeker.</p>
       </div>
 
       <div class="personal-divider"></div>
@@ -28,16 +29,38 @@
 
     </div>
 
+    <figure class="about-photo">
+      <img src="/images/home/akash-reddy-portrait.jpg" alt="Akash Reddy (V Akash Reddy) smiling outdoors, candid portrait" width="1200" height="1600" decoding="async" fetchpriority="high">
+      <figcaption>Akash Reddy</figcaption>
+    </figure>
+
+  </div>
+
+  <div class="about-cards">
+    <a class="home-card" href="/professional">
+      <div class="home-card-icon" aria-hidden="true">💼</div>
+      <div class="home-card-title">Professional</div>
+      <div class="home-card-desc">Work history, skills and education</div>
+      <span class="home-card-arrow" aria-hidden="true">↗</span>
+    </a>
+    <a class="home-card" href="/projects">
+      <div class="home-card-icon" aria-hidden="true">🛠️</div>
+      <div class="home-card-title">Projects</div>
+      <div class="home-card-desc">Things I've built</div>
+      <span class="home-card-arrow" aria-hidden="true">↗</span>
+    </a>
+    <a class="home-card" href="/socials">
+      <div class="home-card-icon" aria-hidden="true">🔗</div>
+      <div class="home-card-title">Socials</div>
+      <div class="home-card-desc">Where to find me online</div>
+      <span class="home-card-arrow" aria-hidden="true">↗</span>
+    </a>
   </div>
 
 </div>
 
 <style>
-  .personal-new-layout {
-    display: flex;
-    align-items: center;
-    min-height: calc(100vh - 200px);
-  }
+  .personal-hero { padding-top: 8px; }
 
   .personal-left {
     max-width: 560px;
@@ -102,12 +125,5 @@
     display: flex;
     gap: 12px;
     flex-wrap: wrap;
-  }
-
-  @media (max-width: 900px) {
-    .personal-new-layout {
-      min-height: unset;
-      padding: 20px 0;
-    }
   }
 </style>

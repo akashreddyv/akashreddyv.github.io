@@ -2,7 +2,7 @@
 /* ============================================================
    Tag the photos in _build/data/photos.json with XMP metadata, so the
    files themselves say who is in them, even when copied elsewhere:
-     Iptc4xmpExt:PersonInImage  "Vurenuka Akash Reddy"  (IPTC "Person Shown")
+     Iptc4xmpExt:PersonInImage  "Akash Reddy"  (IPTC "Person Shown")
      dc:title / dc:description  the photo's title and alt text
      photoshop:Credit           "Akash Reddy (reachakash.com)"  (IPTC "Credit Line")
      xmpRights:WebStatement     the Gallery page
@@ -21,7 +21,7 @@ const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
 const CHECK = process.argv.includes('--check');
-const PERSON = 'Vurenuka Akash Reddy';
+const PERSON = 'Akash Reddy';
 const CREDIT = 'Akash Reddy (reachakash.com)';
 const WEB = 'https://reachakash.com/gallery';
 const XMP_NS = Buffer.from('http://ns.adobe.com/xap/1.0/\0');
