@@ -570,6 +570,14 @@ html:not(.js) .footer-term-wrap { display: none; }
   .home-title { gap: 0.18em; }
   .home-mark  { height: 1.2em; }
 }
+/* The big mark links to the 3D logo viewer (/projects/logodesigns) */
+.home-mark-link { display: block; flex-shrink: 0; line-height: 0; border-radius: 8px; transition: transform 0.25s ease; }
+.home-mark-link:hover { transform: translateY(-3px) scale(1.03); }
+.home-mark-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; }
+@media (prefers-reduced-motion: reduce) {
+  .home-mark-link { transition: none; }
+  .home-mark-link:hover { transform: none; }
+}
 .home-tagline  { margin-top: 34px; font-size: 17px; color: var(--muted); line-height: 1.75; max-width: 480px; opacity: 0; animation: fadeUp 0.9s ease 0.4s forwards; }
 .home-cta      { margin-top: 48px; display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; opacity: 0; animation: fadeUp 0.9s ease 0.55s forwards; }
 
