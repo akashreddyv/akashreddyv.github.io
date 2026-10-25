@@ -51,6 +51,9 @@
         #controls summary:hover { color: #fff; }
         #controls summary:focus-visible { outline: 2px solid #c33; outline-offset: 2px; border-radius: 8px; }
         #controls .panel { padding: 10px 16px 14px; }
+
+        /* Opened from the home page logo: only the reachAkash logo, so no Logo 1 / Logo 2 switch */
+        .only-rak #toggle { display: none; }
         #controls label { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
         #controls input[type=range] { flex: 1; max-width: 110px; accent-color: #c33; }
         #controls input[type=color] { border: none; background: none; width: 28px; height: 22px; cursor: pointer; }
@@ -126,8 +129,6 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 // Starting material for both logos (the Metalness and Roughness sliders start here too).
 const DEFAULT_METALNESS = 1, DEFAULT_ROUGHNESS = 0.33;
-// How strongly the materials reflect the studio room (see "Lighting").
-const ENV_INTENSITY = 1.3;
 
 const $ = id => document.getElementById(id);
 const clamp01 = v => Math.min(1, Math.max(0, v));
@@ -148,28 +149,24 @@ const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setPixelRatio(devicePixelRatio);
 renderer.setSize(innerWidth, innerHeight);
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 0.9;
+renderer.toneMappingExposure = 1.4;
 renderer.localClippingEnabled = true;          // the curve "draws" upward behind a moving clip plane
 document.body.appendChild(renderer.domElement);
-
-// A soft studio room for reflections. Metal shows its surroundings, not the lights' colour,
-// so at full metalness the logo would look black with the lights alone. Background stays black.
-scene.environment = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(renderer), 0.04).texture;
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 //  Lighting
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 scene.add(new THREE.AmbientLight(0xffffff, 0.45));
 
-// Lights at 40% of their old strength (with exposure 0.9, down from 1.4) now that the studio room
-// lights the metal: at full strength their reflections blew the brand red out to orange and cream.
+// Bright direct lights and no environment map: at metalness 1 that gives the high-contrast chrome
+// look (strong highlights, deep shadows) the defaults were chosen with. An environment map flattened it.
 const lightDefs = [
-    { color: 0xffffff, intensity: 1.4,  pos: [300, 400, 500] },
-    { color: 0x8888ff, intensity: 0.6,  pos: [-400, -100, 300] },
-    { color: 0xff4422, intensity: 0.8,  pos: [0, 0, -500] },
-    { color: 0xffddcc, intensity: 0.8,  pos: [0, 500, 100] },
-    { color: 0xff6633, intensity: 0.6,  pos: [-200, -300, 50] },
-    { color: 0xffffff, intensity: 0.72, pos: [400, -200, 200] },
+    { color: 0xffffff, intensity: 3.5, pos: [300, 400, 500] },
+    { color: 0x8888ff, intensity: 1.5, pos: [-400, -100, 300] },
+    { color: 0xff4422, intensity: 2.0, pos: [0, 0, -500] },
+    { color: 0xffddcc, intensity: 2.0, pos: [0, 500, 100] },
+    { color: 0xff6633, intensity: 1.5, pos: [-200, -300, 50] },
+    { color: 0xffffff, intensity: 1.8, pos: [400, -200, 200] },
 ];
 for (const l of lightDefs) {
     const d = new THREE.DirectionalLight(l.color, l.intensity);
@@ -229,7 +226,7 @@ async function buildRak() {
         // that read made the bottom step's slab far deeper than its own height, so it looked like it
         // jutted toward the camera instead of sitting flush with the rest of the mark.
         const depth = Math.hypot(TRb[0] - BR[0], FTL[1] - TRb[1]) * 1.0;
-        const mat = new THREE.MeshStandardMaterial({ color: red ? RED : WHITE, metalness: DEFAULT_METALNESS, roughness: DEFAULT_ROUGHNESS, envMapIntensity: ENV_INTENSITY, transparent: true });
+        const mat = new THREE.MeshStandardMaterial({ color: red ? RED : WHITE, metalness: DEFAULT_METALNESS, roughness: DEFAULT_ROUGHNESS, transparent: true });
         rakMats.push(mat);
         const mesh = new THREE.Mesh(new THREE.BoxGeometry(w, h, depth), mat);
         // Back face (not front) shares the curve's plane at z=0; each step's own depth then
@@ -247,7 +244,7 @@ async function buildRak() {
     const geo = new THREE.ExtrudeGeometry(shapes, { depth: CURVE_DEPTH, bevelEnabled: true, bevelThickness: 2, bevelSize: 1.5, bevelSegments: 2, curveSegments: 24 });
     geo.computeBoundingBox();
     curveTop = geo.boundingBox.min.y; curveBottom = geo.boundingBox.max.y;
-    const curveMat = new THREE.MeshStandardMaterial({ color: RED, metalness: DEFAULT_METALNESS, roughness: DEFAULT_ROUGHNESS, envMapIntensity: ENV_INTENSITY, side: THREE.DoubleSide, clippingPlanes: [curvePlane] });
+    const curveMat = new THREE.MeshStandardMaterial({ color: RED, metalness: DEFAULT_METALNESS, roughness: DEFAULT_ROUGHNESS, side: THREE.DoubleSide, clippingPlanes: [curvePlane] });
     rakMats.push(curveMat);
     curveMesh = new THREE.Mesh(geo, curveMat);
     curveMesh.scale.y = -1;
@@ -341,57 +338,90 @@ function buildOctahedron(top, bot, eq0, eq1, eq2, eq3) {
     const geo = new THREE.BufferGeometry();
     geo.setAttribute('position', new THREE.Float32BufferAttribute(v, 3));
     geo.computeVertexNormals();
+    geo.computeBoundingSphere();                 // its centre is what sortCrystals() measures
     return geo;
 }
 
+// The crystals are see-through, so each one is drawn as two meshes: its back faces first (without
+// hiding anything), then its front faces, and the three crystals farthest-first (sortCrystals).
+// One double-sided transparent mesh drew faces in arbitrary order, so faces popped as it turned.
 const crystalMat = new THREE.MeshPhysicalMaterial({
     color: 0xB22222, emissive: 0x220404, emissiveIntensity: 0.6,
-    metalness: DEFAULT_METALNESS, roughness: DEFAULT_ROUGHNESS, envMapIntensity: ENV_INTENSITY, clearcoat: 1.0, clearcoatRoughness: 0.04,
+    metalness: DEFAULT_METALNESS, roughness: DEFAULT_ROUGHNESS, clearcoat: 1.0, clearcoatRoughness: 0.04,
     reflectivity: 1.0, transparent: true, opacity: 0.88,
-    flatShading: true, side: THREE.DoubleSide, depthWrite: true,
+    flatShading: true, side: THREE.FrontSide, depthWrite: true,
 });
+// The crystal alone reflects a soft studio room: a see-through metal crystal with nothing to reflect
+// renders almost black. Logo 1 has no environment, which keeps its high-contrast chrome look.
+crystalMat.envMap = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(renderer), 0.04).texture;
+const crystalBackMat = crystalMat.clone();
+crystalBackMat.side = THREE.BackSide;
+crystalBackMat.depthWrite = false;
+const crystalMats = [crystalMat, crystalBackMat];   // the controls change both
 
 const crystalGroup = new THREE.Group();
 scene.add(crystalGroup);
+
+function addCrystal(geo) {
+    const g = new THREE.Group();
+    const back = new THREE.Mesh(geo, crystalBackMat);
+    const front = new THREE.Mesh(geo, crystalMat);
+    back.renderOrder = 0;
+    front.renderOrder = 1;
+    g.add(back, front);
+    crystalGroup.add(g);
+}
+
+// A Group's renderOrder orders its meshes as one unit, so ranking the crystals by distance keeps
+// each one's back-then-front pair together and draws the nearest crystal last.
+const _crystalCentre = new THREE.Vector3();
+function sortCrystals() {
+    crystalGroup.children
+        .map(g => [g, _crystalCentre.copy(g.children[0].geometry.boundingSphere.center)
+            .applyMatrix4(g.matrixWorld).distanceToSquared(camera.position)])
+        .sort((a, b) => b[1] - a[1])
+        .forEach(([g], i) => { g.renderOrder = i; });
+}
 
 let depthScale = 1.0;
 function sy(y) { return -y; }
 
 function rebuildCrystal() {
     while (crystalGroup.children.length) {
-        crystalGroup.children[0].geometry.dispose();
+        crystalGroup.children[0].children[0].geometry.dispose();   // shared by the pair
         crystalGroup.remove(crystalGroup.children[0]);
     }
     const ds = depthScale;
 
     // Left
-    crystalGroup.add(new THREE.Mesh(buildOctahedron(
+    addCrystal(buildOctahedron(
         [L.topX, sy(L.topY), 0], [L.botX, sy(L.botY), 0],
         [L.eqL, sy(EQ_Y), 0], [L.eqMidX, sy(EQ_Y), L.baseHalfZ*ds],
         [L.eqR, sy(EQ_Y), 0], [L.eqMidX, sy(EQ_Y), -L.baseHalfZ*ds]
-    ), crystalMat));
+    ));
 
     // Center (45° rotated — edge forward)
     const cHZ = C.baseHalfZ * ds;
     const cMidX = (C.eqL + C.eqR) / 2;
     const cHX = (C.eqR - C.eqL) / 2;
-    crystalGroup.add(new THREE.Mesh(buildOctahedron(
+    addCrystal(buildOctahedron(
         [C.topX, sy(C.topY), 0], [C.botX, sy(C.botY), 0],
         [cMidX, sy(EQ_Y), cHZ], [cMidX+cHX, sy(EQ_Y), 0],
         [cMidX, sy(EQ_Y), -cHZ], [cMidX-cHX, sy(EQ_Y), 0]
-    ), crystalMat));
+    ));
 
-    // Right (mirror)
-    crystalGroup.add(new THREE.Mesh(buildOctahedron(
+    // Right (mirror). Mirroring flips which way the faces wind, so the front (+z) and back (-z)
+    // corners swap places here; otherwise this crystal is built inside-out and shades wrongly.
+    addCrystal(buildOctahedron(
         [R.topX, sy(R.topY), 0], [R.botX, sy(R.botY), 0],
-        [R.eqR, sy(EQ_Y), 0], [R.eqMidX, sy(EQ_Y), R.baseHalfZ*ds],
-        [R.eqL, sy(EQ_Y), 0], [R.eqMidX, sy(EQ_Y), -R.baseHalfZ*ds]
-    ), crystalMat));
+        [R.eqR, sy(EQ_Y), 0], [R.eqMidX, sy(EQ_Y), -R.baseHalfZ*ds],
+        [R.eqL, sy(EQ_Y), 0], [R.eqMidX, sy(EQ_Y), R.baseHalfZ*ds]
+    ));
 
     // Centre at the world origin
     const box = new THREE.Box3().setFromObject(crystalGroup);
     const cen = box.getCenter(new THREE.Vector3());
-    for (const mesh of crystalGroup.children) mesh.position.sub(cen);
+    for (const g of crystalGroup.children) g.position.sub(cen);
     crystalGroup.position.set(0, 0, 0);
     crystalGroup.scale.set(1, 1, 1);
 }
@@ -401,7 +431,13 @@ rebuildCrystal();
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 //  Logo switch
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Opened from the big logo on the home page (?logo=reachakash): just the reachAkash logo,
+// with no Logo 1 / Logo 2 switch (hidden by the .only-rak rule in the CSS).
+const ONLY_RAK = new URLSearchParams(location.search).get('logo') === 'reachakash';
+if (ONLY_RAK) document.documentElement.classList.add('only-rak');
+
 function setMode(mode) {
+    if (ONLY_RAK) mode = 'rak';
     rak.visible = mode === 'rak';
     crystalGroup.visible = mode === 'crystal';
     $('btnRak').classList.toggle('active', mode === 'rak');
@@ -449,18 +485,18 @@ $('height').oninput = e => {
     $('heightV').textContent = e.target.value;
 };
 
-$('colorPicker').oninput = e => crystalMat.color.set(new THREE.Color(e.target.value));
+$('colorPicker').oninput = e => crystalMats.forEach(m => m.color.set(new THREE.Color(e.target.value)));
 
 $('metalness').oninput = e => {
     const v = +e.target.value;
-    crystalMat.metalness = v;
+    crystalMats.forEach(m => { m.metalness = v; });
     rakMats.forEach(m => { m.metalness = v; });
     $('metalnessV').textContent = v.toFixed(2);
 };
 
 $('roughness').oninput = e => {
     const v = +e.target.value;
-    crystalMat.roughness = v;
+    crystalMats.forEach(m => { m.roughness = v; });
     rakMats.forEach(m => { m.roughness = Math.max(v, 0.2); });
     $('roughnessV').textContent = v.toFixed(2);
 };
@@ -472,7 +508,7 @@ $('depth').oninput = e => {
 };
 
 $('opacity').oninput = e => {
-    crystalMat.opacity = +e.target.value;
+    crystalMats.forEach(m => { m.opacity = +e.target.value; });
     $('opacityV').textContent = (+e.target.value).toFixed(2);
 };
 
@@ -518,6 +554,7 @@ function animate() {
     if (rak.rotation.y > TAU) rak.rotation.y -= TAU;
     if (crystalGroup.rotation.y > TAU) crystalGroup.rotation.y -= TAU;
 
+    if (crystalGroup.visible) { crystalGroup.updateMatrixWorld(); sortCrystals(); }
     renderer.render(scene, camera);
 }
 animate();
