@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
+# pages/*.html are raw page templates that _build/build.js fills in, not pages: skip them.
+# The one real page in that folder is the old logo viewer's redirect, so it stays crawlable.
+Allow: /pages/RCG.html
+Disallow: /pages/
 
 Sitemap: https://reachakash.com/sitemap.xml

@@ -234,19 +234,21 @@ function renderPage(route) {
 
 function renderRedirect(route) {
   const target = site.origin + route.redirectTo;
+  // A title unique to each redirect: Bing flags pages that share one, even noindex redirects.
+  const host = site.origin.replace(/^https:\/\//, '');
   return [
     '<!DOCTYPE html>',
     generatedNote(['_build/routes.js']),
     '<html lang="en">',
     '<head>',
     '  <meta charset="UTF-8">',
-    '  <title>Redirecting to reachakash.com</title>',
+    `  <title>${host}${route.path} moved to ${host}${route.redirectTo}</title>`,
     `  <link rel="canonical" href="${target}">`,
     '  <meta name="robots" content="noindex">',
     `  <meta http-equiv="refresh" content="0; url=${route.redirectTo}">`,
     '</head>',
     '<body>',
-    `  <p><a href="${route.redirectTo}">Continue to reachakash.com</a></p>`,
+    `  <p>This page moved to <a href="${route.redirectTo}">${host}${route.redirectTo}</a>.</p>`,
     '</body>',
     '</html>',
     ''
