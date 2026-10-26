@@ -2,10 +2,12 @@
   "_readme": "Photos of Akash Reddy for the Photos section of /gallery, newest first. Each one also goes into the Gallery page's ImageGallery JSON-LD, the Person entity's images and the image sitemap, so search engines tie the photo to his name. Fields: file (site path), width and height (the real pixel size; the build checks), title (short, name first), alt (what the photo shows, with his name), caption (shown under the photo). To add photos: upload them on the admin page (reachakash.com/admin, Photos; GitHub Actions then runs _build/process-photos.js), or drop them in photos-inbox/ (git-ignored, never published) and ask Claude to add them. Either way they get resized to 1600px on the long side, stripped of camera and GPS data, tagged with node _build/photo-meta.js, saved in images/photos/ with a name-first filename, and listed here.",
   "photos": [
     {
-      "file": "/images/photos/photo-20261026-002726-thhf.jpg",
+      "file": "/images/photos/akash-reddy-akash.jpg",
       "alt": "Akash Reddy’s Mercedes Benz ",
       "caption": "Akash Reddy ",
-      "title": "Akash"
+      "title": "Akash",
+      "width": 1199,
+      "height": 1600
     },
     {
       "file": "/images/home/akash-reddy-professional.jpg",
