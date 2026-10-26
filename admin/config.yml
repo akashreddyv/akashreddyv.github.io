@@ -34,6 +34,7 @@ collections:
   - name: photos
     label: Photos
     description: Your photos on the Gallery page (Photos tab). They're also what Google and Bing see for your name, so give each one a good description.
+    editor: { preview: false }
     files:
       - name: photos
         label: Gallery photos
@@ -43,6 +44,7 @@ collections:
           - { name: _readme, widget: hidden }
           - name: photos
             label: Photos (the top one shows first)
+            label_singular: photo
             widget: list
             add_to_top: true
             summary: '{{fields.caption}}'
@@ -70,6 +72,7 @@ collections:
   - name: referrals
     label: Referral codes
     description: Your offers on reachakash.com/referrals. Each one also gets its own page.
+    editor: { preview: false }
     files:
       - name: referrals
         label: Referral codes
@@ -79,6 +82,7 @@ collections:
           - { name: _readme, widget: hidden }
           - name: entries
             label: Offers
+            label_singular: offer
             widget: list
             collapsed: true
             summary: '{{fields.name}}'
@@ -130,6 +134,7 @@ collections:
               - { name: _why, widget: hidden, required: false }
           - name: categories
             label: Categories (advanced)
+            label_singular: category
             widget: list
             collapsed: true
             summary: '{{fields.label}}'
@@ -143,6 +148,7 @@ collections:
   - name: site
     label: Site text
     description: Small bits of text around the site.
+    editor: { preview: false }
     files:
       - name: site
         label: Site text

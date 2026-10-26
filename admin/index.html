@@ -9,8 +9,99 @@
        only accounts that can push to the site's repo can save. Each save is a commit, and
        .github/workflows/build.yml rebuilds and publishes the site about two minutes later. -->
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <style>
+    /* Decap's editor and its top bar have min-width: 800px, which pushes "Add photo" and half the
+       form off a phone screen. Let them shrink, and drop the site link and account menu from the
+       editor's top bar there (both are still on the main screen). */
+    @media (max-width: 799px) {
+      [class*="-EditorContainer"], [class*="-ToolbarContainer"] { min-width: 0 !important; }
+      [class*="-ToolbarSectionMeta"] { display: none !important; }
+    }
+  </style>
 </head>
 <body>
+  <script>
+    // Phone photos are 3-12 MB and can carry the camera's GPS location. Before Decap uploads a
+    // JPEG/HEIC, redraw it at most 2000px on the long side as a fresh JPEG: no camera data at all,
+    // and a unique name (phones often call every upload image.jpg). So the original never reaches
+    // the public repo. GitHub Actions then resizes, renames and tags it for the site
+    // (_build/process-photos.js). PNG logos and other files go up untouched. Works by catching the
+    // file picker's change event first and handing Decap a new one with the cleaned files.
+    (function () {
+      var MAX = 2000;
+      var canSwap = (function () {
+        try {
+          var dt = new DataTransfer();
+          dt.items.add(new File(['x'], 'x.txt'));
+          var probe = document.createElement('input');
+          probe.type = 'file';
+          probe.files = dt.files;
+          return probe.files.length === 1;
+        } catch (err) { return false; }
+      })();
+      if (!canSwap) return;
+      var previews = {};   // cleaned file name -> its in-memory URL
+      var isPhoto = function (f) {
+        return /^image\/(jpeg|heic|heif)$/i.test(f.type) || /\.(jpe?g|heic|heif)$/i.test(f.name);
+      };
+      var stamp = function () {
+        var d = new Date(), p = function (n) { return String(n).padStart(2, '0'); };
+        return d.getFullYear() + p(d.getMonth() + 1) + p(d.getDate()) + '-' + p(d.getHours()) + p(d.getMinutes()) + p(d.getSeconds());
+      };
+      function clean(file, i) {
+        return new Promise(function (resolve) {
+          var url = URL.createObjectURL(file);
+          var img = new Image();
+          img.onload = function () {
+            // naturalWidth/Height and drawImage already follow the photo's rotation flag.
+            var s = Math.min(1, MAX / Math.max(img.naturalWidth, img.naturalHeight));
+            var c = document.createElement('canvas');
+            c.width = Math.round(img.naturalWidth * s);
+            c.height = Math.round(img.naturalHeight * s);
+            c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+            URL.revokeObjectURL(url);
+            c.toBlob(function (blob) {
+              if (!blob) { resolve(file); return; }
+              var name = 'photo-' + stamp() + '-' + Math.random().toString(36).slice(2, 6) + (i ? '-' + (i + 1) : '') + '.jpg';
+              var out = new File([blob], name, { type: 'image/jpeg' });
+              previews[name] = URL.createObjectURL(out);
+              resolve(out);
+            }, 'image/jpeg', 0.9);
+          };
+          // This browser can't read it (HEIC on a computer, say): upload as is; Actions still cleans the site copy.
+          img.onerror = function () { URL.revokeObjectURL(url); resolve(file); };
+          img.src = url;
+        });
+      }
+      window.addEventListener('change', function (e) {
+        var input = e.target;
+        if (!input || input.type !== 'file' || input.__cleaned || !input.files || !input.files.length) return;
+        var files = Array.prototype.slice.call(input.files);
+        if (!files.some(isPhoto)) return;
+        e.stopImmediatePropagation();
+        var handOn = function (list) {
+          if (list) {
+            var dt = new DataTransfer();
+            list.forEach(function (f) { dt.items.add(f); });
+            input.files = dt.files;
+          }
+          input.__cleaned = true;
+          input.dispatchEvent(new Event('change', { bubbles: true }));
+          input.__cleaned = false;
+        };
+        Promise.all(files.map(function (f, i) { return isPhoto(f) ? clean(f, i) : f; }))
+          .then(handOn, function () { handOn(null); });
+      }, true);
+      // Decap previews a photo that isn't published yet from its future web address, which shows a
+      // broken image until the site rebuilds. Show the cleaned copy from memory instead.
+      document.addEventListener('error', function (e) {
+        var img = e.target;
+        if (!img || img.tagName !== 'IMG') return;
+        var url = previews[(img.getAttribute('src') || '').split('/').pop()];
+        if (url && img.src !== url) img.src = url;
+      }, true);
+    })();
+  </script>
   <script src="https://unpkg.com/decap-cms@3.16.3/dist/decap-cms.js"></script>
 </body>
 </html>
