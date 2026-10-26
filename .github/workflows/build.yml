@@ -1,0 +1,77 @@
+# Rebuild the site after every push to main, including saves from the admin page
+# (reachakash.com/admin, Decap CMS), which commit only data and images:
+#   1. process-photos.js: resize new photos, strip camera/GPS data, rename, measure (needs sharp)
+#   2. photo-meta.js:     tag photos with Akash's name (XMP)
+#   3. build.js:          regenerate every page, the sitemap, llms.txt and referrals.json
+# If anything changed, the generated files are committed back to main and GitHub Pages is asked to
+# publish. Pushes made with GITHUB_TOKEN don't start workflows, so the commit-back can't loop.
+name: Build site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: build-site
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # The newest main, not just the commit that started this run: runs wait their turn
+      # (concurrency above), and a later save may have landed in the meantime.
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+
+      - name: Install the image tool
+        run: npm install --no-save --no-package-lock sharp@0.35.5
+
+      - name: Process new photos
+        run: node _build/process-photos.js
+
+      - name: Tag photos
+        run: node _build/photo-meta.js
+
+      - name: Build pages
+        run: node _build/build.js
+
+      - name: Commit the result
+        id: commit
+        run: |
+          git add -A -- . ':!node_modules'
+          if git diff --cached --quiet; then
+            echo "Nothing to commit: the site was already up to date."
+            echo "pushed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Build site after $(git rev-parse --short HEAD)"
+          if ! git push; then
+            # Rejected because a newer save landed while this ran? Its own run rebuilds from there.
+            git fetch --quiet origin main
+            if [ "$(git rev-parse origin/main)" != "$(git rev-parse HEAD~1)" ]; then
+              echo "main moved on while this ran; the next run rebuilds the site."
+              echo "pushed=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            exit 1
+          fi
+          echo "pushed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Publish
+        if: steps.commit.outputs.pushed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X POST "repos/${{ github.repository }}/pages/builds" || echo "Pages will pick the commit up on its own."
