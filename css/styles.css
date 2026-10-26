@@ -582,6 +582,19 @@ html:not(.js) .footer-term-wrap { display: none; }
 .home-cta      { margin-top: 48px; display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; opacity: 0; animation: fadeUp 0.9s ease 0.55s forwards; }
 
 /* Quick-nav cards on home page */
+/* "What should Reach Akash build next?" band under the cards, linking to the suggestion box */
+.home-ideas {
+  display: flex; align-items: center; justify-content: space-between; gap: 20px 32px; flex-wrap: wrap;
+  width: 100%; max-width: 1100px; margin-top: 40px; padding: 26px 30px;
+  text-align: left;
+  background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+  opacity: 0; animation: fadeUp 0.9s ease 0.85s forwards;
+}
+.home-ideas-text { flex: 1 1 420px; }
+.home-ideas-title { font-family: var(--font-display); font-size: clamp(19px, 2.2vw, 23px); font-weight: 700; color: var(--white); margin-bottom: 6px; }
+.home-ideas p { font-size: 15px; line-height: 1.7; color: var(--muted); }
+@media (prefers-reduced-motion: reduce) { .home-ideas { opacity: 1; animation: none; } }
+
 .home-cards {
   margin-top: 80px;
   display: grid;
@@ -1749,11 +1762,10 @@ footer p      { font-size: 13px; color: var(--muted); }
 /* ----------------------------------------------------------------
    15. RESPONSIVE (mobile / tablet)
 ---------------------------------------------------------------- */
-@media (max-width: 900px) {
-  :root { --nav-gutter: 24px; }
-
+/* The menu folds into the ☰ button below 1160px: seven items need about that much room
+   (at 900px, the old breakpoint, the links overflowed between ~920 and ~990px). */
+@media (max-width: 1160px) {
   nav { gap: 12px; }
-  .nav-brand .brand-lockup { height: 48px; }
   .nav-hamburger { display: flex; }
   html:not(.js) .nav-hamburger { display: none; }
 
@@ -1791,6 +1803,11 @@ footer p      { font-size: 13px; color: var(--muted); }
   html:not(.js) nav { position: static; height: auto; flex-wrap: wrap; padding-top: 12px; padding-bottom: 12px; }
   html:not(.js) .nav-links { flex-wrap: wrap; width: 100%; }
   html:not(.js) #page-container { margin-top: 0; }
+}
+
+@media (max-width: 900px) {
+  :root { --nav-gutter: 24px; }
+  .nav-brand .brand-lockup { height: 48px; }
 
   .page-inner { padding: 48px 24px 80px; }
 
@@ -1833,7 +1850,7 @@ footer p      { font-size: 13px; color: var(--muted); }
 #term-launcher {
   position: fixed;
   left: 16px;
-  right: 16px;
+  right: 76px;   /* room for the chat button (16 + 48 + 12) */
   bottom: calc(16px + env(safe-area-inset-bottom));
   z-index: 900;
   height: 48px;
@@ -2084,6 +2101,75 @@ body.term-active { overflow: hidden; }
   caret-color: var(--term-accent);
 }
 
+/* CHAT BOX (js/chat.js): a round button beside the terminal bar, and a panel above it */
+#chat-launcher {
+  position: fixed;
+  right: 16px;
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  z-index: 905;
+  display: flex; align-items: center; justify-content: center;
+  width: 48px; height: 48px;
+  border: 1px solid rgba(var(--accent-rgb), 0.35);
+  border-radius: 50%;
+  background: var(--btn-bg);
+  color: var(--on-accent);
+  cursor: pointer;
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+#chat-launcher:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(var(--accent-rgb), 0.25); }
+#chat-launcher:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+#chat-panel {
+  position: fixed;
+  right: 16px;
+  bottom: calc(76px + env(safe-area-inset-bottom));
+  z-index: 960;
+  display: flex; flex-direction: column;
+  width: min(380px, calc(100vw - 32px));
+  height: min(560px, calc(100vh - 140px));
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+}
+#chat-panel[hidden] { display: none; }
+body.term-active #chat-launcher, body.term-active #chat-panel { display: none; }
+.chat-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--border); background: var(--surface); }
+.chat-title { font-family: var(--font-display); font-size: 15px; font-weight: 700; color: var(--white); }
+.chat-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.chat-close { width: 36px; height: 36px; border: none; border-radius: 50%; background: none; color: var(--muted); font-size: 15px; cursor: pointer; }
+.chat-close:hover { color: var(--accent); background: rgba(var(--accent-rgb), 0.08); }
+.chat-log { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+.chat-msg { max-width: 88%; padding: 10px 13px; border-radius: 12px; font-size: 14px; line-height: 1.55; overflow-wrap: anywhere; }
+.chat-msg.bot { align-self: flex-start; background: var(--surface); border: 1px solid var(--border); border-bottom-left-radius: 4px; }
+.chat-msg.me { align-self: flex-end; background: var(--btn-bg); color: var(--on-accent); border-bottom-right-radius: 4px; }
+.chat-msg a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+.chat-msg code { font-family: ui-monospace, Menlo, Consolas, monospace; font-weight: 600; }
+.chat-send-box { display: flex; flex-direction: column; gap: 8px; width: 88%; }
+.chat-send-box input { min-height: 40px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font: 14px var(--font-body); }
+.chat-send-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.chat-send-actions button { min-height: 38px; padding: 0 14px; border-radius: 999px; font: 600 13px var(--font-body); cursor: pointer; }
+.chat-do-send { border: none; background: var(--btn-bg); color: var(--on-accent); }
+.chat-do-send:disabled { opacity: 0.6; cursor: default; }
+.chat-cancel { border: 1px solid var(--border); background: none; color: var(--muted); }
+.chat-send-status { font-size: 12.5px; color: var(--muted); }
+.chat-send-status:empty { display: none; }
+.chat-chips { display: flex; gap: 6px; padding: 0 14px 10px; overflow-x: auto; scrollbar-width: none; }
+.chat-chips::-webkit-scrollbar { display: none; }
+.chat-chip { flex-shrink: 0; min-height: 34px; padding: 0 12px; border: 1px solid var(--border); border-radius: 999px; background: none; color: var(--text); font: 13px var(--font-body); cursor: pointer; white-space: nowrap; }
+.chat-chip:hover { border-color: var(--accent); color: var(--accent); }
+.chat-input { display: flex; gap: 8px; padding: 10px; border-top: 1px solid var(--border); }
+.chat-input input { flex: 1; min-width: 0; min-height: 44px; padding: 0 14px; border: 1px solid var(--border); border-radius: 999px; background: var(--bg); color: var(--text); font: 14px var(--font-body); }
+.chat-input input:focus { outline: none; border-color: var(--accent); }
+.chat-send { flex-shrink: 0; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border: none; border-radius: 50%; background: var(--btn-bg); color: var(--on-accent); cursor: pointer; }
+@media (max-width: 600px) {
+  #chat-launcher { right: 12px; bottom: calc(12px + env(safe-area-inset-bottom)); width: 46px; height: 46px; }
+  #chat-panel { left: 12px; right: 12px; width: auto; bottom: calc(70px + env(safe-area-inset-bottom)); height: min(560px, calc(100vh - 120px)); }
+}
+@media (prefers-reduced-motion: reduce) { #chat-launcher { transition: none; } #chat-launcher:hover { transform: none; } }
+
 #term-matrix { position: fixed; inset: 0; z-index: 1100; background: #000; cursor: pointer; }
 #term-game   { position: fixed; inset: 0; z-index: 1100; background: #0b0d10; cursor: default; touch-action: none; }
 
@@ -2104,7 +2190,7 @@ body.term-active { overflow: hidden; }
   .term-prompt { font-size: 13px; }
 
   body { padding-bottom: calc(74px + env(safe-area-inset-bottom)); }
-  #term-launcher { left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom)); height: 46px; font-size: 13px; gap: 8px; }
+  #term-launcher { left: 12px; right: 70px; bottom: calc(12px + env(safe-area-inset-bottom)); height: 46px; font-size: 13px; gap: 8px; }
   #term-launcher .tl-key { display: none; }   /* no physical ~ key on phones */
 }
 
@@ -2173,6 +2259,25 @@ a.project-card { display: block; color: inherit; text-decoration: none; }
 /* Brand gallery (About page, #brand) */
 .brand-gallery { margin-top: 88px; scroll-margin-top: calc(var(--nav-h) + 16px); }
 .brand-gallery-first { margin-top: 48px; }
+
+/* GALLERY TABS (pages/gallery.html): Logos | Photos. Both panels stay in the HTML for search engines;
+   with JS only the active one shows. Without JS the switch hides and both panels show. */
+.gallery-tabs {
+  display: inline-flex; gap: 4px; margin-top: 8px; padding: 4px;
+  border: 1px solid var(--border); border-radius: 999px; background: var(--surface);
+}
+html:not(.js) .gallery-tabs { display: none; }
+.gallery-tab {
+  min-height: 44px; padding: 0 24px;
+  border: none; border-radius: 999px; background: none; cursor: pointer;
+  color: var(--muted); font: 600 14px/1 var(--font-body); letter-spacing: 0.04em;
+  transition: background 0.2s, color 0.2s;
+}
+.gallery-tab:hover { color: var(--text); }
+.gallery-tab.is-active { background: var(--btn-bg); color: var(--on-accent); }
+.gallery-tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.gallery-panel { margin-top: 40px; }
+.js .gallery-panel:not(.is-active) { display: none; }
 /* A group inside a section (the merch shots inside Logos) */
 .brand-gallery-group { margin-top: 56px; scroll-margin-top: calc(var(--nav-h) + 16px); }
 .brand-gallery-sub { font-family: var(--font-display); font-size: clamp(20px, 2.4vw, 26px); font-weight: 700; color: var(--white); line-height: 1.2; margin-bottom: 8px; }

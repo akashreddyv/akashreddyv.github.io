@@ -318,6 +318,7 @@
       <li><a href="/referrals" data-nav="referrals">Referrals</a></li>
       <li><a href="/socials" data-nav="socials">Socials</a></li>
       <li><a href="/gallery" data-nav="gallery" aria-current="page">Gallery</a></li>
+      <li><a href="/suggestions" data-nav="suggestions">Suggestions</a></li>
       <li class="nav-about">
         <details class="nav-dropdown">
           <summary data-nav-group="about">About</summary>
@@ -342,8 +343,8 @@
 
   <main id="page-container">
     <div id="content" class="page-content">
-<!-- pages/gallery.html — two sections: Photos (of Akash) and Logos. Its own page, linked from the main menu
-     and the footer. Photos come from _build/data/photos.json (    <div class="gallery-grid">
+<!-- pages/gallery.html — two tabs: Logos (open by default) and Photos (of Akash). Its own page, linked from
+     the main menu and the footer. Photos come from _build/data/photos.json (    <div class="gallery-grid">
       <figure class="gallery-item">
         <a href="/images/home/akash-reddy-professional.jpg" target="_blank" rel="noopener"><img src="/images/home/akash-reddy-professional.jpg" alt="Akash Reddy, AI software developer, in professional attire outdoors in Detroit, MI" width="1200" height="847" decoding="async"></a>
         <figcaption>Akash Reddy · Professional · Detroit, MI</figcaption>
@@ -352,40 +353,26 @@
         <a href="/images/home/akash-reddy-portrait.jpg" target="_blank" rel="noopener"><img src="/images/home/akash-reddy-portrait.jpg" alt="Akash Reddy (V Akash Reddy) smiling outdoors, candid portrait" width="1200" height="1600" decoding="async"></a>
         <figcaption>V Akash Reddy · Portrait</figcaption>
       </figure>
-    </div>), so add new ones there, not here.
-     Logo images come from images/brand/lockup.svg; the merch shots are 3D product renders built
-     from the same logo (WebP, 900px; the cover is 1500x500). Photos sit first: they're what people search for. -->
+    </div>), so add new ones
+     there, not here. Logo images come from images/brand/lockup.svg; the merch shots are 3D product renders built
+     from the same logo (WebP, 900px; the cover is 1500x500).
+     Both panels are always in the HTML (only CSS hides the inactive one), so search engines index the photos
+     even though Logos is the tab people see first. /gallery#photos opens Photos; #merch opens Logos at the merch. -->
 <div class="page-inner">
 
   <div class="page-header">
     <p class="page-eyebrow">Gallery</p>
-    <h1 class="page-title">Photos <em>&amp; logos</em></h1>
-    <p class="page-subtitle">Photos of me, Akash Reddy, and every version of the reachAkash logo, including on merch.</p>
+    <h1 class="page-title">Logos <em>&amp; photos</em></h1>
+    <p class="page-subtitle">Every version of the reachAkash logo, including on merch, and photos of me, Akash Reddy.</p>
   </div>
 
-  <div class="ref-jump" role="navigation" aria-label="Gallery sections">
-    <ul>
-      <li><a href="#photos">Photos</a></li>
-      <li><a href="#logos">Logos</a></li>
-    </ul>
+  <!-- Without JavaScript the tabs are hidden and both panels show, one after the other (css/styles.css, "GALLERY TABS"). -->
+  <div class="gallery-tabs" role="tablist" aria-label="Gallery">
+    <button class="gallery-tab is-active" type="button" role="tab" id="tab-logos" aria-controls="logos" aria-selected="true">Logos</button>
+    <button class="gallery-tab" type="button" role="tab" id="tab-photos" aria-controls="photos" aria-selected="false" tabindex="-1">Photos</button>
   </div>
 
-  <section class="brand-gallery brand-gallery-first" id="photos" aria-labelledby="photos-title">
-    <h2 class="brand-gallery-title" id="photos-title">Photos of Akash Reddy</h2>
-    <p class="brand-gallery-intro">Me, Akash Reddy, software developer in Detroit, MI. Click any photo for the full size.</p>
-    <div class="gallery-grid">
-      <figure class="gallery-item">
-        <a href="/images/home/akash-reddy-professional.jpg" target="_blank" rel="noopener"><img src="/images/home/akash-reddy-professional.jpg" alt="Akash Reddy, AI software developer, in professional attire outdoors in Detroit, MI" width="1200" height="847" decoding="async"></a>
-        <figcaption>Akash Reddy · Professional · Detroit, MI</figcaption>
-      </figure>
-      <figure class="gallery-item">
-        <a href="/images/home/akash-reddy-portrait.jpg" target="_blank" rel="noopener"><img src="/images/home/akash-reddy-portrait.jpg" alt="Akash Reddy (V Akash Reddy) smiling outdoors, candid portrait" width="1200" height="1600" decoding="async"></a>
-        <figcaption>V Akash Reddy · Portrait</figcaption>
-      </figure>
-    </div>
-  </section>
-
-  <section class="brand-gallery" id="logos" aria-labelledby="logos-title">
+  <section class="brand-gallery gallery-panel is-active" id="logos" role="tabpanel" aria-labelledby="tab-logos">
     <h2 class="brand-gallery-title" id="logos-title">Logos</h2>
     <p class="brand-gallery-intro">The full logo, the mark on its own, the red-only version, and the website name. Click any of them for the full size.</p>
     <div class="brand-grid">
@@ -451,6 +438,21 @@
     </div>
   </section>
 
+  <section class="brand-gallery gallery-panel" id="photos" role="tabpanel" aria-labelledby="tab-photos">
+    <h2 class="brand-gallery-title" id="photos-title">Photos of Akash Reddy</h2>
+    <p class="brand-gallery-intro">Me, Akash Reddy, software developer in Detroit, MI. Click any photo for the full size.</p>
+    <div class="gallery-grid">
+      <figure class="gallery-item">
+        <a href="/images/home/akash-reddy-professional.jpg" target="_blank" rel="noopener"><img src="/images/home/akash-reddy-professional.jpg" alt="Akash Reddy, AI software developer, in professional attire outdoors in Detroit, MI" width="1200" height="847" decoding="async"></a>
+        <figcaption>Akash Reddy · Professional · Detroit, MI</figcaption>
+      </figure>
+      <figure class="gallery-item">
+        <a href="/images/home/akash-reddy-portrait.jpg" target="_blank" rel="noopener"><img src="/images/home/akash-reddy-portrait.jpg" alt="Akash Reddy (V Akash Reddy) smiling outdoors, candid portrait" width="1200" height="1600" decoding="async"></a>
+        <figcaption>V Akash Reddy · Portrait</figcaption>
+      </figure>
+    </div>
+  </section>
+
 </div>
 
     </div>
@@ -480,6 +482,7 @@
   <script src="/js/site-config.js"></script>
   <script src="/js/main.js"></script>
   <script src="/js/terminal.js"></script>
+  <script src="/js/chat.js"></script>
   <script src="/js/starfield.js"></script>
 </body>
 </html>

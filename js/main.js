@@ -292,4 +292,49 @@ document.addEventListener("DOMContentLoaded", function () {
       text.focus();
     });
   }
+
+  // ── Gallery tabs (pages/gallery.html): Logos (default) and Photos ─────────────
+  // /gallery#photos opens Photos; an id inside a panel (#merch) opens its tab and scrolls to it.
+  const gTabs = Array.from(document.querySelectorAll('.gallery-tab'));
+  if (gTabs.length) {
+    const gPanels = gTabs.map(function (t) { return document.getElementById(t.getAttribute('aria-controls')); });
+    const selectTab = function (i, focus) {
+      gTabs.forEach(function (t, j) {
+        const on = i === j;
+        t.classList.toggle('is-active', on);
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        t.tabIndex = on ? 0 : -1;
+        gPanels[j].classList.toggle('is-active', on);
+      });
+      if (focus) gTabs[i].focus();
+    };
+    const openFromHash = function () {
+      const target = location.hash.length > 1 && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+      if (!target) return;
+      const i = gPanels.findIndex(function (p) { return p === target || p.contains(target); });
+      if (i < 0) return;
+      selectTab(i);
+      if (target === gPanels[i]) return;
+      // After layout settles: on first load the browser's own jump can run before the tab is shown.
+      if (document.readyState === 'complete') target.scrollIntoView();
+      else window.addEventListener('load', function () { target.scrollIntoView(); }, { once: true });
+    };
+    gTabs.forEach(function (t, i) {
+      t.addEventListener('click', function () {
+        selectTab(i);
+        history.replaceState(null, '', '#' + gPanels[i].id);
+      });
+      t.addEventListener('keydown', function (e) {
+        const n = gTabs.length;
+        const k = e.key === 'ArrowRight' ? (i + 1) % n : e.key === 'ArrowLeft' ? (i - 1 + n) % n
+          : e.key === 'Home' ? 0 : e.key === 'End' ? n - 1 : -1;
+        if (k < 0) return;
+        e.preventDefault();
+        selectTab(k, true);
+        history.replaceState(null, '', '#' + gPanels[k].id);
+      });
+    });
+    openFromHash();
+    window.addEventListener('hashchange', openFromHash);
+  }
 });

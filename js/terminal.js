@@ -171,6 +171,7 @@
         ['socials',            'socials',  'find me online'],
         ['contact',            'contact',  'how to reach me'],
         ['suggest [idea]',     'suggest',  'send an idea (on its own: open the suggestion box)'],
+        ['chat',               'chat',     'open the chat box (message Akash)'],
         ['theme &lt;name&gt;',       'theme',    'dark | light | retro | space (click to pick one)'],
         ['banner',             'banner',   'show the ASCII banner'],
         ['play',               'play',     'shoot down the 404s 👾'],
@@ -317,6 +318,12 @@
 
     matrix() { startMatrix(); },
     play() { startGame(); },
+
+    chat() {
+      if (typeof window.openChat !== 'function') { write('chat: the chat box isn\'t on this page. Try <span class="term-cmd">cd contact</span>.', 'term-err'); return; }
+      close();
+      window.openChat();
+    },
 
     sudo()  { write('We trust you have received the usual lecture. 🙂 Permission denied — but A+ for effort.', 'term-err'); },
     coffee() { write('☕ Brewing… your move. (Caffeine: the only true dependency.)'); },
