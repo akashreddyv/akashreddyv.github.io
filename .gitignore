@@ -7,3 +7,6 @@ _review/
 
 # Photos waiting to be added to the gallery (see photos-inbox/README.txt). Never published.
 photos-inbox/
+
+# Packages the GitHub Action installs (sharp); never committed.
+node_modules/

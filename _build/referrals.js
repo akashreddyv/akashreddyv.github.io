@@ -56,6 +56,14 @@ function load(json, today) {
   const cats = new Map(data.categories.map((c) => [c.id, c]));
   const errors = [], warnings = [], ids = new Set();
 
+  // The admin page (Decap CMS) saves empty optional fields as "" and may add a time to dates.
+  for (const e of data.entries) {
+    for (const [k, v] of Object.entries(e)) {
+      if (v === '') e[k] = null;
+      else if (['lastVerified', 'asOf', 'expires'].includes(k) && typeof v === 'string' && /^\d{4}-\d{2}-\d{2}T/.test(v)) e[k] = v.slice(0, 10);
+    }
+  }
+
   for (const c of data.categories) {
     const where = `referrals.json category "${c.id}"`;
     for (const f of ['id', 'label', 'titleLead', 'intro']) if (!c[f]) errors.push(`${where}: missing ${f}`);
@@ -83,10 +91,15 @@ function load(json, today) {
     }
     if (e.publish && !e.url) errors.push(`${where}: published entries need a url`);
     if (e.headline != null && (typeof e.headline !== 'string' || e.headline.length > 30)) errors.push(`${where}: headline must be a string of 30 characters or fewer`);
-    if (e.logo != null && !/^\/images\/referrals\/[a-z0-9-]+\.(png|svg|webp)$/.test(e.logo)) errors.push(`${where}: logo must be /images/referrals/<name>.png|svg|webp`);
+    // Uploads from the admin page keep their own file names, so any name is fine inside images/referrals/.
+    if (e.logo != null && !/^\/images\/referrals\/[^/\s]+\.(png|svg|webp|jpe?g)$/i.test(e.logo)) errors.push(`${where}: logo must be an image in /images/referrals/`);
   }
 
   const live = data.entries.filter((e) => e.publish && !(e.expires && e.expires < today));
+  // A save from the admin page that emptied the list must not wipe the live site: stop the build instead.
+  if (!data.categories.length || !live.length) {
+    errors.push('referrals.json has no categories or no published offers; refusing to build, since that would empty /referrals. Restore the file from git history.');
+  }
   for (const e of live) {
     const age = (Date.parse(today) - Date.parse(e.lastVerified)) / 86400000;
     if (age > STALE_DAYS) warnings.push(`referrals.json "${e.id}": lastVerified ${e.lastVerified} is ${Math.floor(age)} days old (check the offer)`);

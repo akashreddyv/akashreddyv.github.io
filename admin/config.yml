@@ -1,0 +1,164 @@
+# Decap CMS: the admin page at reachakash.com/admin (admin/index.html loads it).
+# Sign in with GitHub through auth.reachakash.com (reachakash-workers/cms-auth); only accounts that
+# can push to this repo can save. Every save is a commit to main, and .github/workflows/build.yml
+# then resizes new photos, rebuilds the pages and publishes, in about two minutes.
+# The fields below map onto _build/data/*.json, so the build reads exactly what is edited here.
+
+backend:
+  name: github
+  repo: akashreddyv/akashreddyv.github.io
+  branch: main
+  base_url: https://auth.reachakash.com
+  auth_endpoint: auth
+  commit_messages:
+    create: 'Admin: add {{collection}} "{{slug}}"'
+    update: 'Admin: update {{collection}} "{{slug}}"'
+    delete: 'Admin: delete {{collection}} "{{slug}}"'
+    uploadMedia: 'Admin: upload {{path}}'
+    deleteMedia: 'Admin: delete {{path}}'
+
+# On a local preview (127.0.0.1) with `npx decap-server` running in the repo, edits go straight to the
+# local files instead of GitHub. Ignored on reachakash.com.
+local_backend: true
+
+site_url: https://reachakash.com
+display_url: https://reachakash.com
+logo_url: /images/brand/reachakash-symbol.png
+locale: en
+
+# Photos land here; _build/process-photos.js then shrinks them, strips camera/GPS data and renames them.
+media_folder: images/photos
+public_folder: /images/photos
+
+collections:
+  - name: photos
+    label: Photos
+    description: Your photos on the Gallery page (Photos tab). They're also what Google and Bing see for your name, so give each one a good description.
+    files:
+      - name: photos
+        label: Gallery photos
+        file: _build/data/photos.json
+        format: json
+        fields:
+          - { name: _readme, widget: hidden }
+          - name: photos
+            label: Photos (the top one shows first)
+            widget: list
+            add_to_top: true
+            summary: '{{fields.caption}}'
+            fields:
+              - name: file
+                label: Photo
+                widget: image
+                choose_url: false
+                hint: Any photo from your phone or computer. It gets resized, its camera and location data removed, and your name added automatically. It appears on the site about two minutes after you publish.
+              - name: caption
+                label: Caption under the photo
+                widget: string
+                hint: 'For example: Akash Reddy · Hiking · Colorado'
+              - name: alt
+                label: Description for Google and screen readers
+                widget: string
+                hint: 'Say what the photo shows and include your name, for example: Akash Reddy smiling at the top of a mountain trail'
+              - name: title
+                label: Short title
+                widget: string
+                hint: 'Name first, for example: Akash Reddy, hiking. It also becomes the file name.'
+              - { name: width, widget: hidden, required: false }
+              - { name: height, widget: hidden, required: false }
+
+  - name: referrals
+    label: Referral codes
+    description: Your offers on reachakash.com/referrals. Each one also gets its own page.
+    files:
+      - name: referrals
+        label: Referral codes
+        file: _build/data/referrals.json
+        format: json
+        fields:
+          - { name: _readme, widget: hidden }
+          - name: entries
+            label: Offers
+            widget: list
+            collapsed: true
+            summary: '{{fields.name}}'
+            fields:
+              - { name: publish, label: Show on the site, widget: boolean, default: true }
+              - { name: name, label: Company or card name, widget: string }
+              - name: id
+                label: Page address
+                widget: string
+                pattern: ['^[a-z0-9-]+$', 'Lowercase letters, numbers and hyphens only']
+                hint: "Becomes reachakash.com/referrals/<this>, for example remitly. Don't change it for an existing offer."
+              - name: category
+                label: Category
+                widget: select
+                options:
+                  - { label: Credit cards, value: credit-cards }
+                  - { label: Investing & trading, value: investing }
+                  - { label: Payments, value: payments }
+                  - { label: Send money to India, value: send-money-to-india }
+                  - { label: Shopping & cash back, value: shopping }
+                  - { label: AI tools, value: ai-tools }
+              - { name: url, label: Your referral link, widget: string, pattern: ['^https://', 'Must start with https://'] }
+              - { name: code, label: Referral code (if there is one), widget: string, required: false }
+              - name: forYou
+                label: What the person signing up gets
+                widget: string
+                hint: 'For example: $10 off your first transfer. Only say what the company actually offers.'
+              - name: headline
+                label: Short headline for the page title
+                widget: string
+                required: false
+                pattern: ['^.{0,30}$', '30 characters or fewer']
+                hint: 'For example: $10 off your first transfer'
+              - { name: iGet, label: What you get (not shown on the card), widget: string, required: false }
+              - { name: region, label: Where it works, widget: string, required: false, hint: 'For example: US, India, or US to India' }
+              - { name: termsUrl, label: Official terms link, widget: string, pattern: ['^https://', 'Must start with https://'] }
+              - name: logo
+                label: Logo
+                widget: image
+                required: false
+                choose_url: false
+                media_folder: /images/referrals
+                public_folder: /images/referrals
+                hint: A small square app icon (PNG), about 128 pixels.
+              - { name: note, label: Extra note on the card, widget: text, required: false }
+              - { name: lastVerified, label: Date you last checked the offer, widget: datetime, format: 'YYYY-MM-DD', date_format: 'YYYY-MM-DD', time_format: false }
+              - { name: asOf, label: Date the bonus amount is from, widget: datetime, format: 'YYYY-MM-DD', date_format: 'YYYY-MM-DD', time_format: false, required: false }
+              - { name: expires, label: Hide after this date, widget: datetime, format: 'YYYY-MM-DD', date_format: 'YYYY-MM-DD', time_format: false, required: false }
+              - { name: _why, widget: hidden, required: false }
+          - name: categories
+            label: Categories (advanced)
+            widget: list
+            collapsed: true
+            summary: '{{fields.label}}'
+            fields:
+              - { name: id, label: Page address, widget: string, pattern: ['^[a-z0-9-]+$', 'Lowercase letters, numbers and hyphens only'] }
+              - { name: label, label: Name, widget: string }
+              - { name: titleLead, label: Start of the page title, widget: string }
+              - { name: h1, label: Heading (plain part, then the italic part), widget: list, field: { name: part, label: Part, widget: string } }
+              - { name: intro, label: Opening line, widget: text }
+
+  - name: site
+    label: Site text
+    description: Small bits of text around the site.
+    files:
+      - name: site
+        label: Site text
+        file: _build/data/site.json
+        format: json
+        fields:
+          - { name: _readme, widget: hidden }
+          - name: announcement
+            label: Announcement banner
+            widget: string
+            required: false
+            hint: 'One line at the top of every page, for example: Now taking website projects for 2027. Leave it empty for no banner.'
+          - name: announcementLink
+            label: Banner link
+            widget: string
+            required: false
+            pattern: ['^(/\S*|https://\S+)?$', 'A site path like /services, or a full https:// address']
+          - { name: homeTagline, label: Home page, the line under your name, widget: string }
+          - { name: personalBio, label: Personal page, your bio, widget: text }

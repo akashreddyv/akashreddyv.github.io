@@ -1,0 +1,7 @@
+{
+  "_readme": "Small bits of site text, editable from the admin page (reachakash.com/admin, 'Site text'). _build/build.js puts them into the pages. announcement: an optional one-line banner at the top of every page (leave empty for none); announcementLink: where the banner links (optional, a site path like /services or a full https:// address). homeTagline: the line under the name on Home. personalBio: the first paragraph on /personal.",
+  "announcement": "",
+  "announcementLink": "",
+  "homeTagline": "Akash Reddy, AI Software Developer at Molex, Detroit MI",
+  "personalBio": "I'm Akash Reddy (V Akash Reddy), a software developer from Hyderabad, now in Metro Detroit. I build manufacturing test software, and I use AI to get from idea to working tool fast."
+}

@@ -342,6 +342,18 @@ html:not(.js) .footer-term-wrap { display: none; }
   margin-top: 72px;
 }
 
+/* Optional one-line banner at the top of every page (_build/data/site.json, edited from the admin page) */
+.site-announcement {
+  padding: 10px var(--nav-gutter);
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+.site-announcement a { margin-left: 6px; color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+
 .page-content {
   animation: pageIn 0.4s ease forwards;
 }

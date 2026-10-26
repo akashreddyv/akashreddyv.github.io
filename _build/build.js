@@ -7,6 +7,7 @@
 
    Inputs:  _build/template.html, _build/routes.js, pages/*.html, images/brand/lockup.svg,
             _build/data/referrals.json (via _build/referrals.js), _build/data/photos.json,
+            _build/data/site.json (bits of text the admin page edits),
             js/site-config.js (CTA text/links, same rules as the browser)
    Outputs: one HTML file per route at the repo root (GitHub Pages serves
             /about from about.html with a 200), one page per referral offer
@@ -100,34 +101,19 @@ for (const e of REF.live) {
   if (e.logo && !fs.existsSync(path.join(ROOT, e.logo))) throw new Error(`referrals.json "${e.id}": logo file ${e.logo} does not exist`);
 }
 
-// Pixel size of a JPEG, PNG or WebP, read from its header (no dependencies).
-function imageSize(file) {
-  const b = fs.readFileSync(file);
-  if (b[0] === 0x89 && b.toString('ascii', 1, 4) === 'PNG') return [b.readUInt32BE(16), b.readUInt32BE(20)];
-  if (b.toString('ascii', 0, 4) === 'RIFF' && b.toString('ascii', 8, 12) === 'WEBP') {
-    const kind = b.toString('ascii', 12, 16);
-    if (kind === 'VP8X') return [1 + b.readUIntLE(24, 3), 1 + b.readUIntLE(27, 3)];
-    if (kind === 'VP8L') { const v = b.readUInt32LE(21); return [1 + (v & 0x3FFF), 1 + ((v >> 14) & 0x3FFF)]; }
-    return [b.readUInt16LE(26) & 0x3FFF, b.readUInt16LE(28) & 0x3FFF];
-  }
-  for (let i = 2; i < b.length;) {                       // JPEG: walk to the SOF marker
-    const marker = b[i + 1];
-    if (marker >= 0xC0 && marker <= 0xCF && ![0xC4, 0xC8, 0xCC].includes(marker)) return [b.readUInt16BE(i + 7), b.readUInt16BE(i + 5)];
-    i += 2 + b.readUInt16BE(i + 2);
-  }
-  throw new Error(`can't read the size of ${file}`);
-}
+const { imageSize } = require('./image-size.js');
 
 // Photos of Akash for the Photos section of /gallery (_build/data/photos.json).
+// New ones from the admin page get resized, renamed and measured by _build/process-photos.js first.
 const PHOTOS = JSON.parse(read('_build/data/photos.json')).photos;
 for (const p of PHOTOS) {
-  for (const f of ['file', 'width', 'height', 'title', 'alt', 'caption']) {
+  for (const f of ['file', 'title', 'alt', 'caption']) {
     if (!p[f]) throw new Error(`photos.json: ${p.file || '(no file)'} is missing ${f}`);
   }
   const abs = path.join(ROOT, p.file);
   if (!fs.existsSync(abs)) throw new Error(`photos.json: ${p.file} does not exist`);
   const [w, h] = imageSize(abs);
-  if (w !== p.width || h !== p.height) throw new Error(`photos.json: ${p.file} is ${w}x${h}, not ${p.width}x${p.height}`);
+  if (w !== p.width || h !== p.height) throw new Error(`photos.json: ${p.file} is ${w}x${h}, not ${p.width}x${p.height}; run node _build/process-photos.js`);
   if (/\.jpe?g$/i.test(p.file) && !fs.readFileSync(abs).includes('Iptc4xmpExt:PersonInImage')) {
     warnings.push(`photos.json: ${p.file} has no XMP tags yet; run node _build/photo-meta.js`);
   }
@@ -144,6 +130,20 @@ const photoGallery = PHOTOS.length
       '    </div>'
     ].join('\n')
   : '    <p class="brand-gallery-intro">Photos are on their way.</p>';
+
+// Small bits of site text (_build/data/site.json), editable from the admin page. All escaped.
+const SITE = JSON.parse(read('_build/data/site.json'));
+for (const f of ['homeTagline', 'personalBio']) {
+  if (typeof SITE[f] !== 'string' || !SITE[f].trim()) throw new Error(`site.json: ${f} is missing`);
+}
+const announceLink = String(SITE.announcementLink || '').trim();
+if (announceLink && !/^(\/\S*|https:\/\/\S+)$/.test(announceLink)) {
+  throw new Error('site.json: announcementLink must be a site path (like /services) or an https:// address');
+}
+const ANNOUNCEMENT = String(SITE.announcement || '').trim()
+  ? `    <div class="site-announcement" role="note"><p>${escAttr(SITE.announcement.trim())}` +
+    (announceLink ? ` <a href="${escAttr(announceLink)}">Learn more</a>` : '') + '</p></div>\n'
+  : '';
 
 // Every page: the hand-written routes plus one per referral offer and category
 // (those carry their HTML in `content` instead of a pages/ partial).
@@ -164,6 +164,8 @@ function renderPage(route) {
     referralJump: referrals.renderJump(REF.groups),
     referralSections: referrals.renderSections(REF.groups),
     photoGallery,
+    homeTagline: escAttr(SITE.homeTagline.trim()),
+    personalBio: escAttr(SITE.personalBio.trim()),
     logoMark: LOGO_MARK
   });
 
@@ -218,7 +220,8 @@ function renderPage(route) {
     year: YEAR,
     ctaPrimaryText: escAttr(cta.text),
     ctaPrimaryHref: escAttr(cta.href),
-    logoHeader: LOGO_HEADER
+    logoHeader: LOGO_HEADER,
+    announcement: ANNOUNCEMENT
   });
 
   // Mark the current page in the nav ("true" rather than "page" on pages inside a section).

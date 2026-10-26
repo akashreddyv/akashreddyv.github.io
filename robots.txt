@@ -4,5 +4,7 @@ Allow: /
 # The one real page in that folder is the old logo viewer's redirect, so it stays crawlable.
 Allow: /pages/RCG.html
 Disallow: /pages/
+# The admin page (Decap CMS) isn't for visitors or search engines.
+Disallow: /admin/
 
 Sitemap: https://reachakash.com/sitemap.xml
