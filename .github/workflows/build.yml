@@ -34,11 +34,14 @@ jobs:
         with:
           node-version: 24
 
+      # Outside the checkout, so the commit step below only ever sees the site's own files.
       - name: Install the image tool
-        run: npm install --no-save --no-package-lock sharp@0.35.5
+        run: npm install --prefix "$RUNNER_TEMP/tools" --no-save --no-package-lock sharp@0.35.5
 
       - name: Process new photos
         run: node _build/process-photos.js
+        env:
+          NODE_PATH: ${{ runner.temp }}/tools/node_modules
 
       - name: Tag photos
         run: node _build/photo-meta.js
@@ -49,7 +52,7 @@ jobs:
       - name: Commit the result
         id: commit
         run: |
-          git add -A -- . ':!node_modules'
+          git add -A
           if git diff --cached --quiet; then
             echo "Nothing to commit: the site was already up to date."
             echo "pushed=false" >> "$GITHUB_OUTPUT"
