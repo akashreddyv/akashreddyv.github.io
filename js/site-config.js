@@ -18,7 +18,7 @@ window.SITE_CONFIG = {
   waitlistEndpoint: "",    // Phase 4 Worker URL; empty -> /contact
   formEndpoint: "https://api.reachakash.com/contact", // the contact Worker; the suggestion box and the terminal's `suggest` post here too
   contactEmail: "",        // [EDIT] e.g. mail@reachakash.com once Email Routing is verified
-  analyticsToken: ""       // Phase 4: Cloudflare Web Analytics
+  analyticsToken: "e8f6cb904e3b4b36ad5e98abffe5f860"       // Cloudflare Web Analytics token (from its snippet); the build adds the beacon to every page. Empty -> no analytics
 };
 
 /* CTA rules live here, next to the config, so the browser and the page

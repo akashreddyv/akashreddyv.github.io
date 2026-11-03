@@ -145,6 +145,17 @@ const ANNOUNCEMENT = String(SITE.announcement || '').trim()
     (announceLink ? ` <a href="${escAttr(announceLink)}">Learn more</a>` : '') + '</p></div>\n'
   : '';
 
+// Cloudflare Web Analytics (analyticsToken in js/site-config.js): cookieless visit counts, so no
+// cookie banner. Without a token there's no beacon and the CSP allows nothing extra.
+const ANALYTICS_TOKEN = String(sandbox.window.SITE_CONFIG.analyticsToken || '').trim();
+if (ANALYTICS_TOKEN && !/^[A-Za-z0-9]{16,64}$/.test(ANALYTICS_TOKEN)) {
+  throw new Error('js/site-config.js: analyticsToken should be the token from the Cloudflare Web Analytics snippet');
+}
+const ANALYTICS = ANALYTICS_TOKEN
+  ? `  <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "${ANALYTICS_TOKEN}"}'></script>\n`
+  : '';
+const ANALYTICS_CSP = ANALYTICS_TOKEN ? ' https://static.cloudflareinsights.com' : '';
+
 // Every page: the hand-written routes plus one per referral offer and category
 // (those carry their HTML in `content` instead of a pages/ partial).
 const ALL = [...routes, ...referrals.pages(REF, site.origin)];
@@ -221,7 +232,9 @@ function renderPage(route) {
     ctaPrimaryText: escAttr(cta.text),
     ctaPrimaryHref: escAttr(cta.href),
     logoHeader: LOGO_HEADER,
-    announcement: ANNOUNCEMENT
+    announcement: ANNOUNCEMENT,
+    analytics: ANALYTICS,
+    analyticsCsp: ANALYTICS_CSP
   });
 
   // Mark the current page in the nav ("true" rather than "page" on pages inside a section).
