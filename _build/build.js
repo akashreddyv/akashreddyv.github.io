@@ -304,7 +304,7 @@ function renderSitemap() {
 function renderLlms() {
   const pages = routes
     .filter((r) => r.path && !r.draft && !r.redirectTo && !r.notFound && r.llms)
-    .map((r) => `- [${r.slug === 'home' ? 'Home' : r.slug[0].toUpperCase() + r.slug.slice(1)}](${site.origin}${r.path}): ${r.llms}`);
+    .map((r) => `- [${r.llmsName || (r.slug === 'home' ? 'Home' : r.slug[0].toUpperCase() + r.slug.slice(1))}](${site.origin}${r.path}): ${r.llms}`);
   const out = [`# ${llms.title}`, '', `> ${llms.summary}`, '', '## Pages', '', ...pages];
   for (const [heading, items] of llms.sections) out.push('', `## ${heading}`, '', ...items.map((i) => `- ${i}`));
   if (REF.live.length) {

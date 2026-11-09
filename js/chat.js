@@ -19,8 +19,8 @@
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const a = (href, text) => `<a href="${href}">${esc(text)}</a>`;
 
-  // The reachAkash mark, small: the eight steps and the curve (colours from the theme's logo roles).
-  const MARK = '<svg class="chat-mark" viewBox="64 350 790 543" aria-hidden="true" focusable="false"><path fill="var(--logo-ember)" d="M833 372L791 372L751 384L706 410L667 445L627 493L593 546L560 611L539 670L526 732L526 784L537 835L557 872L689 872L657 863L627 849L601 828L583 801L572 769L567 726L570 682L581 628L602 565L626 515L656 469L685 436L719 408L748 391L789 377L833 372Z"/><path fill="var(--logo-mark)" d="M441,873L487,830L487,793L167,793L84,835L84,873Z"/><path fill="var(--logo-ember)" d="M485,720L516,691L516,666L299,666L243,694L243,720Z"/><path fill="var(--logo-mark)" d="M406,577L369,597L369,615L529,615L549,595L549,577Z"/><path fill="var(--logo-mark)" d="M569,546L583,532L583,520L485,520L459,534L459,546Z"/><path fill="var(--logo-mark)" d="M601,500L610,491L610,482L542,482L525,492L525,500Z"/><path fill="var(--logo-mark)" d="M626,469L633,462L633,457L585,457L573,463L573,469Z"/><path fill="var(--logo-mark)" d="M646,447L651,443L651,439L618,439L610,444L610,447Z"/><path fill="var(--logo-mark)" d="M635,434L660,434L664,430L664,426L643,426L635,430Z"/></svg>';
+  // The red part of the reachAkash mark (the red step and the curve), small enough for a button.
+  const MARK = '<svg class="chat-mark" viewBox="231 360 614 524" aria-hidden="true" focusable="false"><path fill="var(--logo-ember)" d="M833 372L791 372L751 384L706 410L667 445L627 493L593 546L560 611L539 670L526 732L526 784L537 835L557 872L689 872L657 863L627 849L601 828L583 801L572 769L567 726L570 682L581 628L602 565L626 515L656 469L685 436L719 408L748 391L789 377L833 372Z"/><path fill="var(--logo-ember)" d="M485,720L516,691L516,666L299,666L243,694L243,720Z"/></svg>';
   // The AI touch: a sparkle.
   const SPARK = '<svg class="chat-spark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M10 3c.8 4.6 2.6 6.4 7.2 7.2C12.6 11 10.8 12.8 10 17.4 9.2 12.8 7.4 11 2.8 10.2 7.4 9.4 9.2 7.6 10 3z"/><path fill="currentColor" d="M18.5 13c.4 2.2 1.2 3 3.4 3.4-2.2.4-3 1.2-3.4 3.4-.4-2.2-1.2-3-3.4-3.4 2.2-.4 3-1.2 3.4-3.4z"/></svg>';
 
@@ -28,17 +28,17 @@
   const ANSWERS = {
     bot: "I'm Akash's assistant on this site: automatic answers, not Akash himself. Ask me anything, and whatever I can't answer I'll pass straight to his inbox.",
     services: `Akash builds custom software, custom AI agents and websites, and coaches people on using AI in their own work. By day he writes R&D and manufacturing test software, so he builds things that have to just work. ${a('/services', 'See the services')}, or tap <b>Message Akash</b> and tell him what you need.`,
-    website: `Akash builds fast, mobile-friendly websites, from a one-page site to a full business site (this one is his work too). Tell him about your project with <b>Message Akash</b> and he'll send a quote. ${a('/services', 'Services')}`,
+    website: `Akash builds fast, mobile-friendly websites, from a one-page site to a full business site (this one is his work too). Tell him about your project with <b>Message Akash</b> and he'll send a quote. ${a('/services/website-development', 'Website development')}`,
     price: "Every project is priced on what it needs, so there's no fixed price list. Tell Akash what you have in mind (tap <b>Message Akash</b>) and he'll reply with a quote.",
-    ai: `AI is Akash's favourite topic: he builds custom AI agents that work with your documents and tools to take repeat tasks off your plate, and he coaches people and teams on using AI day to day. ${a('/services', 'Services')}`,
-    coaching: `AI coaching with Akash is one-on-one or team sessions on using AI in your own work: better prompts, automating repeat tasks, and knowing where AI helps and where it doesn't. ${a('/services', 'Services')}`,
+    ai: `Akash is an AI enthusiast: he builds custom AI agents that work with your documents and tools to take repeat tasks off your plate, and he coaches people and teams on using AI day to day. ${a('/services/ai-agents', 'Custom AI agents')}`,
+    coaching: `AI coaching with Akash is one-on-one or team sessions on using AI in your own work: better prompts, automating repeat tasks, and knowing where AI helps and where it doesn't. ${a('/services/ai-coaching', 'AI coaching')}`,
     referrals: `Akash shares his referral codes for credit cards, investing, payments, sending money to India, cash back and AI tools: ${a('/referrals', 'all referral codes')}. Ask me about a company, like "Remitly" or "Chase".`,
     suggest: `Akash would love your idea! Type it here and I'll drop it in his suggestion box (anonymous unless you add your email). Or use the ${a('/suggestions', 'suggestion box page')}.`,
     direct: "Sure, type your message and I'll send it straight to Akash. He replies by email.",
     contact: `Message Akash right here (tap <b>Message Akash</b>), use the ${a('/contact', 'contact form')}, or email ${a('mailto:' + CONFIG.contactEmail, CONFIG.contactEmail)}.`,
     about: `Akash Reddy is a software developer from Hyderabad, India, now in Metro Detroit. He's an AI Software Developer at Molex, building R&D and manufacturing test software, and Reach Akash is his own studio for software, AI agents and websites. ${a('/personal', 'More about Akash')}`,
     origin: `Akash grew up in Hyderabad, India, and now lives in Metro Detroit, Michigan. ${a('/personal', 'His story')}`,
-    location: `Akash is based in Metro Detroit, Michigan, and works with people anywhere. ${a('/contact', 'Get in touch')}`,
+    location: `Akash is based in Metro Detroit, Michigan. ${a('/contact', 'Get in touch')}`,
     education: `Akash has a master's in Engineering Management from Arkansas State University, and also studied at Amity University and Malla Reddy College of Engineering and Technology. ${a('/professional', 'His background')}`,
     work: `Akash is an AI Software Developer at Molex. Before that he built software at Zoetis, Raptor Consultants Group, Tata Consultancy Services and Persistent Systems. ${a('/professional', 'The full story')}`,
     fun: 'Try the terminal: tap <b>Open the terminal</b> at the bottom of the page (or press <code>~</code>), then type <code>play</code>. Akash hid a little game in there.',
@@ -159,10 +159,10 @@
     launcher.id = 'chat-launcher';
     launcher.type = 'button';
     launcher.title = 'Chat with Akash\'s assistant';
+    launcher.setAttribute('aria-label', 'Chat with Akash\'s assistant');   // no visible text: the mark and the sparkle
     launcher.setAttribute('aria-expanded', 'false');
     launcher.setAttribute('aria-controls', 'chat-panel');
-    // The visible word is the start of the button's name, so voice control ("click Ask") works.
-    launcher.innerHTML = MARK + '<span class="chat-launch-label">Ask<span class="visually-hidden"> Akash\'s assistant</span></span>' + SPARK;
+    launcher.innerHTML = MARK + SPARK;
 
     panel = document.createElement('div');
     panel.id = 'chat-panel';

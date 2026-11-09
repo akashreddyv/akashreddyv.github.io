@@ -132,7 +132,7 @@ function card(e, { link = false } = {}) {
       ? [
           `        <p class="ref-code-label">${name} referral code</p>`,
           '        <div class="ref-code-row">',
-          `          <code class="ref-code" aria-label="${name} referral code">${esc(e.code)}</code>`,
+          `          <code class="ref-code">${esc(e.code)}</code>`,
           `          <button class="btn btn-outline ref-copy" type="button" data-copy="${esc(e.code)}" data-copy-label="${name} referral code" hidden>Copy${hidden}</button>`,
           '        </div>'
         ].join('\n')
@@ -327,13 +327,14 @@ function categoryPage(g, loaded, origin) {
     'From Akash Reddy, who earns a reward.'
   ], 155);
 
+  // data-label: on phones each row stacks into a card and shows its column name (css/styles.css).
   const rows = g.entries.map((e) => [
     '          <tr>',
     `            <th scope="row"><a href="${pagePath(e.id)}">${esc(e.name)}</a></th>`,
-    `            <td>${esc(clause(e.forYou))}</td>`,
-    `            <td>${e.code ? `<code class="ref-inline-code">${esc(e.code)}</code>` : 'Link only'}</td>`,
-    `            <td>${e.region ? esc(e.region) : 'Any'}</td>`,
-    `            <td><time datetime="${e.lastVerified}">${human(e.lastVerified)}</time></td>`,
+    `            <td data-label="What you get">${esc(clause(e.forYou))}</td>`,
+    `            <td data-label="Code">${e.code ? `<code class="ref-inline-code">${esc(e.code)}</code>` : 'Link only'}</td>`,
+    `            <td data-label="Where">${e.region ? esc(e.region) : 'Any'}</td>`,
+    `            <td data-label="Checked"><time datetime="${e.lastVerified}">${human(e.lastVerified)}</time></td>`,
     '          </tr>'
   ].join('\n'));
 

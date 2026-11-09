@@ -389,8 +389,9 @@ html:not(.js) .footer-term-wrap { display: none; }
 /* Page header block */
 .page-header      { margin-bottom: 60px; }
 .page-eyebrow     { font-size: 10px; letter-spacing: 0.35em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
-.page-title       { font-family: var(--font-display); font-size: clamp(42px, 6vw, 70px); font-weight: 700; line-height: 1.05; color: var(--white); }
+.page-title       { font-family: var(--font-display); font-size: clamp(42px, 6vw, 70px); font-weight: 700; line-height: 1.05; color: var(--white); overflow-wrap: break-word; }
 .page-title em    { color: var(--accent); font-style: italic; }
+@media (max-width: 360px) { .page-title { font-size: 36px; } }   /* long words like "TopCashback" fit small phones */
 .page-subtitle    { margin-top: 18px; font-size: 17px; color: var(--muted); line-height: 1.75; max-width: 560px; }
 
 /* Card */
@@ -547,6 +548,7 @@ html:not(.js) .footer-term-wrap { display: none; }
   .home-title { gap: 0.18em; }
   .home-mark  { height: 1.2em; }
 }
+@media (max-width: 360px) { .home-inner { --home-name-size: 54px; } }   /* the mark and name fit 320px phones */
 /* The big mark links to the 3D logo viewer (/projects/logodesigns) */
 .home-mark-link { display: block; flex-shrink: 0; line-height: 0; border-radius: 8px; transition: transform 0.25s ease; }
 .home-mark-link:hover { transform: translateY(-3px) scale(1.03); }
@@ -1791,7 +1793,7 @@ footer p      { font-size: 13px; color: var(--muted); }
 #term-launcher {
   position: fixed;
   left: 16px;
-  right: 144px;   /* room for the chat button (16 + 116 + 12) */
+  right: 112px;   /* room for the chat button (16 + 84 + 12) */
   bottom: calc(16px + env(safe-area-inset-bottom));
   z-index: 900;
   height: 48px;
@@ -2042,29 +2044,27 @@ body.term-active { overflow: hidden; }
   caret-color: var(--term-accent);
 }
 
-/* CHAT BOX (js/chat.js): an "Ask" pill (the mark, the word, a sparkle) beside the terminal bar,
-   and a panel above it. In the pill the mark's steps take the button's text colour. */
+/* CHAT BOX (js/chat.js): a pill with the red part of the mark and an AI sparkle, beside the
+   terminal bar, and a panel above it. */
 #chat-launcher {
   position: fixed;
   right: 16px;
   bottom: calc(16px + env(safe-area-inset-bottom));
   z-index: 905;
-  display: flex; align-items: center; justify-content: center; gap: 7px;
-  width: 116px; height: 48px;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 84px; height: 48px;
   border: 1px solid rgba(var(--accent-rgb), 0.35);
   border-radius: 999px;
   background: var(--btn-bg);
   color: var(--on-accent);
-  --logo-mark: var(--on-accent);
-  font: 700 15px var(--font-body);
   cursor: pointer;
   box-shadow: 0 8px 26px rgba(0, 0, 0, 0.25);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 #chat-launcher:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(var(--accent-rgb), 0.25); }
 #chat-launcher:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-.chat-mark { width: 30px; height: 21px; flex-shrink: 0; }
-.chat-spark { width: 15px; height: 15px; flex-shrink: 0; animation: chat-twinkle 2.6s ease-in-out infinite; }
+.chat-mark { width: 34px; height: 29px; flex-shrink: 0; }
+.chat-spark { width: 17px; height: 17px; flex-shrink: 0; animation: chat-twinkle 2.6s ease-in-out infinite; }
 @keyframes chat-twinkle { 50% { transform: scale(0.72) rotate(18deg); opacity: 0.65; } }
 .chat-id { display: flex; align-items: center; gap: 10px; }
 .chat-title .chat-spark { width: 13px; height: 13px; vertical-align: -1px; }
@@ -2119,7 +2119,7 @@ body.term-active #chat-launcher, body.term-active #chat-panel { display: none; }
 .chat-input input:focus { outline: none; border-color: var(--accent); }
 .chat-send { flex-shrink: 0; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border: none; border-radius: 50%; background: var(--btn-bg); color: var(--on-accent); cursor: pointer; }
 @media (max-width: 600px) {
-  #chat-launcher { right: 12px; bottom: calc(12px + env(safe-area-inset-bottom)); width: 104px; height: 46px; gap: 6px; }
+  #chat-launcher { right: 12px; bottom: calc(12px + env(safe-area-inset-bottom)); width: 76px; height: 46px; gap: 6px; }
   #chat-panel { left: 12px; right: 12px; width: auto; bottom: calc(70px + env(safe-area-inset-bottom)); height: min(560px, calc(100vh - 120px)); }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -2148,14 +2148,82 @@ body.term-active #chat-launcher, body.term-active #chat-panel { display: none; }
   .term-prompt { font-size: 13px; }
 
   body { padding-bottom: calc(74px + env(safe-area-inset-bottom)); }
-  #term-launcher { left: 12px; right: 124px; bottom: calc(12px + env(safe-area-inset-bottom)); height: 46px; font-size: 13px; gap: 8px; }
+  #term-launcher { left: 12px; right: 96px; bottom: calc(12px + env(safe-area-inset-bottom)); height: 46px; font-size: 13px; gap: 8px; }
   #term-launcher .tl-key { display: none; }   /* no physical ~ key on phones */
 }
 
 
 /* ----------------------------------------------------------------
-   17. ABOUT, STUB PAGES AND 404
+   17. PERSONAL (ABOUT), STUB PAGES AND 404
 ---------------------------------------------------------------- */
+/* Personal page (pages/personal.html) */
+.personal-hero { padding-top: 8px; }
+
+.personal-left {
+  max-width: 560px;
+}
+
+.personal-greeting {
+  font-size: 15px;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+}
+
+.personal-bigname {
+  font-family: var(--font-display);
+  font-size: clamp(48px, 6vw, 78px);
+  font-weight: 900;
+  line-height: 1;
+  color: var(--white);
+}
+
+.personal-bigname em {
+  color: var(--accent);
+  font-style: italic;
+}
+
+.personal-divider {
+  width: 36px;
+  height: 1px;
+  background: var(--border);
+  margin: 32px 0;
+}
+
+.personal-bio {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.personal-bio p {
+  font-size: 16px;
+  color: var(--muted);
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+}
+
+.personal-work-label {
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.personal-work-sub {
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 340px;
+}
+
+.personal-cta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
 .about-cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -2342,7 +2410,7 @@ html:not(.js) .gallery-tabs { display: none; }
 }
 .ref-card:target { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
 
-.ref-card-head { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+.ref-card-head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin-bottom: 14px; }   /* wraps the region chip under a long name on small phones */
 .ref-logo {
   flex-shrink: 0;
   width: 44px; height: 44px;
@@ -2350,7 +2418,7 @@ html:not(.js) .gallery-tabs { display: none; }
   border: 1px solid var(--border);
   object-fit: contain;
 }
-.ref-name { flex: 1; min-width: 0; font-family: var(--font-display); font-size: 19px; font-weight: 600; line-height: 1.3; color: var(--white); }
+.ref-name { flex: 1; font-family: var(--font-display); font-size: 19px; font-weight: 600; line-height: 1.3; color: var(--white); }
 .ref-region {
   flex-shrink: 0;
   padding: 4px 9px;
@@ -2459,10 +2527,22 @@ html:not(.js) .gallery-tabs { display: none; }
 .ref-table tbody th a { color: inherit; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
 .ref-table td { color: var(--muted); }
 .ref-table td:nth-child(5) { white-space: nowrap; }
+/* Phones: no sideways scrolling; each row becomes a small card with its column names
+   (data-label, from _build/referrals.js). The header row stays for screen readers. */
+@media (max-width: 600px) {
+  .ref-table { min-width: 0; }
+  .ref-table, .ref-table tbody, .ref-table tr, .ref-table th, .ref-table td { display: block; }
+  .ref-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .ref-table tr { padding: 14px 16px; border-bottom: 1px solid var(--border); }
+  .ref-table tbody tr:last-child { border-bottom: none; }
+  .ref-table th, .ref-table td { padding: 2px 0; border-bottom: none; }
+  .ref-table tbody th { white-space: normal; margin-bottom: 4px; }
+  .ref-table td::before { content: attr(data-label) ": "; color: var(--text); font-weight: 600; }
+}
 
 @media (max-width: 900px) {
-  .ref-grid { grid-template-columns: 1fr; }
-  .ref-grid-one { grid-template-columns: 1fr; }
+  /* minmax(0, …): a plain 1fr column won't shrink below its widest word, which overflowed 320px phones */
+  .ref-grid, .ref-grid-one { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 400px) {
   .ref-card { padding: 20px; }
