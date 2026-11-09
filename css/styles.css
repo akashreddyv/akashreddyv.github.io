@@ -8,7 +8,6 @@
    5.  Page System (show/hide logic)
    6.  Shared / Reusable Components
    7.  Home Page
-   8.  Personal Page
    9.  Professional Page
    10. Projects Page
    11. Socials Page
@@ -17,10 +16,46 @@
    14. Animations
    15. Responsive (mobile)
    16. Interactive terminal
-   17. About, stub pages and 404
+   17. Personal (About), stub pages and 404
    18. Referrals
    19. Logo intro
 ================================================================ */
+
+
+/* Montserrat, served from /fonts (SIL Open Font License, fonts/OFL.txt). Browsers only fetch the
+   latin-ext files for characters outside basic Latin, like ₹. */
+@font-face {
+  font-family: 'Montserrat';
+  font-style: italic;
+  font-weight: 700 900;
+  font-display: swap;
+  src: url(/fonts/montserrat-italic-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Montserrat';
+  font-style: italic;
+  font-weight: 700 900;
+  font-display: swap;
+  src: url(/fonts/montserrat-italic-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url(/fonts/montserrat-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url(/fonts/montserrat-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 
 
 /* ----------------------------------------------------------------
@@ -156,31 +191,6 @@ body::before {
   transition: top 0.2s;
 }
 .skip-to-content:focus { top: 0; outline: none; }
-
-/* Internal page navigation links */
-.page-nav-links {
-  margin-top: 60px;
-  padding-top: 32px;
-  border-top: 1px solid var(--border);
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  align-items: center;
-}
-.page-nav-links span {
-  font-size: 10px;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-.page-nav-links a {
-  font-size: 13px;
-  letter-spacing: 0.06em;
-  color: var(--accent);
-  text-decoration: none;
-  transition: opacity 0.2s;
-}
-.page-nav-links a:hover { opacity: 0.7; }
 
 /* Prefers-reduced-motion — disable all animations */
 @media (prefers-reduced-motion: reduce) {
@@ -409,14 +419,11 @@ html:not(.js) .footer-term-wrap { display: none; }
 .card:hover::after { transform: scaleX(1); }
 
 .card-label { font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
-.card-title { font-family: var(--font-display); font-size: 20px; color: var(--white); margin-bottom: 6px; }
-.card-sub   { font-size: 13px; color: var(--muted); margin-bottom: 18px; }
 .card p     { font-size: 15px; color: var(--muted); line-height: 1.8; }
 
 /* Grid layouts */
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr;           gap: 24px; }
 .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr);    gap: 24px; }
-.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr);    gap: 16px; }
 
 /* Tags */
 .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
@@ -500,48 +507,6 @@ html:not(.js) .footer-term-wrap { display: none; }
   text-transform: uppercase;
   color: var(--accent);
   background: linear-gradient(transparent, rgba(0, 0, 0, 0.72));
-}
-
-.home-slideshow-dots {
-  position: absolute;
-  bottom: 14px;
-  right: 16px;
-  display: flex;
-  gap: 6px;
-  z-index: 2;
-}
-
-.ss-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: rgba(var(--accent-rgb), 0.3);
-  transition: background 0.4s;
-}
-
-.ss-dot.active { background: var(--accent); }
-
-
-.home-bg {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background:
-    radial-gradient(ellipse 80% 60% at 65% 40%, rgba(var(--accent-rgb), 0.055) 0%, transparent 70%),
-    radial-gradient(ellipse 50% 50% at 15% 80%,  rgba(var(--accent-rgb), 0.03)  0%, transparent 60%);
-}
-
-.home-grid {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background-image:
-    linear-gradient(rgba(var(--accent-rgb), 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(var(--accent-rgb), 0.03) 1px, transparent 1px);
-  background-size: 60px 60px;
-  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 70%);
 }
 
 .home-inner {
@@ -647,34 +612,6 @@ html:not(.js) .footer-term-wrap { display: none; }
 
 
 /* ----------------------------------------------------------------
-   8. PERSONAL PAGE
----------------------------------------------------------------- */
-.personal-layout {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 48px;
-  align-items: start;
-}
-
-.about-text p          { font-size: 16px; color: var(--muted); line-height: 1.9; margin-bottom: 22px; }
-.about-text p strong   { color: var(--text); font-weight: 500; }
-
-/* Instagram block */
-.ig-block        { background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: 36px; }
-.ig-header       { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; }
-.ig-icon         { width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, #f58529, #dd2a7b, #8134af, #515bd4); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.ig-icon svg     { width: 22px; height: 22px; fill: white; }
-.ig-handle-name  { font-family: var(--font-display); font-size: 19px; color: var(--white); }
-.ig-handle-sub   { font-size: 13px; color: var(--muted); }
-.ig-note         { font-size: 13px; color: var(--muted); line-height: 1.7; padding: 16px 20px; background: rgba(var(--accent-rgb), 0.04); border-left: 2px solid var(--accent); margin-bottom: 22px; border-radius: 2px; }
-.ig-grid         { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-bottom: 20px; }
-.ig-cell         { aspect-ratio: 1; background: var(--border); border-radius: 2px; display: flex; align-items: center; justify-content: center; font-size: 20px; transition: background 0.3s; }
-.ig-cell:hover   { background: #2a2a2a; }
-.ig-btn          { display: block; text-align: center; padding: 13px; border: 1px solid var(--border); color: var(--muted); text-decoration: none; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; border-radius: 2px; transition: all 0.3s; cursor: none; }
-.ig-btn:hover    { border-color: var(--accent); color: var(--accent); }
-
-
-/* ----------------------------------------------------------------
    9. PROFESSIONAL PAGE
 ---------------------------------------------------------------- */
 .timeline-item {
@@ -705,7 +642,6 @@ html:not(.js) .footer-term-wrap { display: none; }
   box-sizing: content-box;
 }
 
-.skills-section h3,
 .skills-heading         { font-family: var(--font-display); font-size: 28px; color: var(--white); margin-bottom: 28px; }
 
 
@@ -729,7 +665,6 @@ html:not(.js) .footer-term-wrap { display: none; }
 .project-status   { display: inline-block; padding: 3px 12px; border-radius: 20px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 16px; }
 .status-active    { background: rgba(100,220,100,0.1); color: #6dc96d; border: 1px solid rgba(100,220,100,0.2); }
 .status-wip       { background: rgba(var(--accent-rgb), 0.1); color: var(--accent); border: 1px solid rgba(var(--accent-rgb), 0.2); }
-.status-complete  { background: rgba(100,150,255,0.1); color: #7aabff; border: 1px solid rgba(100,150,255,0.2); }
 
 .project-title    { font-family: var(--font-display); font-size: 24px; color: var(--white); margin-bottom: 8px; }
 .project-org      { font-size: 13px; color: var(--muted); margin-bottom: 18px; }
@@ -1313,8 +1248,6 @@ footer p      { font-size: 13px; color: var(--muted); }
   border-right-color: #ffffff;
   border-bottom-color: #ffffff;
 }
-.theme-retro body .ss-dot { border-radius: 0; width: 10px; height: 10px; background: #808080; }
-.theme-retro body .ss-dot.active { background: #000080; }
 
 /* ── GALLERY ── */
 .theme-retro body .gallery-item {
@@ -1334,7 +1267,6 @@ footer p      { font-size: 13px; color: var(--muted); }
   box-shadow: 0 -1px 0 #808080;
   color: #000000;
 }
-.theme-retro body .footer-logo { font-family: 'VT323', monospace; color: #000080; font-size: 22px; }
 .theme-retro body .footer-text { font-family: 'Arial', sans-serif; color: #000000; font-size: 11px; }
 
 /* Mobile nav in retro mode */
@@ -1656,8 +1588,7 @@ footer p      { font-size: 13px; color: var(--muted); }
 .theme-space body .home-card-arrow,
 .theme-space body .social-arrow,
 .theme-space body .project-org,
-.theme-space body .edu-degree,
-.theme-space body .footer-logo {
+.theme-space body .edu-degree {
   color: #ffe81f;
 }
 
@@ -1825,10 +1756,8 @@ footer p      { font-size: 13px; color: var(--muted); }
 
   .grid-2,
   .grid-3,
-  .grid-4,
   .home-cards         { grid-template-columns: 1fr; }
 
-  .personal-layout,
   .contact-layout,
   .timeline-item      { grid-template-columns: 1fr; gap: 28px; }
 
@@ -1862,7 +1791,7 @@ footer p      { font-size: 13px; color: var(--muted); }
 #term-launcher {
   position: fixed;
   left: 16px;
-  right: 76px;   /* room for the chat button (16 + 48 + 12) */
+  right: 144px;   /* room for the chat button (16 + 116 + 12) */
   bottom: calc(16px + env(safe-area-inset-bottom));
   z-index: 900;
   height: 48px;
@@ -2113,24 +2042,37 @@ body.term-active { overflow: hidden; }
   caret-color: var(--term-accent);
 }
 
-/* CHAT BOX (js/chat.js): a round button beside the terminal bar, and a panel above it */
+/* CHAT BOX (js/chat.js): an "Ask" pill (the mark, the word, a sparkle) beside the terminal bar,
+   and a panel above it. In the pill the mark's steps take the button's text colour. */
 #chat-launcher {
   position: fixed;
   right: 16px;
   bottom: calc(16px + env(safe-area-inset-bottom));
   z-index: 905;
-  display: flex; align-items: center; justify-content: center;
-  width: 48px; height: 48px;
+  display: flex; align-items: center; justify-content: center; gap: 7px;
+  width: 116px; height: 48px;
   border: 1px solid rgba(var(--accent-rgb), 0.35);
-  border-radius: 50%;
+  border-radius: 999px;
   background: var(--btn-bg);
   color: var(--on-accent);
+  --logo-mark: var(--on-accent);
+  font: 700 15px var(--font-body);
   cursor: pointer;
   box-shadow: 0 8px 26px rgba(0, 0, 0, 0.25);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 #chat-launcher:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(var(--accent-rgb), 0.25); }
 #chat-launcher:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.chat-mark { width: 30px; height: 21px; flex-shrink: 0; }
+.chat-spark { width: 15px; height: 15px; flex-shrink: 0; animation: chat-twinkle 2.6s ease-in-out infinite; }
+@keyframes chat-twinkle { 50% { transform: scale(0.72) rotate(18deg); opacity: 0.65; } }
+.chat-id { display: flex; align-items: center; gap: 10px; }
+.chat-title .chat-spark { width: 13px; height: 13px; vertical-align: -1px; }
+.chat-typing { display: flex; gap: 4px; padding: 13px; }
+.chat-typing span { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); animation: chat-dot 1s ease-in-out infinite; }
+.chat-typing span:nth-child(2) { animation-delay: 0.15s; }
+.chat-typing span:nth-child(3) { animation-delay: 0.3s; }
+@keyframes chat-dot { 50% { transform: translateY(-3px); opacity: 0.5; } }
 #chat-panel {
   position: fixed;
   right: 16px;
@@ -2177,10 +2119,14 @@ body.term-active #chat-launcher, body.term-active #chat-panel { display: none; }
 .chat-input input:focus { outline: none; border-color: var(--accent); }
 .chat-send { flex-shrink: 0; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border: none; border-radius: 50%; background: var(--btn-bg); color: var(--on-accent); cursor: pointer; }
 @media (max-width: 600px) {
-  #chat-launcher { right: 12px; bottom: calc(12px + env(safe-area-inset-bottom)); width: 46px; height: 46px; }
+  #chat-launcher { right: 12px; bottom: calc(12px + env(safe-area-inset-bottom)); width: 104px; height: 46px; gap: 6px; }
   #chat-panel { left: 12px; right: 12px; width: auto; bottom: calc(70px + env(safe-area-inset-bottom)); height: min(560px, calc(100vh - 120px)); }
 }
-@media (prefers-reduced-motion: reduce) { #chat-launcher { transition: none; } #chat-launcher:hover { transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  #chat-launcher { transition: none; }
+  #chat-launcher:hover { transform: none; }
+  .chat-spark, .chat-typing span { animation: none; }
+}
 
 #term-matrix { position: fixed; inset: 0; z-index: 1100; background: #000; cursor: pointer; }
 #term-game   { position: fixed; inset: 0; z-index: 1100; background: #0b0d10; cursor: default; touch-action: none; }
@@ -2202,7 +2148,7 @@ body.term-active #chat-launcher, body.term-active #chat-panel { display: none; }
   .term-prompt { font-size: 13px; }
 
   body { padding-bottom: calc(74px + env(safe-area-inset-bottom)); }
-  #term-launcher { left: 12px; right: 70px; bottom: calc(12px + env(safe-area-inset-bottom)); height: 46px; font-size: 13px; gap: 8px; }
+  #term-launcher { left: 12px; right: 124px; bottom: calc(12px + env(safe-area-inset-bottom)); height: 46px; font-size: 13px; gap: 8px; }
   #term-launcher .tl-key { display: none; }   /* no physical ~ key on phones */
 }
 
@@ -2270,7 +2216,6 @@ a.project-card { display: block; color: inherit; text-decoration: none; }
 
 /* Brand gallery (About page, #brand) */
 .brand-gallery { margin-top: 88px; scroll-margin-top: calc(var(--nav-h) + 16px); }
-.brand-gallery-first { margin-top: 48px; }
 
 /* GALLERY TABS (pages/gallery.html): Logos | Photos. Both panels stay in the HTML for search engines;
    with JS only the active one shows. Without JS the switch hides and both panels show. */
@@ -2537,13 +2482,6 @@ html:not(.js) .gallery-tabs { display: none; }
 .service-tile .home-card-icon { color: var(--accent); line-height: 0; }
 .service-tile .home-card-title { font-weight: 600; }
 .service-tile .home-card-arrow { margin-top: auto; padding-top: 16px; }
-.service-price {
-  font-family: var(--font-display);
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--white);
-  margin: 4px 0 2px;
-}
 .service-location { margin-top: 28px; font-size: 15px; color: var(--muted); }
 
 /* FAQ blocks (Services, Referrals) */
@@ -2572,7 +2510,7 @@ html:not(.js) .gallery-tabs { display: none; }
    every time on Home, once per visit on other pages. Phase 1: the
    steps appear bottom to top. Phase 2: the curve draws upward.
    Phase 3: each step pops, bottom to top. Everything ends on the exact
-   static logo. Replay for testing: window.replayLogoIntro().
+   static logo.
    Timing lives in this one block. Lengths are logo units: the logo is
    526 units tall, so in the 52px header 10 units is about 1px.
 ---------------------------------------------------------------- */

@@ -63,13 +63,15 @@
 
     </div>
 
-    <!-- Photo (one slide; the slideshow script only rotates when there are two or more) -->
+    <!-- Photo (phones get the 800px WebP; the JPEG is the original, also in the gallery and image sitemap) -->
     <section class="home-slideshow" aria-label="Photo of Akash Reddy">
 
       <div class="home-slide active">
         <figure>
           <img
             src="/images/home/akash-reddy-professional.jpg"
+            srcset="/images/home/akash-reddy-professional-800.webp 800w, /images/home/akash-reddy-professional.jpg 1200w"
+            sizes="(max-width: 622px) 90vw, 560px"
             alt="Akash Reddy, AI software developer at Molex, in professional attire outdoors, Detroit MI"
             width="1200" height="847"
             decoding="async"

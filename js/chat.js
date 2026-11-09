@@ -1,46 +1,57 @@
 /* ============================================================
    reachakash.com — chat box (bottom right, beside the terminal bar)
-   Answers common questions on its own: services, prices, referral codes
-   (looked up in /referrals.json, so it always matches the Referrals page),
-   sending money to India, suggestions, contact. Anything else, or anything
-   typed after "Message Akash", goes to Akash by email through the contact
-   endpoint (js/site-config.js, formEndpoint), with the visitor's email as
-   the reply address if they give one, so he answers from his inbox.
-   No server of its own: the conversation lives in this tab (sessionStorage).
+   Akash's assistant: answers common questions on its own (services,
+   referral codes from /referrals.json, sending money to India, about
+   Akash, suggestions), greets by time of day and page, and remembers a
+   visitor's name for the visit. Anything else, or anything typed after
+   "Message Akash", goes to Akash by email through the contact endpoint
+   (js/site-config.js), with the visitor's email as the reply address.
+   No server of its own and no AI model: fixed answers, so it never makes
+   things up. The conversation lives in this tab (sessionStorage).
    ============================================================ */
 (function () {
   'use strict';
 
-  const ENDPOINT = (window.SITE_CONFIG && window.SITE_CONFIG.formEndpoint) || 'https://api.reachakash.com/contact';
-  const STORE = 'chat-log';
+  const CONFIG = window.SITE_CONFIG;
+  const STORE = 'chat-log', NAME_STORE = 'chat-name';
   const MAX_LEN = 2000;
 
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const a = (href, text) => `<a href="${href}">${esc(text)}</a>`;
 
+  // The reachAkash mark, small: the eight steps and the curve (colours from the theme's logo roles).
+  const MARK = '<svg class="chat-mark" viewBox="64 350 790 543" aria-hidden="true" focusable="false"><path fill="var(--logo-ember)" d="M833 372L791 372L751 384L706 410L667 445L627 493L593 546L560 611L539 670L526 732L526 784L537 835L557 872L689 872L657 863L627 849L601 828L583 801L572 769L567 726L570 682L581 628L602 565L626 515L656 469L685 436L719 408L748 391L789 377L833 372Z"/><path fill="var(--logo-mark)" d="M441,873L487,830L487,793L167,793L84,835L84,873Z"/><path fill="var(--logo-ember)" d="M485,720L516,691L516,666L299,666L243,694L243,720Z"/><path fill="var(--logo-mark)" d="M406,577L369,597L369,615L529,615L549,595L549,577Z"/><path fill="var(--logo-mark)" d="M569,546L583,532L583,520L485,520L459,534L459,546Z"/><path fill="var(--logo-mark)" d="M601,500L610,491L610,482L542,482L525,492L525,500Z"/><path fill="var(--logo-mark)" d="M626,469L633,462L633,457L585,457L573,463L573,469Z"/><path fill="var(--logo-mark)" d="M646,447L651,443L651,439L618,439L610,444L610,447Z"/><path fill="var(--logo-mark)" d="M635,434L660,434L664,430L664,426L643,426L635,430Z"/></svg>';
+  // The AI touch: a sparkle.
+  const SPARK = '<svg class="chat-spark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M10 3c.8 4.6 2.6 6.4 7.2 7.2C12.6 11 10.8 12.8 10 17.4 9.2 12.8 7.4 11 2.8 10.2 7.4 9.4 9.2 7.6 10 3z"/><path fill="currentColor" d="M18.5 13c.4 2.2 1.2 3 3.4 3.4-2.2.4-3 1.2-3.4 3.4-.4-2.2-1.2-3-3.4-3.4 2.2-.4 3-1.2 3.4-3.4z"/></svg>';
+
   // ── Fixed answers (HTML written here; visitor text never goes into them) ──
   const ANSWERS = {
-    greet: "Hi! 👋 I'm the Reach Akash assistant, an automatic helper for this site (not Akash himself). Ask me about his services or referral codes, or tap <b>Message Akash</b> to reach him directly.",
-    bot: "I'm an automated assistant for reachakash.com, not Akash. I answer the common questions, and anything else I pass to him by email.",
-    services: `Reach Akash offers custom software, custom AI agents, AI coaching (one-on-one or team) and website development, from Detroit, Michigan. ${a('/services', 'See the services')}. Want a quote? Tap <b>Message Akash</b> and tell him what you need.`,
-    website: `Akash builds fast, mobile-friendly websites, from a one-page site to a full business website. The price depends on the pages and features, so tell him about your project (tap <b>Message Akash</b>) and he'll send a quote. ${a('/services', 'Services')}`,
-    price: "Every project is priced on what it needs. Tell Akash what you have in mind (tap <b>Message Akash</b>) and he'll reply with a quote.",
-    ai: `Akash builds custom AI agents that use your documents and tools to handle repeat tasks, and coaches people and teams on using AI in everyday work. ${a('/services', 'Services')}`,
-    coaching: `AI coaching is one-on-one or team sessions on using AI tools in your own work: better prompts, automating repeat tasks, and knowing where AI helps and where it doesn't. ${a('/services', 'Services')}`,
-    referrals: `Akash's referral codes cover credit cards, investing, payments, sending money to India, cash back and AI tools: ${a('/referrals', 'all referral codes')}. Ask me about a company, like "Remitly code" or "Chase referral".`,
-    suggest: `Ideas welcome! Type your suggestion here and I'll drop it in Akash's suggestion box (anonymous unless you add your email). Or use the ${a('/suggestions', 'suggestion box page')}.`,
-    direct: "Sure. Type your message and I'll send it to Akash. He replies by email.",
-    contact: `Message Akash right here (tap <b>Message Akash</b>), use the ${a('/contact', 'contact form')}, or email ${a('mailto:mail@reachakash.com', 'mail@reachakash.com')}.`,
-    about: `Akash Reddy is a software developer from Hyderabad, now in Metro Detroit. He builds manufacturing test software and AI tools, and runs Reach Akash. ${a('/personal', 'More about Akash')}`,
-    location: `Akash is based in Detroit, Michigan. ${a('/contact', 'Get in touch')}`,
-    gallery: `The reachAkash logos and Akash's photos are in the ${a('/gallery', 'gallery')}, and you can spin the logo in 3D ${a('/projects/logodesigns?logo=reachakash', 'here')}.`,
-    thanks: 'You\'re welcome! Anything else?',
-    unknown: "I don't have an answer for that one. Want me to send your message to Akash? He replies by email."
+    bot: "I'm Akash's assistant on this site: automatic answers, not Akash himself. Ask me anything, and whatever I can't answer I'll pass straight to his inbox.",
+    services: `Akash builds custom software, custom AI agents and websites, and coaches people on using AI in their own work. By day he writes R&D and manufacturing test software, so he builds things that have to just work. ${a('/services', 'See the services')}, or tap <b>Message Akash</b> and tell him what you need.`,
+    website: `Akash builds fast, mobile-friendly websites, from a one-page site to a full business site (this one is his work too). Tell him about your project with <b>Message Akash</b> and he'll send a quote. ${a('/services', 'Services')}`,
+    price: "Every project is priced on what it needs, so there's no fixed price list. Tell Akash what you have in mind (tap <b>Message Akash</b>) and he'll reply with a quote.",
+    ai: `AI is Akash's favourite topic: he builds custom AI agents that work with your documents and tools to take repeat tasks off your plate, and he coaches people and teams on using AI day to day. ${a('/services', 'Services')}`,
+    coaching: `AI coaching with Akash is one-on-one or team sessions on using AI in your own work: better prompts, automating repeat tasks, and knowing where AI helps and where it doesn't. ${a('/services', 'Services')}`,
+    referrals: `Akash shares his referral codes for credit cards, investing, payments, sending money to India, cash back and AI tools: ${a('/referrals', 'all referral codes')}. Ask me about a company, like "Remitly" or "Chase".`,
+    suggest: `Akash would love your idea! Type it here and I'll drop it in his suggestion box (anonymous unless you add your email). Or use the ${a('/suggestions', 'suggestion box page')}.`,
+    direct: "Sure, type your message and I'll send it straight to Akash. He replies by email.",
+    contact: `Message Akash right here (tap <b>Message Akash</b>), use the ${a('/contact', 'contact form')}, or email ${a('mailto:' + CONFIG.contactEmail, CONFIG.contactEmail)}.`,
+    about: `Akash Reddy is a software developer from Hyderabad, India, now in Metro Detroit. He's an AI Software Developer at Molex, building R&D and manufacturing test software, and Reach Akash is his own studio for software, AI agents and websites. ${a('/personal', 'More about Akash')}`,
+    origin: `Akash grew up in Hyderabad, India, and now lives in Metro Detroit, Michigan. ${a('/personal', 'His story')}`,
+    location: `Akash is based in Metro Detroit, Michigan, and works with people anywhere. ${a('/contact', 'Get in touch')}`,
+    education: `Akash has a master's in Engineering Management from Arkansas State University, and also studied at Amity University and Malla Reddy College of Engineering and Technology. ${a('/professional', 'His background')}`,
+    work: `Akash is an AI Software Developer at Molex. Before that he built software at Zoetis, Raptor Consultants Group, Tata Consultancy Services and Persistent Systems. ${a('/professional', 'The full story')}`,
+    fun: 'Try the terminal: tap <b>Open the terminal</b> at the bottom of the page (or press <code>~</code>), then type <code>play</code>. Akash hid a little game in there.',
+    gallery: `Akash's photos and the reachAkash logos are in the ${a('/gallery', 'gallery')}, and you can spin the logo in 3D ${a('/projects/logodesigns?logo=reachakash', 'here')}.`,
+    howareyou: "Doing great, thanks for asking! What can I help you with?",
+    unknown: "Hmm, I don't have an answer for that one. Want me to send it to Akash? He replies by email."
   };
 
   // First match wins (referral companies are checked before these).
   const RULES = [
     [/\b(are you (a )?(bot|human|real|ai)|who are you)\b/, 'bot'],
+    [/\bhow are (you|u)\b|\bhow'?s it going\b/, 'howareyou'],
+    [/\b(where is (he|akash) from|is (he|akash) from|hometown|grew up|originally from|hyderabad)\b/, 'origin'],
     [/\b(india|indian|inr|rupees?|remit|remittance|send money|money transfer|transfer money)\b/, 'india'],
     [/\b(price|pricing|cost|costs|quote|how much|rates?|budget|charge)\b/, 'price'],
     [/\b(website|web ?site|web design|web dev\w*|landing page|online store|e-?commerce)\b/, 'website'],
@@ -50,14 +61,18 @@
     [/\b(suggest|suggestions?|ideas?|feedback|features?|improve)\b/, 'suggest'],
     [/\b(contact|email|reach|call|phone|talk to|speak to|get in touch)\b/, 'contact'],
     [/\b(logos?|gallery|photos?|pictures?)\b/, 'gallery'],
+    [/\b(stud(y|ied|ies)|education|degree|college|university|school|masters?|graduat\w*)\b/, 'education'],
+    [/\b(experience|worked|work history|career|resume|cv|jobs?|employer|molex|background)\b/, 'work'],
+    [/\b(fun|bored|joke|game|play|terminal|easter egg|secret)\b/, 'fun'],
     [/\b(who is akash|about akash|about you|akash)\b/, 'about'],
     [/\b(where|location|based|detroit|michigan)\b/, 'location'],
     [/\b(services?|hire|work with|build|develop|software|app|project)\b/, 'services'],
-    [/^(hi|hello|hey|yo|hola|namaste|sup|good (morning|afternoon|evening))\b/, 'greet'],
+    [/^(hi|hello|hey|yo|hola|namaste|namaskaram|sup|good (morning|afternoon|evening))\b/, 'greet'],
     [/\b(thanks|thank you|thx|ty)\b/, 'thanks']
   ];
 
   const CHIPS = [
+    ['About Akash', 'about'],
     ['Services', 'services'],
     ['Referral codes', 'referrals'],
     ['Send money to India', 'india'],
@@ -84,13 +99,29 @@
     });
   }
 
+  // ── A visitor's first name, if they say it ("I'm Sam", "my name is Sam") ──
+  const NOT_NAMES = new Set(['looking', 'interested', 'here', 'trying', 'not', 'good', 'fine', 'great', 'ok', 'okay', 'just',
+    'new', 'from', 'in', 'a', 'an', 'the', 'so', 'very', 'really', 'sorry', 'back', 'done', 'bored', 'curious', 'wondering',
+    'thinking', 'glad', 'happy', 'sure', 'well', 'doing', 'also', 'still', 'going', 'planning', 'hoping', 'working']);
+  function nameIn(raw) {
+    const m = raw.trim().match(/^(?:(?:hi|hello|hey)[\s,!.]+)?(?:my name is|my name's|i am|i'm|im|this is|call me)\s+([a-z][a-z'-]{1,20})(?:\s+[a-z][a-z'-]{1,20})?[\s.!]*$/i);
+    if (!m || NOT_NAMES.has(m[1].toLowerCase())) return null;
+    return /[A-Z]/.test(m[1]) ? m[1] : m[1].charAt(0).toUpperCase() + m[1].slice(1);
+  }
+
   // ── DOM ──
   let launcher, panel, log, input, chips;
   let mode = null;          // null, 'direct' (next message goes to Akash) or 'suggest'
   let history = [];         // [{ who: 'bot' | 'me', html }]
+  let visitor = '';         // their first name, once they've said it
+  let queue = Promise.resolve();   // replies wait their turn, so they always appear in order
 
-  function save() { try { sessionStorage.setItem(STORE, JSON.stringify(history.slice(-40))); } catch (e) {} }
-  function restore() { try { history = JSON.parse(sessionStorage.getItem(STORE) || '[]'); } catch (e) { history = []; } }
+  function save() { try { sessionStorage.setItem(STORE, JSON.stringify(history.slice(-40))); sessionStorage.setItem(NAME_STORE, visitor); } catch (e) {} }
+  function restore() {
+    try { history = JSON.parse(sessionStorage.getItem(STORE) || '[]'); visitor = sessionStorage.getItem(NAME_STORE) || ''; }
+    catch (e) { history = []; }
+  }
+  const you = () => (visitor ? ', ' + esc(visitor) : '');
 
   function bubble(who, html, keep) {
     const div = document.createElement('div');
@@ -101,26 +132,46 @@
     if (keep !== false) { history.push({ who, html }); save(); }
     return div;
   }
-  const say = (html) => bubble('bot', html);
+  // A reply: a short "typing" pause, then the message.
+  function say(html) {
+    queue = queue.then(() => new Promise((done) => {
+      const dots = bubble('bot chat-typing', '<span></span><span></span><span></span>', false);
+      setTimeout(() => { dots.remove(); bubble('bot', html); done(); }, 450);
+    }));
+    return queue;
+  }
+
+  // The first hello: by the visitor's time of day, and about the page they're on.
+  function greeting() {
+    const h = new Date().getHours();
+    const hello = h >= 5 && h < 12 ? 'Good morning' : h >= 12 && h < 17 ? 'Good afternoon' : h >= 17 && h < 22 ? 'Good evening' : 'Hi';
+    const p = location.pathname;
+    const lead = /^\/referrals/.test(p) ? 'Looking for a referral code? Tell me the company (like "Remitly" or "Chase") and I\'ll pull it up.'
+      : /^\/(services|contact)/.test(p) ? 'Thinking about a project? Tell me what you have in mind and I\'ll pass it straight to Akash.'
+      : /^\/suggestions/.test(p) ? 'Got an idea? Type it here and I\'ll drop it in Akash\'s suggestion box.'
+      : /^\/(personal|professional)/.test(p) ? 'Curious about Akash? Ask me about his work, where he studied or where he\'s from.'
+      : 'I can tell you about Akash and his work, find a referral code, or pass a message straight to him.';
+    return `${hello}${you()}! 👋 I'm Akash's assistant. ${lead}`;
+  }
 
   function build() {
     launcher = document.createElement('button');
     launcher.id = 'chat-launcher';
     launcher.type = 'button';
-    launcher.title = 'Chat with Reach Akash';
-    launcher.setAttribute('aria-label', 'Chat with Reach Akash');
+    launcher.title = 'Chat with Akash\'s assistant';
     launcher.setAttribute('aria-expanded', 'false');
     launcher.setAttribute('aria-controls', 'chat-panel');
-    launcher.innerHTML = '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8a2.5 2.5 0 0 1-2.5 2.5H10l-4.2 3.6c-.5.4-1.3 0-1.3-.6V16A2.5 2.5 0 0 1 4 13.5z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M8.5 8.5h7M8.5 11.5h4.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>';
+    // The visible word is the start of the button's name, so voice control ("click Ask") works.
+    launcher.innerHTML = MARK + '<span class="chat-launch-label">Ask<span class="visually-hidden"> Akash\'s assistant</span></span>' + SPARK;
 
     panel = document.createElement('div');
     panel.id = 'chat-panel';
     panel.hidden = true;
     panel.setAttribute('role', 'dialog');
-    panel.setAttribute('aria-label', 'Chat with Reach Akash');
+    panel.setAttribute('aria-label', 'Chat with Akash\'s assistant');
     panel.innerHTML = [
       '<div class="chat-head">',
-      '  <div><p class="chat-title">Reach Akash</p><p class="chat-sub">Automatic answers · Akash replies by email</p></div>',
+      `  <div class="chat-id">${MARK}<div><p class="chat-title">Akash's assistant ${SPARK}</p><p class="chat-sub">Instant answers · Akash replies by email</p></div></div>`,
       '  <button class="chat-close" type="button" aria-label="Close chat">✕</button>',
       '</div>',
       '<div class="chat-log" role="log" aria-live="polite"></div>',
@@ -165,7 +216,7 @@
     launcher.setAttribute('aria-expanded', 'true');
     if (!log.childElementCount) {
       if (history.length) history.forEach((m) => bubble(m.who, m.html, false));
-      else say(ANSWERS.greet);
+      else say(greeting());
     }
     input.focus();
   }
@@ -185,11 +236,15 @@
         : `See ${a('/referrals/send-money-to-india', 'apps for sending money to India')}.`);
       return;
     }
+    if (key === 'greet') { say(`Hi${you()}! What can I help you with?`); return; }
+    if (key === 'thanks') { say(`You're welcome${you()}! Anything else?`); return; }
     say(ANSWERS[key]);
   }
 
   async function respond(raw) {
     if (mode === 'direct' || mode === 'suggest') { offerToSend(raw, mode); return; }
+    const name = nameIn(raw);
+    if (name) { visitor = name; save(); say(`Nice to meet you, ${esc(name)}! 😊 What can I help you with?`); return; }
     const text = raw.toLowerCase();
     const companies = companyMatches(text, await loadReferrals());
     if (companies.length) { say(companies.slice(0, 4).map(offerLine).join('<br>')); return; }
@@ -199,9 +254,13 @@
     offerToSend(raw, 'direct');
   }
 
-  // A small form inside the chat: optional email, then send to Akash (or into the suggestion box).
+  // A small form inside the chat, after any reply in progress: optional email, then send to
+  // Akash (or into the suggestion box).
   function offerToSend(text, kind) {
     mode = null;
+    queue = queue.then(() => showSendBox(text, kind));
+  }
+  function showSendBox(text, kind) {
     const box = bubble('bot', '', false);
     box.classList.add('chat-send-box');
     box.innerHTML = [
@@ -227,7 +286,7 @@
         }
         box.remove();
         say(addr
-          ? `✓ Sent. Akash will reply to <b>${esc(addr)}</b>.`
+          ? `✓ Sent${you()}! Akash will reply to <b>${esc(addr)}</b>.`
           : '✓ Sent. You didn\'t add an email, so he can\'t reply directly. Send another message with your email if you\'d like an answer.');
       } catch (err) {
         sendBtn.disabled = false;
@@ -238,15 +297,15 @@
   }
 
   async function sendToAkash(text, addr) {
-    const transcript = history.slice(-10).map((m) => (m.who === 'me' ? 'Visitor: ' : 'Bot: ') + m.html.replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'")).join('\n');
+    const transcript = history.slice(-10).map((m) => (m.who === 'me' ? (visitor || 'Visitor') + ': ' : 'Assistant: ') + m.html.replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'")).join('\n');
     const fd = new FormData();
-    fd.set('name', 'Website chat');
+    fd.set('name', visitor ? visitor + ' (website chat)' : 'Website chat');
     fd.set('email', addr || 'no-reply@reachakash.com');
     fd.set('message',
       'Chat message · sent from the chat box on reachakash.com' + location.pathname + '\n' +
       (addr ? 'Reply to: ' + addr : '(No email given, so there is no reply address.)') +
       '\n\n' + text + '\n\n— The chat so far —\n' + transcript);
-    const res = await fetch(ENDPOINT, { method: 'POST', body: fd });
+    const res = await fetch(CONFIG.formEndpoint, { method: 'POST', body: fd });
     let data = {};
     try { data = await res.json(); } catch (e) { /* handled below */ }
     if (!res.ok || !data.success) throw new Error(data.error || 'the server didn\'t answer');

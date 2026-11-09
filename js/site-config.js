@@ -1,7 +1,7 @@
 /* ============================================================
    reachakash.com — site configuration
    One place for every switch and external link. CTAs read it via
-   data attributes (data-cta="primary", data-service="…"), so changing a
+   data attributes (data-cta="primary"), so changing a
    value here updates the whole site. The page generator
    (_build/build.js) runs this same file, so pages built without
    JavaScript show the same CTA text and links.
@@ -10,14 +10,8 @@
 window.SITE_CONFIG = {
   acceptingClients: false, // false: CTAs say "Contact me"; true: "Start a project" (bookingUrl)
   bookingUrl: "",          // [EDIT] booking link; empty -> /contact
-  paymentLinks: {          // Phase 5: Stripe Payment Links by service id; empty -> no pay button
-    "diagnostic": "",
-    "test-data-sprint": "",
-    "workflow-sprint": ""
-  },
-  waitlistEndpoint: "",    // Phase 4 Worker URL; empty -> /contact
-  formEndpoint: "https://api.reachakash.com/contact", // the contact Worker; the suggestion box and the terminal's `suggest` post here too
-  contactEmail: "",        // [EDIT] e.g. mail@reachakash.com once Email Routing is verified
+  formEndpoint: "https://api.reachakash.com/contact", // the contact Worker; the suggestion box, the chat and the terminal's `suggest` post here too
+  contactEmail: "mail@reachakash.com", // shown by the chat and the terminal, and in the contact form's error message
   analyticsToken: "e8f6cb904e3b4b36ad5e98abffe5f860"       // Cloudflare Web Analytics token (from its snippet); the build adds the beacon to every page. Empty -> no analytics
 };
 

@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' 'unsafe-eval' https://fonts.googleapis.com https://static.cloudflareinsights.com;">
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com;">
 
   <!-- Apply the saved theme before first paint, so pages never flash.
        Default (no class) is dark; the sun/moon button and the terminal's
@@ -76,13 +76,11 @@
   <link rel="manifest" href="/site.webmanifest">
   <meta name="theme-color" content="#000000">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdn.simpleicons.org">
   <link rel="alternate" type="text/markdown" href="/llms.txt" title="Reach Akash LLM Context">
 
-  <!-- Montserrat: only the weights in use (400–900 upright; 700–900 italic for headline accents) -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400..900;1,700..900&display=swap" rel="stylesheet"/>
+  <!-- Montserrat is served from /fonts (rules at the top of styles.css); fetch the main file early -->
+  <link rel="preload" href="/fonts/montserrat-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/css/styles.css">
 
   <script type="application/ld+json">
@@ -382,11 +380,11 @@
     </p>
   </footer>
 
-  <script src="/js/site-config.js"></script>
-  <script src="/js/main.js"></script>
-  <script src="/js/terminal.js"></script>
-  <script src="/js/chat.js"></script>
-  <script src="/js/starfield.js"></script>
+  <script src="/js/site-config.js" defer></script>
+  <script src="/js/main.js" defer></script>
+  <script src="/js/terminal.js" defer></script>
+  <script src="/js/chat.js" defer></script>
+  <script src="/js/starfield.js" defer></script>
   <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "e8f6cb904e3b4b36ad5e98abffe5f860"}'></script>
 </body>
 </html>

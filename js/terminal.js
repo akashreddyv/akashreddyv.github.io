@@ -15,7 +15,7 @@
     role:    'AI Software Developer @ Molex',
     where:   'Detroit, MI, USA',
     origin:  'Hyderabad, India',
-    email:   'mail@reachakash.com',
+    email:   window.SITE_CONFIG.contactEmail,
     skills:  ['C#', '.NET Framework', 'SQL Server', 'T-SQL', 'LabVIEW', 'PostgreSQL', 'WinForms', 'NI-VISA', 'NI-DAQmx', 'SQL', 'JavaScript', 'Git', 'GitLab'],
     edu: [
       'M.S. Engineering Management — Arkansas State University',
@@ -134,12 +134,12 @@
     // Floating launcher (also gives mobile users a way in)
     launcher = document.createElement('button');
     launcher.id = 'term-launcher';
-    launcher.setAttribute('aria-label', 'Open terminal');
     launcher.title = 'Open terminal  (press ~)';
+    // Its name is the visible label, so voice control ("click Open the terminal") works.
     launcher.innerHTML =
-      '<span class="tl-prompt">&gt;_</span>' +
+      '<span class="tl-prompt" aria-hidden="true">&gt;_</span>' +
       '<span class="tl-label">Open the terminal</span>' +
-      '<span class="tl-key">press ~</span>';
+      '<span class="tl-key" aria-hidden="true">press ~</span>';
     launcher.addEventListener('click', open);
     document.body.appendChild(launcher);
   }

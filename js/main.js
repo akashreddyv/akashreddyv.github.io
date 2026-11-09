@@ -49,15 +49,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
   syncThemeControls();
 
-  // ── Header logo intro (css/styles.css, "LOGO INTRO"): replay for testing ──
-  window.replayLogoIntro = function () {
-    const logo = document.querySelector('.logo-anim');
-    if (!logo || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    root.classList.remove('logo-intro');
-    void logo.getBoundingClientRect();   // flush styles so the animations start over
-    root.classList.add('logo-intro');
-  };
-
   // ── CTAs read SITE_CONFIG (the generator already rendered the same values) ──
   if (window.siteCta) {
     document.querySelectorAll('[data-cta]').forEach(function (el) {
@@ -89,20 +80,6 @@ document.addEventListener("DOMContentLoaded", function () {
         dropdown.querySelector('summary').focus();
       }
     });
-  }
-
-  // ── Slideshow (home) ────────────────────────────────────────────
-  const slides = document.querySelectorAll('.home-slide');
-  const dots   = document.querySelectorAll('.ss-dot');
-  if (slides.length > 1) {
-    let cur = 0;
-    setInterval(function () {
-      slides[cur].classList.remove('active');
-      dots[cur]  && dots[cur].classList.remove('active');
-      cur = (cur + 1) % slides.length;
-      slides[cur].classList.add('active');
-      dots[cur]  && dots[cur].classList.add('active');
-    }, 15000);
   }
 
   // ── Referral codes: Copy buttons (the code itself is always visible) ──
@@ -182,7 +159,7 @@ document.addEventListener("DOMContentLoaded", function () {
       try {
         const res  = await fetch(form.action, { method: 'POST', body: new FormData(form) });
         let data;
-        try { data = await res.json(); } catch { throw new Error('Could not reach the server. Please email mail@reachakash.com directly.'); }
+        try { data = await res.json(); } catch { throw new Error('Could not reach the server. Please email ' + window.SITE_CONFIG.contactEmail + ' directly.'); }
 
         if (data.success) {
           status.textContent         = "Message sent! I'll get back to you soon.";

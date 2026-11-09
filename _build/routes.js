@@ -196,7 +196,8 @@ const routes = [
     // The LCP image on Home, plus the redirect for old /?p=/route links that the
     // previous 404 trick created.
     headExtra: [
-      '  <link rel="preload" as="image" href="/images/home/akash-reddy-professional.jpg" fetchpriority="high">',
+      // Same choices as the <img> in pages/home.html, so phones fetch only the 800px WebP.
+      '  <link rel="preload" as="image" href="/images/home/akash-reddy-professional.jpg" imagesrcset="/images/home/akash-reddy-professional-800.webp 800w, /images/home/akash-reddy-professional.jpg 1200w" imagesizes="(max-width: 622px) 90vw, 560px" fetchpriority="high">',
       '  <script>',
       "    (function () { var p = new URLSearchParams(location.search).get('p');",
       "      if (p && /^\\/(?!\\/)[a-z0-9\\-\\/]*$/i.test(p)) location.replace(p); })();",
