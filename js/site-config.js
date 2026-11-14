@@ -8,7 +8,7 @@
    No secrets here — this file is public.
    ============================================================ */
 window.SITE_CONFIG = {
-  acceptingClients: false, // false: CTAs say "Contact me"; true: "Start a project" (bookingUrl)
+  acceptingClients: true,  // false: CTAs say "Contact me"; true: "Start a project" (bookingUrl)
   bookingUrl: "",          // [EDIT] booking link; empty -> /contact
   formEndpoint: "https://api.reachakash.com/contact", // the contact Worker; the suggestion box, the chat and the terminal's `suggest` post here too
   contactEmail: "mail@reachakash.com", // shown by the chat and the terminal, and in the contact form's error message

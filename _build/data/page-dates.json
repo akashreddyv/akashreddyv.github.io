@@ -1,7 +1,7 @@
 {
   "/": {
     "date": "2026-11-14",
-    "hash": "16acfd8d7e68"
+    "hash": "9f091f46ffcd"
   },
   "/contact": {
     "date": "2026-11-14",
@@ -12,8 +12,8 @@
     "hash": "704d813582df"
   },
   "/lab": {
-    "date": "2026-11-08",
-    "hash": "90ad6f760cee"
+    "date": "2026-11-14",
+    "hash": "0587c338930b"
   },
   "/notes": {
     "date": "2026-11-08",
@@ -157,7 +157,7 @@
   },
   "/services": {
     "date": "2026-11-14",
-    "hash": "53e4ecf99fc0"
+    "hash": "311a069a0178"
   },
   "/services/ai-agents": {
     "date": "2026-11-14",
@@ -165,7 +165,7 @@
   },
   "/services/ai-coaching": {
     "date": "2026-11-14",
-    "hash": "74d6e9d6f8f9"
+    "hash": "cc8a33557872"
   },
   "/services/custom-software": {
     "date": "2026-11-14",
@@ -173,7 +173,7 @@
   },
   "/services/website-development": {
     "date": "2026-11-14",
-    "hash": "adfcb4c40935"
+    "hash": "40ad7c9a1a0a"
   },
   "/socials": {
     "date": "2026-11-14",
