@@ -123,7 +123,8 @@ const PERSON = {
   givenName: 'Akash',
   familyName: 'Reddy',
   // Name variants for search only: the pages themselves just say Akash Reddy (or Akash).
-  alternateName: ['Vurenuka Akash Reddy', 'Akash Reddy Vurenuka', 'V Akash Reddy', 'Reddy Akash', 'V Akash', 'Akash', 'Reach Akash', 'Reddy'],
+  // The last three are his handles (GitHub and LinkedIn, Instagram and others, X).
+  alternateName: ['Vurenuka Akash Reddy', 'Akash Reddy Vurenuka', 'V Akash Reddy', 'Reddy Akash', 'V Akash', 'Akash', 'AK', 'AK Reddy', 'Reach Akash', 'Reddy', 'akashreddyv', 'ak.r48', 'AkReddy48'],
   disambiguatingDescription: 'AI software developer in Detroit, Michigan, and founder of Reach Akash (reachakash.com)',
   description: 'Akash Reddy (full name Vurenuka Akash Reddy, also known as V Akash Reddy and Reach Akash) is an AI software developer at Molex based in Detroit, MI, USA, originally from Hyderabad, India. Through Reach Akash he offers custom software, custom AI agents, AI coaching and website development.',
   mainEntityOfPage: url('/personal'),
@@ -605,7 +606,8 @@ const llms = {
     ['Identity', [
       'Name: Akash Reddy',
       'Full name: Vurenuka Akash Reddy (also written Akash Reddy Vurenuka)',
-      'Also known as: V Akash Reddy, V Akash, Akash, Reach Akash',
+      'Also known as: V Akash Reddy, V Akash, Akash, AK, AK Reddy, Reach Akash',
+      'Handles: akashreddyv (GitHub, LinkedIn), ak.r48 (Instagram, YouTube, Threads, Snapchat, Facebook, Discord), AkReddy48 (X)',
       'Role: AI Software Developer',
       'Employer: Molex (GRTS team)',
       'Previous employers: Zoetis (Veterinary Medicine Research & Development department), Raptor Consultants Group, Tata Consultancy Services, Persistent Systems Ltd.',
