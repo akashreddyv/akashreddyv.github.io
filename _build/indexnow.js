@@ -7,9 +7,10 @@
 
      node _build/indexnow.js                            every URL in sitemap.xml
      node _build/indexnow.js /services                  just these paths
-     node _build/indexnow.js --changed-since old.xml    URLs that are new, or whose
-                                                        date differs, compared with an
-                                                        older copy of sitemap.xml
+     node _build/indexnow.js --changed-since old.json   pages that are new or whose
+                                                        content changed, compared with
+                                                        an older copy of
+                                                        _build/data/page-dates.json
 
    .github/workflows/build.yml runs the last form after every push, once
    the new pages are live. The key file must be reachable at
@@ -24,26 +25,39 @@ const ROOT = path.resolve(__dirname, '..');
 const HOST = 'reachakash.com';
 const KEY = '6ff2dd73f330de5c848b33484ad81918';
 
-// loc -> lastmod for every <url> in a sitemap
-const sitemapDates = (xml) => new Map([...xml.matchAll(/<loc>([^<]+)<\/loc>\s*(?:<lastmod>([^<]+)<\/lastmod>)?/g)].map((m) => [m[1], m[2] || '']));
-
 (async () => {
   const keyFile = path.join(ROOT, `${KEY}.txt`);
   if (!fs.existsSync(keyFile) || fs.readFileSync(keyFile, 'utf8').trim() !== KEY) {
     throw new Error(`${KEY}.txt is missing or does not contain the key`);
   }
 
-  const now = sitemapDates(fs.readFileSync(path.join(ROOT, 'sitemap.xml'), 'utf8'));
+  // Every published URL (drafts and redirects aren't in the sitemap).
+  const all = [...fs.readFileSync(path.join(ROOT, 'sitemap.xml'), 'utf8').matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
   const args = process.argv.slice(2);
   let urlList;
   if (args[0] === '--changed-since') {
-    const before = sitemapDates(fs.readFileSync(args[1], 'utf8'));
-    urlList = [...now].filter(([loc, date]) => before.get(loc) !== date).map(([loc]) => loc);
+    // page-dates.json keeps a hash of each page's own content: a different hash is a real change.
+    const before = JSON.parse(fs.readFileSync(args[1], 'utf8'));
+    const now = JSON.parse(fs.readFileSync(path.join(ROOT, '_build/data/page-dates.json'), 'utf8'));
+    const pagePath = (loc) => loc.slice(`https://${HOST}`.length) || '/';
+    urlList = all.filter((loc) => !before[pagePath(loc)] || before[pagePath(loc)].hash !== now[pagePath(loc)].hash);
     if (!urlList.length) { console.log('IndexNow: no page changed, nothing to send'); return; }
+
+    // GitHub Pages publishes a minute or so after a push. Wait until the first changed page is
+    // being served, so search engines aren't sent to fetch the old version.
+    const file = (pagePath(urlList[0]) === '/' ? '/index' : pagePath(urlList[0])) + '.html';
+    const built = fs.readFileSync(path.join(ROOT, file), 'utf8').replace(/\r\n/g, '\n');
+    let isLive = false;
+    for (let i = 0; i < 24 && !isLive; i++) {
+      if (i) await new Promise((r) => setTimeout(r, 10000));
+      const res = await fetch(`${urlList[0]}?nc=${Date.now()}`).catch(() => null);
+      isLive = !!res && res.ok && (await res.text()) === built;
+    }
+    if (!isLive) { console.log(`IndexNow: ${urlList[0]} isn't live yet; nothing sent`); return; }
   } else if (args.length) {
     urlList = args.map((p) => `https://${HOST}${p.startsWith('/') ? p : '/' + p}`);
   } else {
-    urlList = [...now.keys()];
+    urlList = all;
   }
 
   const live = await fetch(`https://${HOST}/${KEY}.txt`);
