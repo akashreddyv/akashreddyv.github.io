@@ -306,7 +306,7 @@ function offerPage(e, loaded, origin) {
       },
       crumbs(origin, [[cat.label, pagePath(cat.id)], [e.name, path]])
     ],
-    sitemap: { changefreq: 'weekly', priority: '0.7', lastmod: e.lastVerified },
+    sitemap: { changefreq: 'weekly', priority: '0.7' },
     llms: null
   };
 }
@@ -409,7 +409,7 @@ function categoryPage(g, loaded, origin) {
       },
       crumbs(origin, [[g.label, path]])
     ],
-    sitemap: { changefreq: 'weekly', priority: '0.8', lastmod: latest },
+    sitemap: { changefreq: 'weekly', priority: '0.8' },
     llms: null
   };
 }

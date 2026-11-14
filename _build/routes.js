@@ -72,8 +72,8 @@ const SAME_AS = [
   'https://www.facebook.com/ak.r48'
 ];
 
-// Latest "checked" date across published referral entries, for the page's dateModified,
-// its sitemap lastmod and the month in its title.
+// Latest "checked" date across published referral entries, for the Referrals page's dateModified
+// and the month in its title. (sitemap.xml dates come from _build/data/page-dates.json.)
 const REFERRALS_UPDATED = require('./data/referrals.json').entries
   .filter((e) => e.publish).map((e) => e.lastVerified).sort().pop();
 const REFERRALS_MONTH = (() => {
@@ -435,7 +435,7 @@ const routes = [
       },
       crumbs(['Referrals', '/referrals'])
     ],
-    sitemap: { changefreq: 'weekly', priority: '0.9', lastmod: REFERRALS_UPDATED },
+    sitemap: { changefreq: 'weekly', priority: '0.9' },
     llms: 'Referral codes and links of Akash Reddy (credit cards, investing and trading, payments, sending money to India, shopping and cash back, AI tools), each with its own page, a disclosure that he earns a reward and links to official terms. Machine-readable copy: https://reachakash.com/referrals.json'
   },
 
