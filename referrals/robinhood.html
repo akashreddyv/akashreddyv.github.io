@@ -47,7 +47,6 @@
   <meta name="description" content="Robinhood referral link, no code needed: a free stock reward when you sign up. Checked Oct 11, 2026, with the official terms.">
   <link rel="canonical" href="https://reachakash.com/referrals/robinhood">
   <meta name="author" content="Akash Reddy">
-  <meta name="ai-content-declaration" content="human-authored">
   <meta name="msvalidate.01" content="48A040F99576BC4B4336A7BB59188A10">
   <meta name="msvalidate.01" content="014F0BDE0F3F0D8CAA75505D34C79C1C">
 
@@ -60,6 +59,7 @@
   <meta property="og:image"     content="https://reachakash.com/images/brand/og-image.png">
   <meta property="og:image:alt" content="reachAkash.com — Reach Akash (Akash Reddy)">
   <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:creator"     content="@AkReddy48">
   <meta name="twitter:title"       content="Robinhood Referral Link: free stock when you sign up">
   <meta name="twitter:description" content="Robinhood referral link, no code needed: a free stock reward when you sign up. Checked Oct 11, 2026, with the official terms.">
   <meta name="twitter:image"       content="https://reachakash.com/images/brand/og-image.png">
@@ -76,7 +76,6 @@
   <link rel="manifest" href="/site.webmanifest">
   <meta name="theme-color" content="#000000">
 
-  <link rel="preconnect" href="https://cdn.simpleicons.org">
   <link rel="alternate" type="text/markdown" href="/llms.txt" title="Reach Akash LLM Context">
 
   <!-- Montserrat is served from /fonts (rules at the top of styles.css); fetch the main file early -->
@@ -89,21 +88,27 @@
       "@context": "https://schema.org",
       "@type": "WebPage",
       "@id": "https://reachakash.com/referrals/robinhood#webpage",
-      "url": "https://reachakash.com/referrals/robinhood",
       "name": "Robinhood referral link",
       "description": "Robinhood referral link, no code needed: a free stock reward when you sign up. Checked Oct 11, 2026, with the official terms.",
-      "isPartOf": {
-        "@id": "https://reachakash.com/#website"
-      },
       "about": {
         "@type": "Thing",
         "name": "Robinhood"
       },
       "author": {
-        "@id": "https://reachakash.com/#person"
+        "@type": "Person",
+        "@id": "https://reachakash.com/#person",
+        "name": "Akash Reddy",
+        "url": "https://reachakash.com"
       },
       "dateModified": "2026-10-11",
-      "inLanguage": "en"
+      "inLanguage": "en",
+      "url": "https://reachakash.com/referrals/robinhood",
+      "isPartOf": {
+        "@type": "WebSite",
+        "@id": "https://reachakash.com/#website",
+        "name": "Reach Akash",
+        "url": "https://reachakash.com/"
+      }
     },
     {
       "@context": "https://schema.org",
@@ -367,6 +372,24 @@
       <li><a href="/suggestions">Suggestions</a></li>
       <li><a href="/privacy">Privacy</a></li>
     </ul>
+    <!-- Every page links to each service and to Akash's profiles (rel="me": they are his own) -->
+    <div class="footer-more">
+      <ul class="footer-links" aria-label="Services">
+        <li class="footer-label" aria-hidden="true">Services</li>
+        <li><a href="/services/custom-software">Custom software</a></li>
+        <li><a href="/services/website-development">Website development</a></li>
+        <li><a href="/services/ai-agents">AI agents</a></li>
+        <li><a href="/services/ai-coaching">AI coaching</a></li>
+      </ul>
+      <ul class="footer-links" aria-label="Akash Reddy on social media">
+        <li class="footer-label" aria-hidden="true">Find me</li>
+        <li><a href="https://www.linkedin.com/in/akashreddyv/" rel="me noopener" target="_blank">LinkedIn</a></li>
+        <li><a href="https://github.com/akashreddyv" rel="me noopener" target="_blank">GitHub</a></li>
+        <li><a href="https://www.instagram.com/ak.r48" rel="me noopener" target="_blank">Instagram</a></li>
+        <li><a href="https://x.com/AkReddy48" rel="me noopener" target="_blank">X</a></li>
+        <li><a href="https://www.youtube.com/@ak.r48" rel="me noopener" target="_blank">YouTube</a></li>
+      </ul>
+    </div>
     <p class="footer-text">
       &copy; 2026 Reach Akash &middot; Akash Reddy
       <span class="footer-term-wrap">&middot; <span id="footer-term" role="button" tabindex="0" title="Open the terminal (or press ~)">&gt;_ terminal</span></span>

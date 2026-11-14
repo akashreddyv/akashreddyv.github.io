@@ -4,12 +4,13 @@
 
 ## Pages
 
-- [Home](https://reachakash.com/): Landing page for Akash Reddy (Reach Akash), software developer in Detroit, MI, with links to his services, projects, work history and contact.
-- [Personal](https://reachakash.com/personal): About Akash Reddy: bio and photo. Software developer from Hyderabad, now in Metro Detroit; techie, AI enthusiast, travel and adventure seeker. Links to his professional history, projects and social profiles.
+- [Home](https://reachakash.com/): Landing page for Akash Reddy (Reach Akash), software developer in Detroit, MI, with links to his services, projects, work history, social profiles and contact.
+- [Personal](https://reachakash.com/personal): About Akash Reddy: bio, photo and quick facts. Software developer from Hyderabad, now in Metro Detroit; AI Software Developer at Molex and founder of Reach Akash; techie, AI enthusiast, travel and adventure seeker. Links to his professional history, projects and social profiles.
 - [Professional](https://reachakash.com/professional): Career and education. AI Software Developer at Molex (Jun 2026-present) on the GRTS team, building database systems for connector reliability test stations (SQL Server, C#, .NET Framework, LabVIEW). Previously Software Developer at Zoetis (Jan 2026-Jun 2026), building ZAHM (.NET 4.8, C#, WinForms, PostgreSQL, NI-VISA); Software Developer at Raptor Consultants Group (Nov 2024-Dec 2025); Software Engineer at Tata Consultancy Services (Aug 2022-Aug 2023); and Associate Software Developer at Persistent Systems Ltd. Education: MS Engineering Management (Arkansas State University, 2023-2024), MBA Digital Entrepreneurship (Amity University, 2023-2025), B.Tech Information Technology (Malla Reddy Institute of Technology, 2018-2022).
 - [Projects](https://reachakash.com/projects): Software portfolio, including personal website reachakash.com (HTML/CSS/JS, GitHub Pages) and a 3D interactive logo viewer (Three.js, SVG).
-- [Socials](https://reachakash.com/socials): Social media profiles. Instagram @ak.r48, LinkedIn @akashreddyv, X @AkReddy48, YouTube @ak.r48, Snapchat @ak.r48, Discord @ak.r48, Threads @ak.r48, Facebook @ak.r48.
-- [Contact](https://reachakash.com/contact): Contact Akash Reddy via LinkedIn, Instagram, or the contact form. Located in Detroit, MI, USA.
+- [How reachakash.com is built](https://reachakash.com/projects/reachakash-website): How the site works: plain HTML, CSS and JavaScript generated from one template by a small Node.js build script (no framework), hosted on GitHub Pages; an admin page built on Decap CMS with automatic builds on GitHub Actions; contact form, suggestion box and chat box that email through a Cloudflare Worker; structured data, a sitemap with dates and images, IndexNow pings and llms.txt; cookieless analytics; a 3D logo viewer built with Three.js.
+- [Socials](https://reachakash.com/socials): Social media profiles. LinkedIn @akashreddyv, GitHub @akashreddyv, Instagram @ak.r48, X @AkReddy48, YouTube @ak.r48, Snapchat @ak.r48, Discord @ak.r48, Threads @ak.r48, Facebook @ak.r48.
+- [Contact](https://reachakash.com/contact): Contact Akash Reddy: the contact form, email mail@reachakash.com, LinkedIn, Instagram or X. Located in Detroit, MI, USA.
 - [Gallery](https://reachakash.com/gallery): Gallery: photos of Akash Reddy, and the reachAkash logo in every version (cover banner, logo on black and on white, the mark, a red-only mark, the website name), including on a t-shirt, polo, cap, bumper sticker, mug and business cards.
 - [Referrals](https://reachakash.com/referrals): Referral codes and links of Akash Reddy (credit cards, investing and trading, payments, sending money to India, shopping and cash back, AI tools), each with its own page, a disclosure that he earns a reward and links to official terms. Machine-readable copy: https://reachakash.com/referrals.json
 - [Services](https://reachakash.com/services): Services from Akash Reddy at Reach Akash in Detroit, Michigan: custom software (including test data and workflow tools for teams that build and test hardware), custom AI agents, AI coaching (one-on-one or team) and website development (fast, mobile-friendly websites built around what each client needs). Each service has its own page under /services/. Contact: https://reachakash.com/contact
@@ -27,28 +28,37 @@
 - Role: AI Software Developer
 - Employer: Molex (GRTS team)
 - Previous employers: Zoetis (Veterinary Medicine Research & Development department), Raptor Consultants Group, Tata Consultancy Services, Persistent Systems Ltd.
+- Education: M.S. in Engineering Management, Arkansas State University (2023-2024); M.B.A. in Digital Entrepreneurship, Amity University (2023-2025); B.Tech in Information Technology, Malla Reddy Institute of Technology (2018-2022)
+- Certification: AWS Certified Cloud Practitioner
 - Location: Detroit, Michigan, USA
 - Origin: Hyderabad, Telangana, India
 - Website: https://reachakash.com
 
 ## Services
 
-- Business name: Reach Akash (reachakash.com), run by Akash Reddy in Detroit, Michigan
-- Software services: custom software and automation, including test data and workflow tools for teams that build and test hardware
-- Website development: fast, mobile-friendly websites built around what each client needs, from a one-page site to a full business website
-- Custom AI agents: agents built around a client’s documents, tools and repeat tasks
-- AI coaching: one-on-one or team coaching on using AI tools in everyday work
-- Details: https://reachakash.com/services
-- Contact: https://reachakash.com/contact
+- Business name: Reach Akash (reachakash.com), the studio of Akash Reddy in Detroit, Michigan
+- Custom software: Custom software and automation, including test data and workflow tools for teams that build and test hardware. https://reachakash.com/services/custom-software
+- Website development: Fast, mobile-friendly websites built around what you need, from a one-page site to a full business website. https://reachakash.com/services/website-development
+- Custom AI agents: AI agents built around your work that use your documents and tools to handle repeat tasks. https://reachakash.com/services/ai-agents
+- AI coaching: One-on-one or team coaching on using AI tools in your everyday work. https://reachakash.com/services/ai-coaching
+- All services: https://reachakash.com/services
+
+## Contact
+
+- Email: mail@reachakash.com
+- Contact form: https://reachakash.com/contact
+- Every page also has a chat box that can pass a message to Akash by email
 
 ## Social Profiles
 
 - LinkedIn: https://www.linkedin.com/in/akashreddyv/
 - GitHub: https://github.com/akashreddyv
 - Instagram: https://www.instagram.com/ak.r48
-- X / Twitter: https://x.com/AkReddy48
+- X: https://x.com/AkReddy48
 - YouTube: https://www.youtube.com/@ak.r48
 - Threads: https://www.threads.com/@ak.r48
+- Snapchat: https://www.snapchat.com/@ak.r48
+- Facebook: https://www.facebook.com/ak.r48
 
 ## Referral codes
 

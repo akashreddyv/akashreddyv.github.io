@@ -20,7 +20,7 @@
     edu: [
       'M.S. Engineering Management — Arkansas State University',
       'Amity University',
-      'Malla Reddy College of Engineering and Technology'
+      'Malla Reddy Institute of Technology'
     ],
     work: [
       ['Jun 2026 — Present',   'AI Software Developer',        'Molex (GRTS)',              'Database systems for connector reliability test stations.'],

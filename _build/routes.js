@@ -16,10 +16,21 @@
      sitemap     { changefreq, priority, images? } or false
      draft       true → noindex, left out of sitemap.xml and llms.txt
      llms        one-line summary for llms.txt (published routes only)
+     llmsName    its link text there (default: the slug)
    ============================================================ */
+
+const fs = require('fs');
+const path = require('path');
+const vm = require('vm');
 
 const ORIGIN = 'https://reachakash.com';
 const url = (p) => ORIGIN + p;
+
+// js/site-config.js is the one place for switches and contact details. Run the browser's file
+// here, so pages, JSON-LD and llms.txt all read the same values (build.js uses it too).
+const browser = { window: {} };
+vm.runInNewContext(fs.readFileSync(path.join(__dirname, '../js/site-config.js'), 'utf8'), browser, { filename: 'js/site-config.js' });
+const EMAIL = browser.window.SITE_CONFIG.contactEmail;
 // Brand gallery images (images/brand/gallery/): [file, name, width, height]
 const GALLERY = [
   ['cover.webp', 'reachAkash.com cover banner', 1500, 500],
@@ -61,15 +72,17 @@ const photoByFile = (file) => {
   return p;
 };
 
-const SAME_AS = [
-  'https://www.linkedin.com/in/akashreddyv/',
-  'https://github.com/akashreddyv',
-  'https://www.instagram.com/ak.r48',
-  'https://x.com/AkReddy48',
-  'https://www.youtube.com/@ak.r48',
-  'https://www.threads.com/@ak.r48',
-  'https://www.snapchat.com/@ak.r48',
-  'https://www.facebook.com/ak.r48'
+// Akash's public profiles: [name, URL]. They are the Person's sameAs links and the profile list
+// in llms.txt, and build.js checks that the Socials page links to every one of them.
+const PROFILES = [
+  ['LinkedIn', 'https://www.linkedin.com/in/akashreddyv/'],
+  ['GitHub', 'https://github.com/akashreddyv'],
+  ['Instagram', 'https://www.instagram.com/ak.r48'],
+  ['X', 'https://x.com/AkReddy48'],
+  ['YouTube', 'https://www.youtube.com/@ak.r48'],
+  ['Threads', 'https://www.threads.com/@ak.r48'],
+  ['Snapchat', 'https://www.snapchat.com/@ak.r48'],
+  ['Facebook', 'https://www.facebook.com/ak.r48']
 ];
 
 // Latest "checked" date across published referral entries, for the Referrals page's dateModified
@@ -89,48 +102,57 @@ const crumbs = (...items) => ({
   }))
 });
 
-// The full Person entity. Home and About both carry it under one @id.
+// One person and one studio, each under a single @id on every page, so search engines and AI
+// tools see the same Akash Reddy everywhere rather than several look-alikes. The short forms
+// name the entity wherever a page only refers to it (author, provider, founder).
+const PERSON_REF = { '@type': 'Person', '@id': url('/#person'), name: 'Akash Reddy', url: ORIGIN };
+const BRAND_REF = { '@type': 'Organization', '@id': url('/#brand'), name: 'Reach Akash', url: url('/') };
+
+const DETROIT = { '@type': 'City', name: 'Detroit', containedInPlace: { '@type': 'State', name: 'Michigan' } };
+const ADDRESS = { '@type': 'PostalAddress', addressLocality: 'Detroit', addressRegion: 'MI', addressCountry: 'US' };
+const degree = (name, school) => ({
+  '@type': 'EducationalOccupationalCredential', name, credentialCategory: 'degree',
+  recognizedBy: { '@type': 'CollegeOrUniversity', name: school }
+});
+
+// The full Person entity, on every page that is about Akash (Home, Personal, Professional,
+// Socials, Contact). Facts only, and the same ones the pages show.
 const PERSON = {
   '@context': 'https://schema.org',
-  '@type': 'Person',
-  '@id': url('/#person'),
-  name: 'Akash Reddy',
+  ...PERSON_REF,
   givenName: 'Akash',
   familyName: 'Reddy',
   // Name variants for search only: the pages themselves just say Akash Reddy (or Akash).
   alternateName: ['Vurenuka Akash Reddy', 'Akash Reddy Vurenuka', 'V Akash Reddy', 'Reddy Akash', 'V Akash', 'Akash', 'Reach Akash', 'Reddy'],
-  url: ORIGIN,
+  disambiguatingDescription: 'AI software developer in Detroit, Michigan, and founder of Reach Akash (reachakash.com)',
+  description: 'Akash Reddy (full name Vurenuka Akash Reddy, also known as V Akash Reddy and Reach Akash) is an AI software developer at Molex based in Detroit, MI, USA, originally from Hyderabad, India. Through Reach Akash he offers custom software, custom AI agents, AI coaching and website development.',
+  mainEntityOfPage: url('/personal'),
   image: PHOTOS.map((p) => photoObject(p)),
+  email: EMAIL,
   jobTitle: 'AI Software Developer',
   worksFor: { '@type': 'Organization', name: 'Molex', url: 'https://www.molex.com' },
+  hasOccupation: {
+    '@type': 'Occupation',
+    name: 'AI Software Developer',
+    occupationLocation: { '@type': 'City', name: 'Detroit, MI' },
+    skills: 'SQL Server, T-SQL, database architecture, C#, .NET Framework, LabVIEW, .NET/LabVIEW interop, industrial test automation, data pipeline design, PostgreSQL, SQL, JavaScript, Git, GitLab'
+  },
   alumniOf: [
     { '@type': 'CollegeOrUniversity', name: 'Arkansas State University', sameAs: 'https://www.astate.edu' },
     { '@type': 'CollegeOrUniversity', name: 'Amity University' },
-    { '@type': 'CollegeOrUniversity', name: 'Malla Reddy College of Engineering and Technology' }
+    { '@type': 'CollegeOrUniversity', name: 'Malla Reddy Institute of Technology' }
   ],
-  address: { '@type': 'PostalAddress', addressLocality: 'Detroit', addressRegion: 'MI', addressCountry: 'US' },
-  sameAs: SAME_AS,
+  hasCredential: [
+    degree('M.S. in Engineering Management', 'Arkansas State University'),
+    degree('M.B.A. in Digital Entrepreneurship', 'Amity University'),
+    degree('B.Tech in Information Technology', 'Malla Reddy Institute of Technology'),
+    { '@type': 'EducationalOccupationalCredential', name: 'AWS Certified Cloud Practitioner', credentialCategory: 'certification',
+      recognizedBy: { '@type': 'Organization', name: 'Amazon Web Services' } }
+  ],
+  address: ADDRESS,
+  sameAs: PROFILES.map(([, link]) => link),
   knowsAbout: ['Software Development', 'AI Agents', 'AI Coaching', 'Website Development', 'Database Architecture', 'SQL Server', 'C#', '.NET Framework', 'LabVIEW', 'Industrial Test Automation', 'AI', 'Travel'],
-  brand: { '@id': url('/#brand') },
-  description: 'Akash Reddy (full name Vurenuka Akash Reddy, also known as V Akash Reddy and Reach Akash) is an AI software developer at Molex based in Detroit, MI, USA, originally from Hyderabad, India. Through Reach Akash he offers custom software, custom AI agents, AI coaching and website development.'
-};
-
-const DETROIT = { '@type': 'City', name: 'Detroit', containedInPlace: { '@type': 'State', name: 'Michigan' } };
-
-// The studio brand — carries "The Ascent" mark as its logo.
-const BRAND = {
-  '@context': 'https://schema.org',
-  '@type': 'Organization',
-  '@id': url('/#brand'),
-  name: 'Reach Akash',
-  alternateName: ['reachAkash.com', 'Reach Akash by Akash Reddy'],
-  url: url('/'),
-  logo: { '@type': 'ImageObject', url: url('/images/brand/reachakash-symbol.png'), width: 2400, height: 1681 },
-  description: 'Reach Akash is the studio of Akash Reddy in Detroit, Michigan: custom software, custom AI agents, AI coaching and website development.',
-  address: { '@type': 'PostalAddress', addressLocality: 'Detroit', addressRegion: 'MI', addressCountry: 'US' },
-  areaServed: DETROIT,
-  knowsAbout: ['Custom Software', 'AI Agents', 'AI Coaching', 'Website Development'],
-  founder: { '@id': url('/#person') }
+  brand: BRAND_REF
 };
 
 // One Service entity per offering, each with its own page /services/<id> (no Review or rating markup).
@@ -139,7 +161,7 @@ const service = (id, name, serviceType, description) => ({
   '@type': 'Service',
   '@id': url('/services/' + id + '#service'),
   name, serviceType, description,
-  provider: { '@id': url('/#brand') },
+  provider: BRAND_REF,
   areaServed: DETROIT,
   url: url('/services/' + id)
 });
@@ -153,6 +175,26 @@ const SERVICES = [
   service('ai-coaching', 'AI coaching', 'AI coaching',
     'One-on-one or team coaching on using AI tools in your everyday work.')
 ];
+
+// The studio brand — carries "The Ascent" mark as its logo. On Home, Services and Contact.
+const BRAND = {
+  '@context': 'https://schema.org',
+  ...BRAND_REF,
+  alternateName: ['reachAkash', 'ReachAkash', 'reachAkash.com', 'Reach Akash by Akash Reddy'],
+  logo: { '@type': 'ImageObject', url: url('/images/brand/reachakash-symbol.png'), width: 2400, height: 1681 },
+  description: 'Reach Akash is the studio of Akash Reddy in Detroit, Michigan: custom software, custom AI agents, AI coaching and website development.',
+  email: EMAIL,
+  contactPoint: { '@type': 'ContactPoint', contactType: 'customer service', email: EMAIL, url: url('/contact') },
+  address: ADDRESS,
+  areaServed: DETROIT,
+  knowsAbout: ['Custom Software', 'AI Agents', 'AI Coaching', 'Website Development'],
+  founder: PERSON_REF,
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Services',
+    itemListElement: SERVICES.map((s) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', '@id': s['@id'], name: s.name, url: s.url } }))
+  }
+};
 
 // The service pages (pages/services/<id>.html): [id, breadcrumb name, title, description].
 const SERVICE_PAGES = [
@@ -171,15 +213,15 @@ const SERVICE_PAGES = [
   ogType: 'website',
   ogTitle: title.replace(' | Akash Reddy', ''),
   ogDesc: description,
+  // build.js completes every page node with its url, the site it belongs to and dateModified.
   jsonld: [
     {
       '@context': 'https://schema.org',
       '@type': 'WebPage',
       '@id': url('/services/' + id + '#webpage'),
-      url: url('/services/' + id),
       name: title,
-      isPartOf: { '@id': url('/#website') },
-      about: { '@id': url('/services/' + id + '#service') }
+      about: { '@id': url('/services/' + id + '#service') },
+      author: PERSON_REF
     },
     SERVICES.find((s) => s.url === url('/services/' + id)),
     crumbs(['Services', '/services'], [crumb, '/services/' + id])
@@ -207,15 +249,17 @@ const routes = [
         '@id': url('/#website'),
         url: url('/'),
         name: 'Reach Akash',
-        alternateName: ['Akash Reddy', 'Reddy Akash', 'Reach Akash Reddy'],
-        publisher: { '@id': url('/#brand') }
+        alternateName: ['reachAkash', 'reachAkash.com', 'Akash Reddy', 'Reddy Akash', 'Reach Akash Reddy'],
+        inLanguage: 'en',
+        publisher: BRAND_REF,
+        about: PERSON_REF
       },
       {
         '@context': 'https://schema.org',
         '@type': 'WebPage',
         '@id': url('/#webpage'),
-        url: url('/'),
         name: 'Akash Reddy | AI Software & Website Developer, Detroit',
+        about: { '@id': url('/#person') },
         primaryImageOfPage: photoObject(photoByFile('/images/home/akash-reddy-professional.jpg'), { representativeOfPage: true })
       },
       BRAND,
@@ -238,14 +282,14 @@ const routes = [
       "      if (p && /^\\/(?!\\/)[a-z0-9\\-\\/]*$/i.test(p)) location.replace(p); })();",
       '  </script>'
     ].join('\n') + '\n',
-    llms: 'Landing page for Akash Reddy (Reach Akash), software developer in Detroit, MI, with links to his services, projects, work history and contact.'
+    llms: 'Landing page for Akash Reddy (Reach Akash), software developer in Detroit, MI, with links to his services, projects, work history, social profiles and contact.'
   },
 
   // About and Personal are one page now: /personal. /about redirects to it.
   {
     slug: 'personal', path: '/personal', out: 'personal.html', source: 'pages/personal.html', nav: 'personal', navGroup: 'about',
-    title: 'Akash Reddy | About & Personal',
-    description: 'Akash Reddy, software developer from Hyderabad, now in Metro Detroit. Techie, AI enthusiast, travel and adventure seeker.',
+    title: 'About Akash Reddy | Software Developer in Detroit',
+    description: 'Akash Reddy is a software developer from Hyderabad, now in Metro Detroit: AI Software Developer at Molex and founder of Reach Akash. Bio and quick facts.',
     ogType: 'profile',
     ogTitle: 'About Akash Reddy',
     ogDesc: 'Software developer from Hyderabad, now in Metro Detroit. Builds manufacturing test software and uses AI to get from idea to working tool fast.',
@@ -253,22 +297,22 @@ const routes = [
       {
         '@context': 'https://schema.org',
         '@type': 'ProfilePage',
-        url: url('/personal'),
+        '@id': url('/personal#webpage'),
         name: 'About Akash Reddy',
         mainEntity: { '@id': url('/#person') },
         primaryImageOfPage: photoObject(photoByFile('/images/home/akash-reddy-portrait.jpg'), { representativeOfPage: true })
       },
       PERSON,
-      crumbs(['About & Personal', '/personal'])
+      crumbs(['About', '/personal'])
     ],
     sitemap: { changefreq: 'monthly', priority: '0.9', images: [[PORTRAIT, 'Akash Reddy Portrait']] },
-    llms: 'About Akash Reddy: bio and photo. Software developer from Hyderabad, now in Metro Detroit; techie, AI enthusiast, travel and adventure seeker. Links to his professional history, projects and social profiles.'
+    llms: 'About Akash Reddy: bio, photo and quick facts. Software developer from Hyderabad, now in Metro Detroit; AI Software Developer at Molex and founder of Reach Akash; techie, AI enthusiast, travel and adventure seeker. Links to his professional history, projects and social profiles.'
   },
   { slug: 'about', path: '/about', out: 'about.html', redirectTo: '/personal' },
 
   {
     slug: 'professional', path: '/professional', out: 'professional.html', source: 'pages/professional.html', nav: 'professional', navGroup: 'about',
-    title: 'Akash Reddy | Professional',
+    title: 'Akash Reddy | Experience, Skills & Education',
     description: 'Career and skills of Akash Reddy, AI Software Developer at Molex: SQL Server, C#, .NET, LabVIEW. MS Engineering Management, Arkansas State.',
     ogType: 'website',
     ogTitle: 'Akash Reddy, Professional Experience and Skills',
@@ -276,20 +320,12 @@ const routes = [
     jsonld: [
       {
         '@context': 'https://schema.org',
-        '@type': 'Person',
-        name: 'Akash Reddy',
-        alternateName: ['Vurenuka Akash Reddy', 'Akash Reddy Vurenuka', 'V Akash Reddy'],
-        url: ORIGIN,
-        jobTitle: 'AI Software Developer',
-        worksFor: { '@type': 'Organization', name: 'Molex', url: 'https://www.molex.com' },
-        hasOccupation: {
-          '@type': 'Occupation',
-          name: 'AI Software Developer',
-          occupationLocation: { '@type': 'City', name: 'Detroit, MI' },
-          skills: 'SQL Server, T-SQL, database architecture, C#, .NET Framework, LabVIEW, .NET/LabVIEW interop, industrial test automation, data pipeline design, PostgreSQL, SQL, JavaScript, Git, GitLab'
-        },
-        alumniOf: PERSON.alumniOf
+        '@type': 'WebPage',
+        '@id': url('/professional#webpage'),
+        name: 'Akash Reddy: experience, skills and education',
+        mainEntity: { '@id': url('/#person') }
       },
+      PERSON,
       crumbs(['Professional', '/professional'])
     ],
     sitemap: { changefreq: 'monthly', priority: '0.8' },
@@ -298,7 +334,7 @@ const routes = [
 
   {
     slug: 'projects', path: '/projects', out: 'projects.html', source: 'pages/projects.html', nav: 'projects',
-    title: 'Akash Reddy | Projects',
+    title: 'Projects by Akash Reddy | Websites, Software & 3D',
     description: 'Software projects by Akash Reddy: this website, generated from one template with vanilla JS, a 3D logo viewer and more.',
     ogType: 'website',
     ogTitle: 'Akash Reddy, Software Projects and Portfolio',
@@ -307,22 +343,24 @@ const routes = [
       {
         '@context': 'https://schema.org',
         '@type': 'CollectionPage',
+        '@id': url('/projects#webpage'),
         name: 'Projects by Akash Reddy',
         description: 'Software projects and portfolio of Akash Reddy',
-        author: { '@type': 'Person', name: 'Akash Reddy', url: ORIGIN },
+        author: PERSON_REF,
         hasPart: [
           {
             '@type': 'CreativeWork',
             name: 'reachakash.com, Personal Portfolio Website',
             description: 'A multi-page personal portfolio built with HTML, CSS, and vanilla JavaScript: static pages generated from one shared template by a small build script, with no framework and no client-side router. Hosted on GitHub Pages.',
-            url: ORIGIN,
-            creator: { '@type': 'Person', name: 'Akash Reddy' }
+            url: url('/projects/reachakash-website'),
+            creator: PERSON_REF
           },
           {
             '@type': 'CreativeWork',
             name: 'Logo Designs, 3D Interactive Viewer',
             description: '3D interactive logo viewer built with Three.js: the reachAkash mark and a crystal variant, with a play button, front/back/top/bottom views, and real-time material controls.',
-            creator: { '@type': 'Person', name: 'Akash Reddy' }
+            url: url('/projects/logodesigns'),
+            creator: PERSON_REF
           }
         ]
       },
@@ -331,33 +369,62 @@ const routes = [
     sitemap: { changefreq: 'monthly', priority: '0.8' },
     llms: 'Software portfolio, including personal website reachakash.com (HTML/CSS/JS, GitHub Pages) and a 3D interactive logo viewer (Three.js, SVG).'
   },
+  {
+    // The write-up of this site. Keep it true: when the site changes, update pages/projects/reachakash-website.html.
+    slug: 'project-website', path: '/projects/reachakash-website', out: 'projects/reachakash-website.html', source: 'pages/projects/reachakash-website.html',
+    nav: 'projects', navCurrent: 'true',
+    title: 'How reachakash.com Is Built | Akash Reddy',
+    description: 'How Akash Reddy built reachakash.com: fast pages with no framework, an admin page that works from a phone, serverless contact forms and search-ready data.',
+    ogType: 'article',
+    ogTitle: 'How reachakash.com is built',
+    ogDesc: 'Fast pages with no framework, an admin page that works from a phone, serverless contact forms and search-ready data.',
+    jsonld: [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        '@id': url('/projects/reachakash-website#article'),
+        headline: 'How reachakash.com is built',
+        description: 'How reachakash.com works: static pages generated from one template with no framework, an admin page built on Decap CMS, contact forms on a Cloudflare Worker, and structured data, a sitemap and IndexNow for search.',
+        author: PERSON_REF,
+        publisher: BRAND_REF,
+        datePublished: '2026-11-13',
+        image: url('/images/brand/og-image.png'),
+        about: { '@type': 'WebSite', '@id': url('/#website'), name: 'Reach Akash', url: url('/') },
+        inLanguage: 'en'
+      },
+      crumbs(['Projects', '/projects'], ['How this site is built', '/projects/reachakash-website'])
+    ],
+    sitemap: { changefreq: 'monthly', priority: '0.7' },
+    llmsName: 'How reachakash.com is built',
+    llms: 'How the site works: plain HTML, CSS and JavaScript generated from one template by a small Node.js build script (no framework), hosted on GitHub Pages; an admin page built on Decap CMS with automatic builds on GitHub Actions; contact form, suggestion box and chat box that email through a Cloudflare Worker; structured data, a sitemap with dates and images, IndexNow pings and llms.txt; cookieless analytics; a 3D logo viewer built with Three.js.'
+  },
 
   {
     slug: 'socials', path: '/socials', out: 'socials.html', source: 'pages/socials.html', nav: 'socials',
-    title: 'Akash Reddy | Socials',
-    description: 'Social media profiles of Akash Reddy: Instagram, LinkedIn, X, YouTube, Snapchat, Discord, Threads, and Facebook.',
+    title: 'Akash Reddy on Instagram, LinkedIn, X, YouTube & GitHub',
+    description: 'The official social media profiles of Akash Reddy: LinkedIn, GitHub, Instagram @ak.r48, X @AkReddy48, YouTube, Threads, Snapchat, Discord and Facebook.',
     ogType: 'website',
     ogTitle: 'Find Akash Reddy Online, Social Media Profiles',
     ogDesc: 'All social profiles of Akash Reddy: Instagram @ak.r48, LinkedIn @akashreddyv, X @AkReddy48, YouTube @ak.r48 and more.',
     jsonld: [
       {
         '@context': 'https://schema.org',
-        '@type': 'Person',
-        name: 'Akash Reddy',
-        alternateName: ['Vurenuka Akash Reddy', 'Akash Reddy Vurenuka', 'V Akash Reddy'],
-        url: ORIGIN,
-        sameAs: SAME_AS
+        '@type': 'WebPage',
+        '@id': url('/socials#webpage'),
+        name: 'Akash Reddy on social media',
+        mainEntity: { '@id': url('/#person') }
       },
+      PERSON,
       crumbs(['Socials', '/socials'])
     ],
-    sitemap: { changefreq: 'yearly', priority: '0.5' },
-    llms: 'Social media profiles. Instagram @ak.r48, LinkedIn @akashreddyv, X @AkReddy48, YouTube @ak.r48, Snapchat @ak.r48, Discord @ak.r48, Threads @ak.r48, Facebook @ak.r48.'
+    sitemap: { changefreq: 'yearly', priority: '0.6' },
+    llms: 'Social media profiles. LinkedIn @akashreddyv, GitHub @akashreddyv, Instagram @ak.r48, X @AkReddy48, YouTube @ak.r48, Snapchat @ak.r48, Discord @ak.r48, Threads @ak.r48, Facebook @ak.r48.'
   },
 
   {
     slug: 'contact', path: '/contact', out: 'contact.html', source: 'pages/contact.html', nav: 'contact',
-    title: 'Akash Reddy | Contact',
-    description: 'Contact Akash Reddy. Reach out for work, collaboration, or just to connect. Based in Detroit, MI.',
+    title: 'Contact Akash Reddy | Reach Akash, Detroit',
+    description: `Contact Akash Reddy at Reach Akash in Detroit, MI: send a message, email ${EMAIL}, or connect on LinkedIn, Instagram or X.`,
     ogType: 'website',
     ogTitle: 'Contact Akash Reddy, Get In Touch',
     ogDesc: 'Reach Akash Reddy for work, collaboration, or to connect. LinkedIn, Instagram, or the contact form.',
@@ -365,15 +432,18 @@ const routes = [
       {
         '@context': 'https://schema.org',
         '@type': 'ContactPage',
+        '@id': url('/contact#webpage'),
         name: 'Contact Akash Reddy',
         description: 'Contact page for Akash Reddy, AI software developer in Detroit, MI',
-        url: url('/contact'),
-        mainEntity: { '@type': 'Person', name: 'Akash Reddy', url: ORIGIN }
+        mainEntity: { '@id': url('/#person') },
+        about: { '@id': url('/#brand') }
       },
+      PERSON,
+      BRAND,
       crumbs(['Contact', '/contact'])
     ],
-    sitemap: { changefreq: 'yearly', priority: '0.5' },
-    llms: 'Contact Akash Reddy via LinkedIn, Instagram, or the contact form. Located in Detroit, MI, USA.'
+    sitemap: { changefreq: 'yearly', priority: '0.6' },
+    llms: `Contact Akash Reddy: the contact form, email ${EMAIL}, LinkedIn, Instagram or X. Located in Detroit, MI, USA.`
   },
 
   {
@@ -390,9 +460,8 @@ const routes = [
         '@id': url('/gallery#gallery'),
         name: 'Akash Reddy: photos and logos',
         description: 'Photos of Akash Reddy, software developer in Detroit, MI, and the reachAkash logos and brand mockups.',
-        url: url('/gallery'),
-        about: { '@id': url('/#person') },
-        author: { '@id': url('/#person') },
+        about: PERSON_REF,
+        author: PERSON_REF,
         image: [
           ...PHOTOS.map((p) => photoObject(p)),
           ...GALLERY.map(([file, name, w, h]) => ({ '@type': 'ImageObject', contentUrl: url('/images/brand/gallery/' + file), name, width: w, height: h, creditText: CREDIT }))
@@ -426,11 +495,9 @@ const routes = [
         '@context': 'https://schema.org',
         '@type': 'CollectionPage',
         '@id': url('/referrals#webpage'),
-        url: url('/referrals'),
         name: 'Referral codes and sign-up bonuses',
         description: 'Referral codes and links from Akash Reddy for credit cards, investing, payments, sending money to India, cash back and AI tools, with a disclosure that he earns a reward and links to each program’s official terms.',
-        isPartOf: { '@id': url('/#website') },
-        author: { '@id': url('/#person') },
+        author: PERSON_REF,
         dateModified: REFERRALS_UPDATED
       },
       crumbs(['Referrals', '/referrals'])
@@ -454,12 +521,12 @@ const routes = [
         '@context': 'https://schema.org',
         '@type': 'WebPage',
         '@id': url('/services#webpage'),
-        url: url('/services'),
         name: 'Services from Akash Reddy at Reach Akash',
         description: 'Custom software, custom AI agents, AI coaching and website development in Detroit, Michigan.',
-        isPartOf: { '@id': url('/#website') },
-        about: { '@id': url('/#brand') }
+        about: { '@id': url('/#brand') },
+        author: PERSON_REF
       },
+      BRAND,
       ...SERVICES,
       crumbs(['Services', '/services'])
     ],
@@ -530,6 +597,7 @@ const routes = [
   { slug: 'home-alias', path: '/home', out: 'home.html', redirectTo: '/' }
 ];
 
+// llms.txt: a plain summary of the site for AI tools. Facts only, the same ones the pages show.
 const llms = {
   title: 'Akash Reddy',
   summary: 'Akash Reddy (full name Vurenuka Akash Reddy; also known as V Akash Reddy, V Akash and Reach Akash) is an AI software developer at Molex based in Detroit, MI, USA. Originally from Hyderabad, India. Through Reach Akash (reachakash.com) he offers custom software, custom AI agents, AI coaching and website development in Detroit, Michigan.',
@@ -541,27 +609,23 @@ const llms = {
       'Role: AI Software Developer',
       'Employer: Molex (GRTS team)',
       'Previous employers: Zoetis (Veterinary Medicine Research & Development department), Raptor Consultants Group, Tata Consultancy Services, Persistent Systems Ltd.',
+      'Education: M.S. in Engineering Management, Arkansas State University (2023-2024); M.B.A. in Digital Entrepreneurship, Amity University (2023-2025); B.Tech in Information Technology, Malla Reddy Institute of Technology (2018-2022)',
+      'Certification: AWS Certified Cloud Practitioner',
       'Location: Detroit, Michigan, USA',
       'Origin: Hyderabad, Telangana, India',
       'Website: https://reachakash.com'
     ]],
     ['Services', [
-      'Business name: Reach Akash (reachakash.com), run by Akash Reddy in Detroit, Michigan',
-      'Software services: custom software and automation, including test data and workflow tools for teams that build and test hardware',
-      'Website development: fast, mobile-friendly websites built around what each client needs, from a one-page site to a full business website',
-      'Custom AI agents: agents built around a client’s documents, tools and repeat tasks',
-      'AI coaching: one-on-one or team coaching on using AI tools in everyday work',
-      'Details: https://reachakash.com/services',
-      'Contact: https://reachakash.com/contact'
+      'Business name: Reach Akash (reachakash.com), the studio of Akash Reddy in Detroit, Michigan',
+      ...SERVICES.map((s) => `${s.name}: ${s.description} ${s.url}`),
+      'All services: https://reachakash.com/services'
     ]],
-    ['Social Profiles', [
-      'LinkedIn: https://www.linkedin.com/in/akashreddyv/',
-      'GitHub: https://github.com/akashreddyv',
-      'Instagram: https://www.instagram.com/ak.r48',
-      'X / Twitter: https://x.com/AkReddy48',
-      'YouTube: https://www.youtube.com/@ak.r48',
-      'Threads: https://www.threads.com/@ak.r48'
-    ]]
+    ['Contact', [
+      `Email: ${EMAIL}`,
+      'Contact form: https://reachakash.com/contact',
+      'Every page also has a chat box that can pass a message to Akash by email'
+    ]],
+    ['Social Profiles', PROFILES.map(([name, link]) => `${name}: ${link}`)]
   ]
 };
 
@@ -574,5 +638,7 @@ module.exports = {
     ogImageAlt: 'reachAkash.com — Reach Akash (Akash Reddy)'
   },
   routes,
-  llms
+  llms,
+  profiles: PROFILES,
+  browser: browser.window
 };

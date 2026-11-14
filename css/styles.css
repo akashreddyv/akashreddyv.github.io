@@ -558,7 +558,13 @@ html:not(.js) .footer-term-wrap { display: none; }
   .home-mark-link:hover { transform: none; }
 }
 .home-tagline  { margin-top: 34px; font-size: 17px; color: var(--muted); line-height: 1.75; max-width: 480px; opacity: 0; animation: fadeUp 0.9s ease 0.4s forwards; }
-.home-cta      { margin-top: 48px; display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; opacity: 0; animation: fadeUp 0.9s ease 0.55s forwards; }
+.home-intro    { margin-top: 10px; font-size: 17px; color: var(--muted); line-height: 1.75; max-width: 560px; opacity: 0; animation: fadeUp 0.9s ease 0.45s forwards; }
+.home-intro a  { color: var(--text); text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+.home-intro a:hover { color: var(--accent); }
+.home-cta      { margin-top: 40px; display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; opacity: 0; animation: fadeUp 0.9s ease 0.55s forwards; }
+.home-social   { margin-top: 22px; display: flex; flex-wrap: wrap; justify-content: center; gap: 0 4px; opacity: 0; animation: fadeUp 0.9s ease 0.65s forwards; }
+.home-social a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 10px; font-size: 13px; letter-spacing: 0.06em; color: var(--muted); text-decoration: none; }
+.home-social a:hover { color: var(--accent); }
 
 /* Quick-nav cards on home page */
 /* "What should Reach Akash build next?" band under the cards, linking to the suggestion box */
@@ -671,7 +677,7 @@ html:not(.js) .footer-term-wrap { display: none; }
 .project-title    { font-family: var(--font-display); font-size: 24px; color: var(--white); margin-bottom: 8px; }
 .project-org      { font-size: 13px; color: var(--muted); margin-bottom: 18px; }
 .project-desc     { font-size: 15px; color: var(--muted); line-height: 1.8; margin-bottom: 20px; }
-.project-links    { display: flex; gap: 12px; margin-top: 24px; }
+.project-links    { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
 
 
 /* ----------------------------------------------------------------
@@ -710,6 +716,8 @@ html:not(.js) .footer-term-wrap { display: none; }
 .sc-discord:hover     { box-shadow: 0 20px 50px rgba(88,101,242,.18); }
 .sc-threads::before   { background: linear-gradient(135deg, rgba(255,255,255,.04), transparent); }
 .sc-threads:hover     { box-shadow: 0 20px 50px rgba(255,255,255,.07); }
+.sc-github::before    { background: linear-gradient(135deg, rgba(255,255,255,.04), transparent); }
+.sc-github:hover      { box-shadow: 0 20px 50px rgba(255,255,255,.07); }
 .sc-facebook::before  { background: linear-gradient(135deg, rgba(24,119,242,.14), transparent); }
 .sc-facebook:hover    { box-shadow: 0 20px 50px rgba(24,119,242,.18); }
 
@@ -793,6 +801,9 @@ footer {
   text-decoration: none;
 }
 .footer-links a:hover { color: var(--accent); }
+/* Second row: each service on the left, Akash's profiles on the right (stacked on phones) */
+.footer-more { flex-basis: 100%; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0 32px; margin-left: -10px; }
+.footer-label { display: inline-flex; align-items: center; min-height: 44px; padding: 0 6px 0 10px; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
 
 footer p      { font-size: 13px; color: var(--muted); }
 .footer-text  { line-height: 1.8; }
@@ -815,7 +826,7 @@ footer p      { font-size: 13px; color: var(--muted); }
 /* ----------------------------------------------------------------
    EDUCATION SECTION
 ---------------------------------------------------------------- */
-.edu-section { margin-bottom: 60px; }
+.edu-section { margin: 64px 0 60px; }
 
 /* Small row — high school + junior college side by side */
 .edu-row-small {
@@ -1779,6 +1790,7 @@ footer p      { font-size: 13px; color: var(--muted); }
     padding: 28px 24px;
   }
   .footer-links { margin-left: -10px; }
+  .footer-more { flex-direction: column; margin-left: 0; }
 }
 
 @media (max-width: 480px) {
@@ -2223,6 +2235,17 @@ body.term-active #chat-launcher, body.term-active #chat-panel { display: none; }
   gap: 12px;
   flex-wrap: wrap;
 }
+
+/* "At a glance" quick facts under the bio: a grid of label/value cells */
+.facts-title { margin-top: 56px; font-size: 13px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); }
+.facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; margin-top: 16px; background: var(--border); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.facts > div { padding: 18px 20px; background: var(--card); }
+.facts dt { margin-bottom: 6px; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+.facts dd { font-size: 15px; line-height: 1.6; color: var(--text); }
+.facts a { color: inherit; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+.facts a:hover { color: var(--accent); }
+@media (max-width: 760px) { .facts { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 480px) { .facts { grid-template-columns: 1fr; } }
 
 .about-cards {
   display: grid;

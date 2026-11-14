@@ -1,15 +1,15 @@
 {
   "/": {
-    "date": "2026-11-08",
-    "hash": "ec06f603ffe8"
+    "date": "2026-11-14",
+    "hash": "c489a1774142"
   },
   "/contact": {
-    "date": "2026-11-08",
-    "hash": "eb2c91f57d2f"
+    "date": "2026-11-14",
+    "hash": "178fc48c3856"
   },
   "/gallery": {
-    "date": "2026-11-08",
-    "hash": "f61b165af436"
+    "date": "2026-11-14",
+    "hash": "704d813582df"
   },
   "/lab": {
     "date": "2026-11-08",
@@ -20,160 +20,164 @@
     "hash": "dabe50b9eb54"
   },
   "/personal": {
-    "date": "2026-11-08",
-    "hash": "8d8861a90b0f"
+    "date": "2026-11-14",
+    "hash": "94787c568db3"
   },
   "/privacy": {
-    "date": "2026-11-08",
-    "hash": "12a3371e11c1"
+    "date": "2026-11-14",
+    "hash": "2cfddf1bd0e1"
   },
   "/professional": {
-    "date": "2026-11-08",
-    "hash": "7e8474128abb"
+    "date": "2026-11-14",
+    "hash": "b379bd9cd02a"
   },
   "/projects": {
-    "date": "2026-11-08",
-    "hash": "0b0ca97c0d50"
+    "date": "2026-11-14",
+    "hash": "fdf0436d2776"
+  },
+  "/projects/reachakash-website": {
+    "date": "2026-11-14",
+    "hash": "10605a66b6fe"
   },
   "/referrals": {
-    "date": "2026-11-08",
-    "hash": "9bbe9820a3cd"
+    "date": "2026-11-14",
+    "hash": "fbcf8968c88c"
   },
   "/referrals/abound": {
-    "date": "2026-11-08",
-    "hash": "ef7b102eb671"
+    "date": "2026-11-14",
+    "hash": "90bf7e5f5b00"
   },
   "/referrals/ai-tools": {
-    "date": "2026-11-08",
-    "hash": "de0dc977bea8"
+    "date": "2026-11-14",
+    "hash": "9f0e8e56b1a6"
   },
   "/referrals/amex-blue-cash-everyday": {
-    "date": "2026-11-08",
-    "hash": "e5044124e1ed"
+    "date": "2026-11-14",
+    "hash": "8d59649ef99c"
   },
   "/referrals/amex-delta-skymiles-blue": {
-    "date": "2026-11-08",
-    "hash": "13afd42f81b7"
+    "date": "2026-11-14",
+    "hash": "7cf26a618d35"
   },
   "/referrals/bilt": {
-    "date": "2026-11-08",
-    "hash": "759a69b59099"
+    "date": "2026-11-14",
+    "hash": "d393aec5c10a"
   },
   "/referrals/cash-app": {
-    "date": "2026-11-08",
-    "hash": "db6b1685bce5"
+    "date": "2026-11-14",
+    "hash": "30d5c5d1cfe8"
   },
   "/referrals/cashkaro": {
-    "date": "2026-11-08",
-    "hash": "9fe887f5b9f1"
+    "date": "2026-11-14",
+    "hash": "4c6d3747cdb0"
   },
   "/referrals/chase-freedom": {
-    "date": "2026-11-08",
-    "hash": "fde4d0e8d6de"
+    "date": "2026-11-14",
+    "hash": "2b6315b2a34d"
   },
   "/referrals/chase-sapphire": {
-    "date": "2026-11-08",
-    "hash": "776d50b8c8ae"
+    "date": "2026-11-14",
+    "hash": "78d28daffb9d"
   },
   "/referrals/cheq": {
-    "date": "2026-11-08",
-    "hash": "a47dfa162b78"
+    "date": "2026-11-14",
+    "hash": "83790a1a7130"
   },
   "/referrals/claude": {
-    "date": "2026-11-08",
-    "hash": "633093111f5b"
+    "date": "2026-11-14",
+    "hash": "19654312323f"
   },
   "/referrals/cred": {
-    "date": "2026-11-08",
-    "hash": "ab746ccf7146"
+    "date": "2026-11-14",
+    "hash": "8282a9dfb461"
   },
   "/referrals/credit-cards": {
-    "date": "2026-11-08",
-    "hash": "3f97766924a6"
+    "date": "2026-11-14",
+    "hash": "6973e6fa1c30"
   },
   "/referrals/crobo": {
-    "date": "2026-11-08",
-    "hash": "1b1a79d1e776"
+    "date": "2026-11-14",
+    "hash": "874a2d258171"
   },
   "/referrals/discover": {
-    "date": "2026-11-08",
-    "hash": "60bdc21963bf"
+    "date": "2026-11-14",
+    "hash": "f68cc625c002"
   },
   "/referrals/investing": {
-    "date": "2026-11-08",
-    "hash": "d6b50f72be55"
+    "date": "2026-11-14",
+    "hash": "c8268a56d0a5"
   },
   "/referrals/kalshi": {
-    "date": "2026-11-08",
-    "hash": "46f69aad9a0f"
+    "date": "2026-11-14",
+    "hash": "88abb4ae39f9"
   },
   "/referrals/kraken": {
-    "date": "2026-11-08",
-    "hash": "07800cedc9aa"
+    "date": "2026-11-14",
+    "hash": "1ed65c2e894f"
   },
   "/referrals/mypursu": {
-    "date": "2026-11-08",
-    "hash": "b450c26c84bd"
+    "date": "2026-11-14",
+    "hash": "65b3dbc7733d"
   },
   "/referrals/payments": {
-    "date": "2026-11-08",
-    "hash": "9e029faf2f8d"
+    "date": "2026-11-14",
+    "hash": "9393f4d2ba3f"
   },
   "/referrals/rakuten": {
-    "date": "2026-11-08",
-    "hash": "e53f254f49b8"
+    "date": "2026-11-14",
+    "hash": "3bcf320b5588"
   },
   "/referrals/remitly": {
-    "date": "2026-11-08",
-    "hash": "c4a2d610e97a"
+    "date": "2026-11-14",
+    "hash": "68f0f3b66f40"
   },
   "/referrals/robinhood": {
-    "date": "2026-11-08",
-    "hash": "af6138dd5f1d"
+    "date": "2026-11-14",
+    "hash": "35d52220f02a"
   },
   "/referrals/send-money-to-india": {
-    "date": "2026-11-08",
-    "hash": "f261800a0952"
+    "date": "2026-11-14",
+    "hash": "ed7d6b45c4c8"
   },
   "/referrals/shopping": {
-    "date": "2026-11-08",
-    "hash": "9fe5d88e7e3d"
+    "date": "2026-11-14",
+    "hash": "a8edbf5c5413"
   },
   "/referrals/topcashback": {
-    "date": "2026-11-08",
-    "hash": "d58615cfefb8"
+    "date": "2026-11-14",
+    "hash": "a4f56a490fa1"
   },
   "/referrals/unplex": {
-    "date": "2026-11-08",
-    "hash": "7e8807b8d737"
+    "date": "2026-11-14",
+    "hash": "eee270cd2e36"
   },
   "/referrals/upside": {
-    "date": "2026-11-08",
-    "hash": "51df09354efa"
+    "date": "2026-11-14",
+    "hash": "216251a1b2aa"
   },
   "/services": {
-    "date": "2026-11-08",
-    "hash": "dff0156702f3"
+    "date": "2026-11-14",
+    "hash": "53e4ecf99fc0"
   },
   "/services/ai-agents": {
-    "date": "2026-11-08",
-    "hash": "91ea54cf16ca"
+    "date": "2026-11-14",
+    "hash": "ae66da1b08f5"
   },
   "/services/ai-coaching": {
-    "date": "2026-11-08",
-    "hash": "6ce7939417ce"
+    "date": "2026-11-14",
+    "hash": "74d6e9d6f8f9"
   },
   "/services/custom-software": {
-    "date": "2026-11-08",
-    "hash": "a1f65fcb7530"
+    "date": "2026-11-14",
+    "hash": "80dd6e70684d"
   },
   "/services/website-development": {
-    "date": "2026-11-08",
-    "hash": "044e8ed7108d"
+    "date": "2026-11-14",
+    "hash": "adfcb4c40935"
   },
   "/socials": {
-    "date": "2026-11-08",
-    "hash": "9fb16140b190"
+    "date": "2026-11-14",
+    "hash": "76e3a190194f"
   },
   "/suggestions": {
     "date": "2026-11-08",

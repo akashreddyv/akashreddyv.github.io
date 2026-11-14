@@ -19,7 +19,6 @@
 
 const fs = require('fs');
 const path = require('path');
-const vm = require('vm');
 const crypto = require('crypto');
 
 const ROOT = path.resolve(__dirname, '..');
@@ -28,14 +27,12 @@ const CHECK = process.argv.includes('--check');
 // must not depend on how the inputs happen to be checked out.
 const read = (p) => fs.readFileSync(path.join(ROOT, p), 'utf8').replace(/\r\n/g, '\n');
 
-const { site, routes, llms } = require('./routes.js');
+// `browser` is js/site-config.js as the browser sees it (routes.js runs it), so generated HTML
+// matches what the page's own JavaScript would render.
+const { site, routes, llms, profiles, browser } = require('./routes.js');
 const referrals = require('./referrals.js');
 const template = read('_build/template.html');
-
-// Run the browser config file so generated HTML matches what JS would render.
-const sandbox = { window: {} };
-vm.runInNewContext(read('js/site-config.js'), sandbox, { filename: 'js/site-config.js' });
-const cta = sandbox.window.siteCta('primary', sandbox.window.SITE_CONFIG);
+const cta = browser.siteCta('primary', browser.SITE_CONFIG);
 
 const YEAR = String(new Date().getFullYear());
 const TODAY = new Date().toISOString().slice(0, 10);
@@ -133,6 +130,12 @@ const photoGallery = PHOTOS.length
     ].join('\n')
   : '    <p class="brand-gallery-intro">Photos are on their way.</p>';
 
+// The Socials page must link to every profile that the page data (sameAs) and llms.txt name.
+const socialsPage = read('pages/socials.html');
+for (const [name, link] of profiles) {
+  if (!socialsPage.includes(`href="${link}"`)) throw new Error(`pages/socials.html has no link to ${name} (${link}), which _build/routes.js lists as a profile`);
+}
+
 // Small bits of site text (_build/data/site.json), editable from the admin page. All escaped.
 const SITE = JSON.parse(read('_build/data/site.json'));
 for (const f of ['homeTagline', 'personalBio']) {
@@ -149,7 +152,7 @@ const ANNOUNCEMENT = String(SITE.announcement || '').trim()
 
 // Cloudflare Web Analytics (analyticsToken in js/site-config.js): cookieless visit counts, so no
 // cookie banner. Without a token there's no beacon and the CSP allows nothing extra.
-const ANALYTICS_TOKEN = String(sandbox.window.SITE_CONFIG.analyticsToken || '').trim();
+const ANALYTICS_TOKEN = String(browser.SITE_CONFIG.analyticsToken || '').trim();
 if (ANALYTICS_TOKEN && !/^[A-Za-z0-9]{16,64}$/.test(ANALYTICS_TOKEN)) {
   throw new Error('js/site-config.js: analyticsToken should be the token from the Cloudflare Web Analytics snippet');
 }
@@ -184,7 +187,7 @@ function pageDate(pagePath, parts) {
 // Every page describes itself the same way in JSON-LD: a WebPage (or the page type its route
 // gives) that belongs to the site and says when it last changed.
 const WEBSITE_REF = { '@type': 'WebSite', '@id': site.origin + '/#website', name: 'Reach Akash', url: site.origin + '/' };
-const isPageNode = (o) => /^(Web|Profile|Collection|Contact)Page$|^ImageGallery$/.test(o['@type']);
+const isPageNode = (o) => /^(Web|Profile|Collection|Contact)Page$|^ImageGallery$|Article$/.test(o['@type']);
 function withPageNode(ld, route, modified) {
   const base = { url: site.origin + route.path, isPartOf: WEBSITE_REF, dateModified: modified };
   const i = ld.findIndex(isPageNode);

@@ -43,11 +43,10 @@
     })();
   </script>
 
-  <title>Akash Reddy | About &amp; Personal</title>
-  <meta name="description" content="Akash Reddy, software developer from Hyderabad, now in Metro Detroit. Techie, AI enthusiast, travel and adventure seeker.">
+  <title>About Akash Reddy | Software Developer in Detroit</title>
+  <meta name="description" content="Akash Reddy is a software developer from Hyderabad, now in Metro Detroit: AI Software Developer at Molex and founder of Reach Akash. Bio and quick facts.">
   <link rel="canonical" href="https://reachakash.com/personal">
   <meta name="author" content="Akash Reddy">
-  <meta name="ai-content-declaration" content="human-authored">
   <meta name="msvalidate.01" content="48A040F99576BC4B4336A7BB59188A10">
   <meta name="msvalidate.01" content="014F0BDE0F3F0D8CAA75505D34C79C1C">
 
@@ -62,6 +61,7 @@
   <meta property="profile:first_name" content="Akash">
   <meta property="profile:last_name"  content="Reddy">
   <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:creator"     content="@AkReddy48">
   <meta name="twitter:title"       content="About Akash Reddy">
   <meta name="twitter:description" content="Software developer from Hyderabad, now in Metro Detroit. Builds manufacturing test software and uses AI to get from idea to working tool fast.">
   <meta name="twitter:image"       content="https://reachakash.com/images/brand/og-image.png">
@@ -78,7 +78,6 @@
   <link rel="manifest" href="/site.webmanifest">
   <meta name="theme-color" content="#000000">
 
-  <link rel="preconnect" href="https://cdn.simpleicons.org">
   <link rel="alternate" type="text/markdown" href="/llms.txt" title="Reach Akash LLM Context">
 
   <!-- Montserrat is served from /fonts (rules at the top of styles.css); fetch the main file early -->
@@ -90,7 +89,7 @@
     {
       "@context": "https://schema.org",
       "@type": "ProfilePage",
-      "url": "https://reachakash.com/personal",
+      "@id": "https://reachakash.com/personal#webpage",
       "name": "About Akash Reddy",
       "mainEntity": {
         "@id": "https://reachakash.com/#person"
@@ -109,19 +108,21 @@
         },
         "representativeOfPage": true
       },
+      "url": "https://reachakash.com/personal",
       "isPartOf": {
         "@type": "WebSite",
         "@id": "https://reachakash.com/#website",
         "name": "Reach Akash",
         "url": "https://reachakash.com/"
       },
-      "dateModified": "2026-11-08"
+      "dateModified": "2026-11-14"
     },
     {
       "@context": "https://schema.org",
       "@type": "Person",
       "@id": "https://reachakash.com/#person",
       "name": "Akash Reddy",
+      "url": "https://reachakash.com",
       "givenName": "Akash",
       "familyName": "Reddy",
       "alternateName": [
@@ -134,7 +135,9 @@
         "Reach Akash",
         "Reddy"
       ],
-      "url": "https://reachakash.com",
+      "disambiguatingDescription": "AI software developer in Detroit, Michigan, and founder of Reach Akash (reachakash.com)",
+      "description": "Akash Reddy (full name Vurenuka Akash Reddy, also known as V Akash Reddy and Reach Akash) is an AI software developer at Molex based in Detroit, MI, USA, originally from Hyderabad, India. Through Reach Akash he offers custom software, custom AI agents, AI coaching and website development.",
+      "mainEntityOfPage": "https://reachakash.com/personal",
       "image": [
         {
           "@type": "ImageObject",
@@ -176,11 +179,21 @@
           }
         }
       ],
+      "email": "mail@reachakash.com",
       "jobTitle": "AI Software Developer",
       "worksFor": {
         "@type": "Organization",
         "name": "Molex",
         "url": "https://www.molex.com"
+      },
+      "hasOccupation": {
+        "@type": "Occupation",
+        "name": "AI Software Developer",
+        "occupationLocation": {
+          "@type": "City",
+          "name": "Detroit, MI"
+        },
+        "skills": "SQL Server, T-SQL, database architecture, C#, .NET Framework, LabVIEW, .NET/LabVIEW interop, industrial test automation, data pipeline design, PostgreSQL, SQL, JavaScript, Git, GitLab"
       },
       "alumniOf": [
         {
@@ -194,7 +207,45 @@
         },
         {
           "@type": "CollegeOrUniversity",
-          "name": "Malla Reddy College of Engineering and Technology"
+          "name": "Malla Reddy Institute of Technology"
+        }
+      ],
+      "hasCredential": [
+        {
+          "@type": "EducationalOccupationalCredential",
+          "name": "M.S. in Engineering Management",
+          "credentialCategory": "degree",
+          "recognizedBy": {
+            "@type": "CollegeOrUniversity",
+            "name": "Arkansas State University"
+          }
+        },
+        {
+          "@type": "EducationalOccupationalCredential",
+          "name": "M.B.A. in Digital Entrepreneurship",
+          "credentialCategory": "degree",
+          "recognizedBy": {
+            "@type": "CollegeOrUniversity",
+            "name": "Amity University"
+          }
+        },
+        {
+          "@type": "EducationalOccupationalCredential",
+          "name": "B.Tech in Information Technology",
+          "credentialCategory": "degree",
+          "recognizedBy": {
+            "@type": "CollegeOrUniversity",
+            "name": "Malla Reddy Institute of Technology"
+          }
+        },
+        {
+          "@type": "EducationalOccupationalCredential",
+          "name": "AWS Certified Cloud Practitioner",
+          "credentialCategory": "certification",
+          "recognizedBy": {
+            "@type": "Organization",
+            "name": "Amazon Web Services"
+          }
         }
       ],
       "address": {
@@ -228,9 +279,11 @@
         "Travel"
       ],
       "brand": {
-        "@id": "https://reachakash.com/#brand"
-      },
-      "description": "Akash Reddy (full name Vurenuka Akash Reddy, also known as V Akash Reddy and Reach Akash) is an AI software developer at Molex based in Detroit, MI, USA, originally from Hyderabad, India. Through Reach Akash he offers custom software, custom AI agents, AI coaching and website development."
+        "@type": "Organization",
+        "@id": "https://reachakash.com/#brand",
+        "name": "Reach Akash",
+        "url": "https://reachakash.com/"
+      }
     },
     {
       "@context": "https://schema.org",
@@ -245,7 +298,7 @@
         {
           "@type": "ListItem",
           "position": 2,
-          "name": "About & Personal",
+          "name": "About",
           "item": "https://reachakash.com/personal"
         }
       ]
@@ -368,7 +421,7 @@
 
       <div class="personal-cta" style="margin-top: 24px;">
         <a class="btn btn-primary" href="/contact">get in touch</a>
-        <a href="https://www.instagram.com/ak.r48" target="_blank" rel="noopener" class="btn btn-outline">@ak.r48</a>
+        <a href="https://www.instagram.com/ak.r48" target="_blank" rel="me noopener" class="btn btn-outline">@ak.r48</a>
       </div>
 
     </div>
@@ -379,6 +432,23 @@
     </figure>
 
   </div>
+
+  <!-- Quick facts, for people and for search engines: the same ones the page data (JSON-LD) carries -->
+  <h2 class="facts-title">At a glance</h2>
+  <dl class="facts">
+    <div><dt>Based in</dt><dd>Metro Detroit, Michigan</dd></div>
+    <div><dt>From</dt><dd>Hyderabad, India</dd></div>
+    <div><dt>Day job</dt><dd>AI Software Developer at Molex. <a href="/professional">Work history</a></dd></div>
+    <div><dt>Studio</dt><dd><a href="/services">Reach Akash</a>: custom software, AI agents, AI coaching and websites</dd></div>
+    <div><dt>Studied</dt><dd>M.S. in Engineering Management, Arkansas State University</dd></div>
+    <div><dt>Online</dt><dd>
+      <a href="https://www.linkedin.com/in/akashreddyv/" rel="me noopener" target="_blank">LinkedIn</a>,
+      <a href="https://github.com/akashreddyv" rel="me noopener" target="_blank">GitHub</a>,
+      <a href="https://www.instagram.com/ak.r48" rel="me noopener" target="_blank">Instagram</a>,
+      <a href="https://x.com/AkReddy48" rel="me noopener" target="_blank">X</a>,
+      <a href="https://www.youtube.com/@ak.r48" rel="me noopener" target="_blank">YouTube</a>
+    </dd></div>
+  </dl>
 
   <div class="about-cards">
     <a class="home-card" href="/professional">
@@ -421,6 +491,24 @@
       <li><a href="/suggestions">Suggestions</a></li>
       <li><a href="/privacy">Privacy</a></li>
     </ul>
+    <!-- Every page links to each service and to Akash's profiles (rel="me": they are his own) -->
+    <div class="footer-more">
+      <ul class="footer-links" aria-label="Services">
+        <li class="footer-label" aria-hidden="true">Services</li>
+        <li><a href="/services/custom-software">Custom software</a></li>
+        <li><a href="/services/website-development">Website development</a></li>
+        <li><a href="/services/ai-agents">AI agents</a></li>
+        <li><a href="/services/ai-coaching">AI coaching</a></li>
+      </ul>
+      <ul class="footer-links" aria-label="Akash Reddy on social media">
+        <li class="footer-label" aria-hidden="true">Find me</li>
+        <li><a href="https://www.linkedin.com/in/akashreddyv/" rel="me noopener" target="_blank">LinkedIn</a></li>
+        <li><a href="https://github.com/akashreddyv" rel="me noopener" target="_blank">GitHub</a></li>
+        <li><a href="https://www.instagram.com/ak.r48" rel="me noopener" target="_blank">Instagram</a></li>
+        <li><a href="https://x.com/AkReddy48" rel="me noopener" target="_blank">X</a></li>
+        <li><a href="https://www.youtube.com/@ak.r48" rel="me noopener" target="_blank">YouTube</a></li>
+      </ul>
+    </div>
     <p class="footer-text">
       &copy; 2026 Reach Akash &middot; Akash Reddy
       <span class="footer-term-wrap">&middot; <span id="footer-term" role="button" tabindex="0" title="Open the terminal (or press ~)">&gt;_ terminal</span></span>

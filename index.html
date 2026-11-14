@@ -47,7 +47,6 @@
   <meta name="description" content="Akash Reddy, AI software and website developer in Detroit, MI: custom software, AI agents, AI coaching and websites. Projects, work history and contact.">
   <link rel="canonical" href="https://reachakash.com/">
   <meta name="author" content="Akash Reddy">
-  <meta name="ai-content-declaration" content="human-authored">
   <meta name="msvalidate.01" content="48A040F99576BC4B4336A7BB59188A10">
   <meta name="msvalidate.01" content="014F0BDE0F3F0D8CAA75505D34C79C1C">
 
@@ -62,6 +61,7 @@
   <meta property="profile:first_name" content="Akash">
   <meta property="profile:last_name"  content="Reddy">
   <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:creator"     content="@AkReddy48">
   <meta name="twitter:title"       content="Akash Reddy · Reach Akash">
   <meta name="twitter:description" content="reachAkash.com">
   <meta name="twitter:image"       content="https://reachakash.com/images/brand/og-image.png">
@@ -78,7 +78,6 @@
   <link rel="manifest" href="/site.webmanifest">
   <meta name="theme-color" content="#000000">
 
-  <link rel="preconnect" href="https://cdn.simpleicons.org">
   <link rel="preload" as="image" href="/images/home/akash-reddy-professional.jpg" imagesrcset="/images/home/akash-reddy-professional-800.webp 800w, /images/home/akash-reddy-professional.jpg 1200w" imagesizes="(max-width: 622px) 90vw, 560px" fetchpriority="high">
   <script>
     (function () { var p = new URLSearchParams(location.search).get('p');
@@ -99,20 +98,34 @@
       "url": "https://reachakash.com/",
       "name": "Reach Akash",
       "alternateName": [
+        "reachAkash",
+        "reachAkash.com",
         "Akash Reddy",
         "Reddy Akash",
         "Reach Akash Reddy"
       ],
+      "inLanguage": "en",
       "publisher": {
-        "@id": "https://reachakash.com/#brand"
+        "@type": "Organization",
+        "@id": "https://reachakash.com/#brand",
+        "name": "Reach Akash",
+        "url": "https://reachakash.com/"
+      },
+      "about": {
+        "@type": "Person",
+        "@id": "https://reachakash.com/#person",
+        "name": "Akash Reddy",
+        "url": "https://reachakash.com"
       }
     },
     {
       "@context": "https://schema.org",
       "@type": "WebPage",
       "@id": "https://reachakash.com/#webpage",
-      "url": "https://reachakash.com/",
       "name": "Akash Reddy | AI Software & Website Developer, Detroit",
+      "about": {
+        "@id": "https://reachakash.com/#person"
+      },
       "primaryImageOfPage": {
         "@type": "ImageObject",
         "contentUrl": "https://reachakash.com/images/home/akash-reddy-professional.jpg",
@@ -127,24 +140,27 @@
         },
         "representativeOfPage": true
       },
+      "url": "https://reachakash.com/",
       "isPartOf": {
         "@type": "WebSite",
         "@id": "https://reachakash.com/#website",
         "name": "Reach Akash",
         "url": "https://reachakash.com/"
       },
-      "dateModified": "2026-11-08"
+      "dateModified": "2026-11-14"
     },
     {
       "@context": "https://schema.org",
       "@type": "Organization",
       "@id": "https://reachakash.com/#brand",
       "name": "Reach Akash",
+      "url": "https://reachakash.com/",
       "alternateName": [
+        "reachAkash",
+        "ReachAkash",
         "reachAkash.com",
         "Reach Akash by Akash Reddy"
       ],
-      "url": "https://reachakash.com/",
       "logo": {
         "@type": "ImageObject",
         "url": "https://reachakash.com/images/brand/reachakash-symbol.png",
@@ -152,6 +168,13 @@
         "height": 1681
       },
       "description": "Reach Akash is the studio of Akash Reddy in Detroit, Michigan: custom software, custom AI agents, AI coaching and website development.",
+      "email": "mail@reachakash.com",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "email": "mail@reachakash.com",
+        "url": "https://reachakash.com/contact"
+      },
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Detroit",
@@ -173,7 +196,52 @@
         "Website Development"
       ],
       "founder": {
-        "@id": "https://reachakash.com/#person"
+        "@type": "Person",
+        "@id": "https://reachakash.com/#person",
+        "name": "Akash Reddy",
+        "url": "https://reachakash.com"
+      },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Services",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "@id": "https://reachakash.com/services/custom-software#service",
+              "name": "Custom software",
+              "url": "https://reachakash.com/services/custom-software"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "@id": "https://reachakash.com/services/website-development#service",
+              "name": "Website development",
+              "url": "https://reachakash.com/services/website-development"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "@id": "https://reachakash.com/services/ai-agents#service",
+              "name": "Custom AI agents",
+              "url": "https://reachakash.com/services/ai-agents"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "@id": "https://reachakash.com/services/ai-coaching#service",
+              "name": "AI coaching",
+              "url": "https://reachakash.com/services/ai-coaching"
+            }
+          }
+        ]
       }
     },
     {
@@ -181,6 +249,7 @@
       "@type": "Person",
       "@id": "https://reachakash.com/#person",
       "name": "Akash Reddy",
+      "url": "https://reachakash.com",
       "givenName": "Akash",
       "familyName": "Reddy",
       "alternateName": [
@@ -193,7 +262,9 @@
         "Reach Akash",
         "Reddy"
       ],
-      "url": "https://reachakash.com",
+      "disambiguatingDescription": "AI software developer in Detroit, Michigan, and founder of Reach Akash (reachakash.com)",
+      "description": "Akash Reddy (full name Vurenuka Akash Reddy, also known as V Akash Reddy and Reach Akash) is an AI software developer at Molex based in Detroit, MI, USA, originally from Hyderabad, India. Through Reach Akash he offers custom software, custom AI agents, AI coaching and website development.",
+      "mainEntityOfPage": "https://reachakash.com/personal",
       "image": [
         {
           "@type": "ImageObject",
@@ -235,11 +306,21 @@
           }
         }
       ],
+      "email": "mail@reachakash.com",
       "jobTitle": "AI Software Developer",
       "worksFor": {
         "@type": "Organization",
         "name": "Molex",
         "url": "https://www.molex.com"
+      },
+      "hasOccupation": {
+        "@type": "Occupation",
+        "name": "AI Software Developer",
+        "occupationLocation": {
+          "@type": "City",
+          "name": "Detroit, MI"
+        },
+        "skills": "SQL Server, T-SQL, database architecture, C#, .NET Framework, LabVIEW, .NET/LabVIEW interop, industrial test automation, data pipeline design, PostgreSQL, SQL, JavaScript, Git, GitLab"
       },
       "alumniOf": [
         {
@@ -253,7 +334,45 @@
         },
         {
           "@type": "CollegeOrUniversity",
-          "name": "Malla Reddy College of Engineering and Technology"
+          "name": "Malla Reddy Institute of Technology"
+        }
+      ],
+      "hasCredential": [
+        {
+          "@type": "EducationalOccupationalCredential",
+          "name": "M.S. in Engineering Management",
+          "credentialCategory": "degree",
+          "recognizedBy": {
+            "@type": "CollegeOrUniversity",
+            "name": "Arkansas State University"
+          }
+        },
+        {
+          "@type": "EducationalOccupationalCredential",
+          "name": "M.B.A. in Digital Entrepreneurship",
+          "credentialCategory": "degree",
+          "recognizedBy": {
+            "@type": "CollegeOrUniversity",
+            "name": "Amity University"
+          }
+        },
+        {
+          "@type": "EducationalOccupationalCredential",
+          "name": "B.Tech in Information Technology",
+          "credentialCategory": "degree",
+          "recognizedBy": {
+            "@type": "CollegeOrUniversity",
+            "name": "Malla Reddy Institute of Technology"
+          }
+        },
+        {
+          "@type": "EducationalOccupationalCredential",
+          "name": "AWS Certified Cloud Practitioner",
+          "credentialCategory": "certification",
+          "recognizedBy": {
+            "@type": "Organization",
+            "name": "Amazon Web Services"
+          }
         }
       ],
       "address": {
@@ -287,9 +406,11 @@
         "Travel"
       ],
       "brand": {
-        "@id": "https://reachakash.com/#brand"
-      },
-      "description": "Akash Reddy (full name Vurenuka Akash Reddy, also known as V Akash Reddy and Reach Akash) is an AI software developer at Molex based in Detroit, MI, USA, originally from Hyderabad, India. Through Reach Akash he offers custom software, custom AI agents, AI coaching and website development."
+        "@type": "Organization",
+        "@id": "https://reachakash.com/#brand",
+        "name": "Reach Akash",
+        "url": "https://reachakash.com/"
+      }
     }
   ]
   </script>
@@ -442,10 +563,23 @@
 
       <p class="home-tagline">Akash Reddy, AI Software Developer at Molex, Detroit MI</p>
 
+      <!-- What I do, in one sentence, with a link to each service's page -->
+      <p class="home-intro">I build <a href="/services/custom-software">custom software</a>, <a href="/services/ai-agents">AI agents</a> and <a href="/services/website-development">websites</a>, and coach people and teams on <a href="/services/ai-coaching">using AI</a>.</p>
+
       <div class="home-cta">
         <a class="btn btn-primary" href="/services">Work with me</a>
         <a class="btn btn-outline" href="/professional">My work</a>
       </div>
+
+      <!-- My own profiles (rel="me" says so to search engines); all of them are on /socials -->
+      <p class="home-social">
+        <a href="https://www.linkedin.com/in/akashreddyv/" rel="me noopener" target="_blank">LinkedIn</a>
+        <a href="https://github.com/akashreddyv" rel="me noopener" target="_blank">GitHub</a>
+        <a href="https://www.instagram.com/ak.r48" rel="me noopener" target="_blank">Instagram</a>
+        <a href="https://x.com/AkReddy48" rel="me noopener" target="_blank">X</a>
+        <a href="https://www.youtube.com/@ak.r48" rel="me noopener" target="_blank">YouTube</a>
+        <a href="/socials">All socials</a>
+      </p>
 
       <div class="home-cards">
         <a class="home-card" href="/personal">
@@ -528,6 +662,24 @@
       <li><a href="/suggestions">Suggestions</a></li>
       <li><a href="/privacy">Privacy</a></li>
     </ul>
+    <!-- Every page links to each service and to Akash's profiles (rel="me": they are his own) -->
+    <div class="footer-more">
+      <ul class="footer-links" aria-label="Services">
+        <li class="footer-label" aria-hidden="true">Services</li>
+        <li><a href="/services/custom-software">Custom software</a></li>
+        <li><a href="/services/website-development">Website development</a></li>
+        <li><a href="/services/ai-agents">AI agents</a></li>
+        <li><a href="/services/ai-coaching">AI coaching</a></li>
+      </ul>
+      <ul class="footer-links" aria-label="Akash Reddy on social media">
+        <li class="footer-label" aria-hidden="true">Find me</li>
+        <li><a href="https://www.linkedin.com/in/akashreddyv/" rel="me noopener" target="_blank">LinkedIn</a></li>
+        <li><a href="https://github.com/akashreddyv" rel="me noopener" target="_blank">GitHub</a></li>
+        <li><a href="https://www.instagram.com/ak.r48" rel="me noopener" target="_blank">Instagram</a></li>
+        <li><a href="https://x.com/AkReddy48" rel="me noopener" target="_blank">X</a></li>
+        <li><a href="https://www.youtube.com/@ak.r48" rel="me noopener" target="_blank">YouTube</a></li>
+      </ul>
+    </div>
     <p class="footer-text">
       &copy; 2026 Reach Akash &middot; Akash Reddy
       <span class="footer-term-wrap">&middot; <span id="footer-term" role="button" tabindex="0" title="Open the terminal (or press ~)">&gt;_ terminal</span></span>

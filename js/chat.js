@@ -39,7 +39,7 @@
     about: `Akash Reddy is a software developer from Hyderabad, India, now in Metro Detroit. He's an AI Software Developer at Molex, building R&D and manufacturing test software, and Reach Akash is his own studio for software, AI agents and websites. ${a('/personal', 'More about Akash')}`,
     origin: `Akash grew up in Hyderabad, India, and now lives in Metro Detroit, Michigan. ${a('/personal', 'His story')}`,
     location: `Akash is based in Metro Detroit, Michigan. ${a('/contact', 'Get in touch')}`,
-    education: `Akash has a master's in Engineering Management from Arkansas State University, and also studied at Amity University and Malla Reddy College of Engineering and Technology. ${a('/professional', 'His background')}`,
+    education: `Akash has a master's in Engineering Management from Arkansas State University, and also studied at Amity University and Malla Reddy Institute of Technology. ${a('/professional', 'His background')}`,
     work: `Akash is an AI Software Developer at Molex. Before that he built software at Zoetis, Raptor Consultants Group, Tata Consultancy Services and Persistent Systems. ${a('/professional', 'The full story')}`,
     fun: 'Try the terminal: tap <b>Open the terminal</b> at the bottom of the page (or press <code>~</code>), then type <code>play</code>. Akash hid a little game in there.',
     gallery: `Akash's photos and the reachAkash logos are in the ${a('/gallery', 'gallery')}, and you can spin the logo in 3D ${a('/projects/logodesigns?logo=reachakash', 'here')}.`,

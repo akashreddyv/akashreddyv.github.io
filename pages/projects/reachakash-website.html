@@ -1,0 +1,83 @@
+<!-- pages/projects/reachakash-website.html — how this site is built. Every claim here is something the
+     site really does: when the site changes, change this page too. Body text reuses the privacy
+     page's text styles (.legal). -->
+<div class="page-inner">
+
+  <div class="page-header">
+    <p class="page-eyebrow"><a href="/projects">Projects</a></p>
+    <h1 class="page-title">How this site <em>is built</em></h1>
+    <p class="page-subtitle">reachakash.com is my own website: fast pages with no framework, an admin page I can use from my phone, and forms that reach my inbox without a server to look after.</p>
+  </div>
+
+  <div class="legal">
+
+    <section class="legal-section">
+      <h2>Fast, simple pages</h2>
+      <ul>
+        <li>Every page is plain HTML, CSS and a little JavaScript, generated from one shared template by a small build script. There's no framework and nothing to load before the page shows.</li>
+        <li>The font, icons and images are served from the site itself, with a smaller home photo for phones.</li>
+        <li>Pages can be read with JavaScript turned off, there are light and dark themes, and the reduced-motion setting is respected.</li>
+      </ul>
+    </section>
+
+    <section class="legal-section">
+      <h2>Updating it from a phone</h2>
+      <ul>
+        <li>An admin page, built on the open-source Decap CMS, lets me add photos, referral codes and text without touching code.</li>
+        <li>Photos are shrunk and stripped of camera and location data on the phone before they upload.</li>
+        <li>Each save starts an automatic build on GitHub Actions that resizes new photos, rebuilds the pages and publishes them a couple of minutes later.</li>
+      </ul>
+    </section>
+
+    <section class="legal-section">
+      <h2>Getting in touch, without a server</h2>
+      <ul>
+        <li>The <a href="/contact">contact form</a>, the <a href="/suggestions">suggestion box</a> and the chat box all email me through one small Cloudflare Worker.</li>
+        <li>The chat box answers common questions from answers I wrote, with no AI model behind it, so it can't make things up. Anything else it passes to me.</li>
+        <li>Hidden trap fields catch spam bots, so there are no puzzles for people to solve.</li>
+      </ul>
+    </section>
+
+    <section class="legal-section">
+      <h2>Built to be found</h2>
+      <ul>
+        <li>Every page has its own title and description, structured data that search engines read, and a place in a sitemap with dates and images.</li>
+        <li>Each referral offer gets its own page, generated from one data file, and each service has its own page too.</li>
+        <li>When a page changes, the site tells Bing and other search engines right away, and a plain-text summary is kept up to date for AI tools.</li>
+      </ul>
+    </section>
+
+    <section class="legal-section">
+      <h2>Private by default</h2>
+      <p>There are no tracking cookies and no cookie banner. Visits are counted with a cookieless counter that only shows me totals. The details are on the <a href="/privacy">privacy page</a>.</p>
+    </section>
+
+    <section class="legal-section">
+      <h2>A few extras</h2>
+      <p>There's a terminal you can open on any page (press <code>~</code>), with a small game hidden inside, and a <a href="/projects/logodesigns">3D logo viewer</a> built with Three.js.</p>
+    </section>
+
+    <section class="legal-section">
+      <h2>What it's made with</h2>
+      <div class="tags">
+        <span class="tag">HTML</span>
+        <span class="tag">CSS</span>
+        <span class="tag">JavaScript</span>
+        <span class="tag">Node.js build script</span>
+        <span class="tag">GitHub Pages</span>
+        <span class="tag">GitHub Actions</span>
+        <span class="tag">Cloudflare Workers</span>
+        <span class="tag">Decap CMS</span>
+        <span class="tag">Three.js</span>
+      </div>
+      <p style="margin-top:16px;">The code is public on <a href="https://github.com/akashreddyv/akashreddyv.github.io" target="_blank" rel="noopener">GitHub</a>.</p>
+    </section>
+
+  </div>
+
+  <div class="stub-actions">
+    <a class="btn btn-primary" href="/contact?topic=website">Ask about a website</a>
+    <a class="btn btn-outline" href="/services/website-development">Website development</a>
+  </div>
+
+</div>

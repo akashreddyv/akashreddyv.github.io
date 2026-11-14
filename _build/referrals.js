@@ -178,6 +178,9 @@ const DISCLOSURE = 'I earn a referral reward when you sign up through my links o
 
 const faqItem = (q, a) => ['    <div class="faq-item">', `      <h3>${q}</h3>`, `      <p>${a}</p>`, '    </div>'].join('\n');
 
+// The same Person every page names (PERSON_REF in routes.js).
+const author = (origin) => ({ '@type': 'Person', '@id': origin + '/#person', name: 'Akash Reddy', url: origin });
+
 function crumbs(origin, items) {
   return {
     '@context': 'https://schema.org',
@@ -295,12 +298,10 @@ function offerPage(e, loaded, origin) {
         '@context': 'https://schema.org',
         '@type': 'WebPage',
         '@id': origin + path + '#webpage',
-        url: origin + path,
         name: `${e.name} referral ${k}`,
         description,
-        isPartOf: { '@id': origin + '/#website' },
         about: { '@type': 'Thing', name: e.name },
-        author: { '@id': origin + '/#person' },
+        author: author(origin),
         dateModified: e.lastVerified,
         inLanguage: 'en'
       },
@@ -398,11 +399,9 @@ function categoryPage(g, loaded, origin) {
         '@context': 'https://schema.org',
         '@type': 'CollectionPage',
         '@id': origin + path + '#webpage',
-        url: origin + path,
         name: `${g.label} referral codes`,
         description,
-        isPartOf: { '@id': origin + '/#website' },
-        author: { '@id': origin + '/#person' },
+        author: author(origin),
         dateModified: latest,
         inLanguage: 'en',
         mainEntity: itemList(g.entries, origin)

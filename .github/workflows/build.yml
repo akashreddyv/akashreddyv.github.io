@@ -5,6 +5,8 @@
 #   3. build.js:          regenerate every page, the sitemap, llms.txt and referrals.json
 # If anything changed, the generated files are committed back to main and GitHub Pages is asked to
 # publish. Pushes made with GITHUB_TOKEN don't start workflows, so the commit-back can't loop.
+#   4. indexnow.js:       once the new pages are live, tell Bing and the other IndexNow search
+#                         engines which pages changed (sitemap dates, compared with before the push)
 name: Build site
 
 on:
@@ -66,7 +68,7 @@ jobs:
             git fetch --quiet origin main
             if [ "$(git rev-parse origin/main)" != "$(git rev-parse HEAD~1)" ]; then
               echo "main moved on while this ran; the next run rebuilds the site."
-              echo "pushed=false" >> "$GITHUB_OUTPUT"
+              echo "pushed=superseded" >> "$GITHUB_OUTPUT"
               exit 0
             fi
             exit 1
@@ -78,3 +80,20 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh api -X POST "repos/${{ github.repository }}/pages/builds" || echo "Pages will pick the commit up on its own."
+
+      # Bing's index also feeds ChatGPT search, Copilot and DuckDuckGo. Wait until the live site
+      # serves this build's sitemap, so nobody is sent to pages that haven't been published yet.
+      # Never fails the run: the sitemap alone still gets every change found, just more slowly.
+      - name: Tell search engines what changed
+        if: github.event_name == 'push' && steps.commit.outputs.pushed != 'superseded'
+        run: |
+          before="${{ github.event.before }}"
+          git fetch --quiet --depth=1 origin "$before" || { echo "Can't see the version before this push; skipping."; exit 0; }
+          git show "$before:sitemap.xml" > "$RUNNER_TEMP/sitemap-before.xml" || exit 0
+          live=no
+          for i in $(seq 1 24); do
+            if curl -fsS "https://reachakash.com/sitemap.xml?nc=$RANDOM" | cmp -s - sitemap.xml; then live=yes; break; fi
+            sleep 10
+          done
+          if [ "$live" != yes ]; then echo "The new pages aren't live yet; skipping."; exit 0; fi
+          node _build/indexnow.js --changed-since "$RUNNER_TEMP/sitemap-before.xml" || echo "The ping didn't go through."
