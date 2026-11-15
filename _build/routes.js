@@ -310,6 +310,8 @@ const routes = [
     llms: 'About Akash Reddy: bio, photo and quick facts. Software developer from Hyderabad, now in Metro Detroit; AI Software Developer at Molex and founder of Reach Akash; techie, AI enthusiast, travel and adventure seeker. Links to his professional history, projects and social profiles.'
   },
   { slug: 'about', path: '/about', out: 'about.html', redirectTo: '/personal' },
+  // The sample sites live in /samples; the folder itself has no page, so send it to their cards.
+  { slug: 'samples', path: '/samples', out: 'samples.html', redirectTo: '/projects' },
 
   {
     slug: 'professional', path: '/professional', out: 'professional.html', source: 'pages/professional.html', nav: 'professional', navGroup: 'about',
@@ -336,10 +338,10 @@ const routes = [
   {
     slug: 'projects', path: '/projects', out: 'projects.html', source: 'pages/projects.html', nav: 'projects',
     title: 'Projects by Akash Reddy | Websites, Software & 3D',
-    description: 'Software projects by Akash Reddy: this website, generated from one template with vanilla JS, a 3D logo viewer and more.',
+    description: 'Projects by Akash Reddy: this website, two sample small-business websites (a pizza shop and a heating company) and a 3D logo viewer.',
     ogType: 'website',
     ogTitle: 'Akash Reddy, Software Projects and Portfolio',
-    ogDesc: 'Software projects by Akash Reddy: personal website, 3D logo viewer built with Three.js, and more. HTML, CSS, JavaScript, and C# / .NET.',
+    ogDesc: 'Projects by Akash Reddy: his own website, two sample small-business websites and a 3D logo viewer built with Three.js.',
     jsonld: [
       {
         '@context': 'https://schema.org',
@@ -362,13 +364,28 @@ const routes = [
             description: '3D interactive logo viewer built with Three.js: the reachAkash mark and a crystal variant, with a play button, front/back/top/bottom views, and real-time material controls.',
             url: url('/projects/logodesigns'),
             creator: PERSON_REF
+          },
+          // The two sample sites (standalone pages in /samples, marked noindex). Always say they are samples.
+          {
+            '@type': 'CreativeWork',
+            name: 'Sample pizza shop website (Rivet Pizza Co., a made-up business)',
+            description: 'A sample one-page restaurant website for a made-up pizza shop: the menu, opening hours that mark today, a map, and call, directions and order buttons. Built to show what a restaurant website can be.',
+            url: url('/samples/pizza-shop'),
+            creator: PERSON_REF
+          },
+          {
+            '@type': 'CreativeWork',
+            name: 'Sample heating and cooling website (Hearth & Frost, a made-up business)',
+            description: 'A sample one-page website for a made-up home-service company: a call button, a quote request form, services, a service-area map and common questions. Built to show what a contractor website can be.',
+            url: url('/samples/heating-cooling'),
+            creator: PERSON_REF
           }
         ]
       },
       crumbs(['Projects', '/projects'])
     ],
     sitemap: { changefreq: 'monthly', priority: '0.8' },
-    llms: 'Software portfolio, including personal website reachakash.com (HTML/CSS/JS, GitHub Pages) and a 3D interactive logo viewer (Three.js, SVG).'
+    llms: 'Software portfolio, including personal website reachakash.com (HTML/CSS/JS, GitHub Pages) and a 3D interactive logo viewer (Three.js, SVG). Also two sample websites for made-up businesses, built to show what a small-business site can be: a pizza shop (' + url('/samples/pizza-shop') + ') and a heating and cooling company (' + url('/samples/heating-cooling') + ').'
   },
   {
     // The write-up of this site. Keep it true: when the site changes, update pages/projects/reachakash-website.html.

@@ -31,7 +31,8 @@
     ],
     projects: [
       ['reachakash.com', 'This site: static pages built from one template by a small build script, vanilla JS, hosted on GitHub Pages.'],
-      ['Logo Designs',   'Interactive 3D logo viewer built with Three.js: the reachAkash mark and a crystal variant.']
+      ['Logo Designs',   'Interactive 3D logo viewer built with Three.js: the reachAkash mark and a crystal variant.'],
+      ['Sample sites',   'Two sites for made-up businesses, a pizza shop and a heating company, built to show what I can make for a real one.']
     ],
     socials: [
       ['LinkedIn',  'https://www.linkedin.com/in/akashreddyv/'],
@@ -50,7 +51,7 @@
     home: '/', services: '/services', projects: '/projects', referrals: '/referrals', socials: '/socials',
     gallery: '/gallery', personal: '/personal', professional: '/professional', contact: '/contact',
     logos: '/gallery#logos', merch: '/gallery#merch', suggestions: '/suggestions',
-    'logo-viewer': '/projects/logodesigns', privacy: '/privacy'
+    'logo-viewer': '/projects/logodesigns', samples: '/projects#samples', privacy: '/privacy'
   };
   const PAGE_NAMES = Object.keys(PAGES);
   // Old names `cd` still understands (About and Personal are one page now).
