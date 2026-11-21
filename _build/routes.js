@@ -85,6 +85,10 @@ const PROFILES = [
   ['Facebook', 'https://www.facebook.com/ak.r48']
 ];
 
+// Reach Akash's Google Business Profile (verified Nov 2026). The kgmid is Google's permanent ID for it;
+// the share.google link the profile hands out redirects to this same search.
+const GOOGLE_PROFILE = 'https://www.google.com/search?kgmid=/g/11z_h3rx5f';
+
 // Latest "checked" date across published referral entries, for the Referrals page's dateModified
 // and the month in its title. (sitemap.xml dates come from _build/data/page-dates.json.)
 const REFERRALS_UPDATED = require('./data/referrals.json').entries
@@ -185,6 +189,7 @@ const BRAND = {
   logo: { '@type': 'ImageObject', url: url('/images/brand/reachakash-symbol.png'), width: 2400, height: 1681 },
   description: 'Reach Akash is the studio of Akash Reddy in Detroit, Michigan: custom software, custom AI agents, AI coaching and website development.',
   email: EMAIL,
+  sameAs: [GOOGLE_PROFILE],
   contactPoint: { '@type': 'ContactPoint', contactType: 'customer service', email: EMAIL, url: url('/contact') },
   address: ADDRESS,
   areaServed: DETROIT,
@@ -642,6 +647,7 @@ const llms = {
     ['Contact', [
       `Email: ${EMAIL}`,
       'Contact form: https://reachakash.com/contact',
+      `Google Business Profile (Reach Akash, software company in Detroit): ${GOOGLE_PROFILE}`,
       'Every page also has a chat box that can pass a message to Akash by email'
     ]],
     ['Social Profiles', PROFILES.map(([name, link]) => `${name}: ${link}`)]
