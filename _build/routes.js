@@ -343,10 +343,10 @@ const routes = [
   {
     slug: 'projects', path: '/projects', out: 'projects.html', source: 'pages/projects.html', nav: 'projects',
     title: 'Projects by Akash Reddy | Websites, Software & 3D',
-    description: 'Projects by Akash Reddy: this website, sample websites for a pizza shop and a heating company, a sample test data dashboard and a 3D logo viewer.',
+    description: 'Projects by Akash Reddy: this website, a sample test data dashboard for a made-up factory and a 3D logo viewer built with Three.js.',
     ogType: 'website',
     ogTitle: 'Akash Reddy, Software Projects and Portfolio',
-    ogDesc: 'Projects by Akash Reddy: his own website, two sample small-business websites, a sample test data dashboard and a 3D logo viewer built with Three.js.',
+    ogDesc: 'Projects by Akash Reddy: his own website, a sample test data dashboard and a 3D logo viewer built with Three.js.',
     jsonld: [
       {
         '@context': 'https://schema.org',
@@ -370,21 +370,7 @@ const routes = [
             url: url('/projects/logodesigns'),
             creator: PERSON_REF
           },
-          // The samples (standalone pages in /samples, marked noindex). Always say they are samples.
-          {
-            '@type': 'CreativeWork',
-            name: 'Sample pizza shop website (Rivet Pizza Co., a made-up business)',
-            description: 'A sample one-page restaurant website for a made-up pizza shop: the menu, opening hours that mark today, a map, and call, directions and order buttons. Built to show what a restaurant website can be.',
-            url: url('/samples/pizza-shop'),
-            creator: PERSON_REF
-          },
-          {
-            '@type': 'CreativeWork',
-            name: 'Sample heating and cooling website (Hearth & Frost, a made-up business)',
-            description: 'A sample one-page website for a made-up home-service company: a call button, a quote request form, services, a service-area map and common questions. Built to show what a contractor website can be.',
-            url: url('/samples/heating-cooling'),
-            creator: PERSON_REF
-          },
+          // The sample (a standalone page in /samples, marked noindex). Always say it is a sample.
           {
             '@type': 'CreativeWork',
             name: 'Sample test results dashboard (Sample Factory, made-up data)',
@@ -397,7 +383,7 @@ const routes = [
       crumbs(['Projects', '/projects'])
     ],
     sitemap: { changefreq: 'monthly', priority: '0.8' },
-    llms: 'Software portfolio, including personal website reachakash.com (HTML/CSS/JS, GitHub Pages) and a 3D interactive logo viewer (Three.js, SVG). Also samples for made-up businesses, built to show what Akash can build: websites for a pizza shop (' + url('/samples/pizza-shop') + ') and a heating and cooling company (' + url('/samples/heating-cooling') + '), and a test results dashboard for a factory (' + url('/samples/test-dashboard') + ').'
+    llms: 'Software portfolio, including personal website reachakash.com (HTML/CSS/JS, GitHub Pages) and a 3D interactive logo viewer (Three.js, SVG). Also a sample custom software tool, built to show what Akash can build: a test results dashboard for a made-up factory (' + url('/samples/test-dashboard') + ').'
   },
   {
     // The write-up of this site. Keep it true: when the site changes, update pages/projects/reachakash-website.html.
