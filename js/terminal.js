@@ -32,7 +32,7 @@
     projects: [
       ['reachakash.com', 'This site: static pages built from one template by a small build script, vanilla JS, hosted on GitHub Pages.'],
       ['Logo Designs',   'Interactive 3D logo viewer built with Three.js: the reachAkash mark and a crystal variant.'],
-      ['Sample sites',   'Two sites for made-up businesses, a pizza shop and a heating company, built to show what I can make for a real one.']
+      ['Samples',        'Sites for a made-up pizza shop and heating company, and a test data dashboard for a made-up factory: what I can build for a real one.']
     ],
     socials: [
       ['LinkedIn',  'https://www.linkedin.com/in/akashreddyv/'],

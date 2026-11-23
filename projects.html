@@ -44,7 +44,7 @@
   </script>
 
   <title>Projects by Akash Reddy | Websites, Software &amp; 3D</title>
-  <meta name="description" content="Projects by Akash Reddy: this website, two sample small-business websites (a pizza shop and a heating company) and a 3D logo viewer.">
+  <meta name="description" content="Projects by Akash Reddy: this website, sample websites for a pizza shop and a heating company, a sample test data dashboard and a 3D logo viewer.">
   <link rel="canonical" href="https://reachakash.com/projects">
   <meta name="author" content="Akash Reddy">
   <meta name="msvalidate.01" content="48A040F99576BC4B4336A7BB59188A10">
@@ -55,13 +55,13 @@
   <meta property="og:type"      content="website">
   <meta property="og:url"       content="https://reachakash.com/projects">
   <meta property="og:title"     content="Akash Reddy, Software Projects and Portfolio">
-  <meta property="og:description" content="Projects by Akash Reddy: his own website, two sample small-business websites and a 3D logo viewer built with Three.js.">
+  <meta property="og:description" content="Projects by Akash Reddy: his own website, two sample small-business websites, a sample test data dashboard and a 3D logo viewer built with Three.js.">
   <meta property="og:image"     content="https://reachakash.com/images/brand/og-image.png">
   <meta property="og:image:alt" content="reachAkash.com — Reach Akash (Akash Reddy)">
   <meta name="twitter:card"        content="summary_large_image">
   <meta name="twitter:creator"     content="@AkReddy48">
   <meta name="twitter:title"       content="Akash Reddy, Software Projects and Portfolio">
-  <meta name="twitter:description" content="Projects by Akash Reddy: his own website, two sample small-business websites and a 3D logo viewer built with Three.js.">
+  <meta name="twitter:description" content="Projects by Akash Reddy: his own website, two sample small-business websites, a sample test data dashboard and a 3D logo viewer built with Three.js.">
   <meta name="twitter:image"       content="https://reachakash.com/images/brand/og-image.png">
 
   <!-- Search result thumbnail -->
@@ -144,6 +144,18 @@
             "name": "Akash Reddy",
             "url": "https://reachakash.com"
           }
+        },
+        {
+          "@type": "CreativeWork",
+          "name": "Sample test results dashboard (Sample Factory, made-up data)",
+          "description": "A sample custom software tool: a dashboard of production test results for a made-up factory, with first-pass yield by day, the most common failures, test stations and a searchable list of failed units with CSV export. Built to show what custom software can be.",
+          "url": "https://reachakash.com/samples/test-dashboard",
+          "creator": {
+            "@type": "Person",
+            "@id": "https://reachakash.com/#person",
+            "name": "Akash Reddy",
+            "url": "https://reachakash.com"
+          }
         }
       ],
       "url": "https://reachakash.com/projects",
@@ -153,7 +165,7 @@
         "name": "Reach Akash",
         "url": "https://reachakash.com/"
       },
-      "dateModified": "2026-11-15"
+      "dateModified": "2026-11-23"
     },
     {
       "@context": "https://schema.org",
@@ -271,7 +283,7 @@
   <div class="page-header">
     <p class="page-eyebrow">What I've Built</p>
     <h1 class="page-title">My <em>Projects</em></h1>
-    <p class="page-subtitle">A collection of software, tools, and experiments I've built, from full-stack web apps to 3D interactive experiences.</p>
+    <p class="page-subtitle">Software, websites and experiments I've built, including sample work made to show what I can build for you.</p>
   </div>
 
   <div class="grid-2">
@@ -309,10 +321,10 @@
 
   </div>
 
-  <!-- The sample sites are standalone pages in /samples (not generated). Their preview images come from
+  <!-- The samples are standalone pages in /samples (not generated). Their preview images come from
        the pages themselves; retake them when a sample's first screen changes. -->
-  <h2 class="skills-heading project-group" id="samples">Sample websites</h2>
-  <p class="project-group-note">Two sites for made-up businesses, built to show what I can make for a real one. Each is a single fast page, so try them on your phone too.</p>
+  <h2 class="skills-heading project-group" id="samples">Sample work</h2>
+  <p class="project-group-note">Two websites and a software tool for made-up businesses, built to show what I can make for a real one. Try them on your phone too.</p>
 
   <div class="grid-2">
 
@@ -344,11 +356,25 @@
       </div>
     </a>
 
+    <a class="project-card" href="/samples/test-dashboard" target="_blank" rel="noopener">
+      <img class="project-shot" src="/images/projects/sample-test-dashboard.webp" alt="The test results dashboard sample: yield numbers, a chart of first-pass yield by day and the most common failures" width="960" height="600" loading="lazy" decoding="async">
+      <span class="project-status status-wip">Sample</span>
+      <div class="project-title">Test results dashboard</div>
+      <div class="project-org">Sample software · Sample Factory and its data are made up</div>
+      <p class="project-desc">A dashboard for a factory's production test results: units tested, first-pass yield by day against a target, the most common failures, a table of every test station and a searchable list of failed units with a CSV export. The data is generated in the browser, and every filter updates every number.</p>
+      <div class="tags">
+        <span class="tag">JavaScript</span>
+        <span class="tag">SVG charts</span>
+        <span class="tag">Data</span>
+        <span class="tag">CSV</span>
+      </div>
+    </a>
+
   </div>
 
   <div class="stub-actions">
-    <a class="btn btn-primary" href="/contact?topic=website">Ask about a website</a>
-    <a class="btn btn-outline" href="/services/website-development">Website development</a>
+    <a class="btn btn-primary" href="/contact" data-cta="primary">Start a project</a>
+    <a class="btn btn-outline" href="/services">All services</a>
   </div>
 
 </div>

@@ -29,7 +29,7 @@
     bot: "I'm Akash's assistant on this site: automatic answers, not Akash himself. Ask me anything, and whatever I can't answer I'll pass straight to his inbox.",
     services: `Akash builds custom software, custom AI agents and websites, and offers coaching on using AI in your own work. By day he writes R&D and manufacturing test software, so he builds things that have to just work. ${a('/services', 'See the services')}, or tap <b>Message Akash</b> and tell him what you need.`,
     website: `Akash builds fast, mobile-friendly websites, from a one-page site to a full business site. This site is his work, and so are these ${a('/projects#samples', 'two sample sites')}. Tell him about your project with <b>Message Akash</b> and he'll send a quote. ${a('/services/website-development', 'Website development')}`,
-    samples: `Akash built two sample sites for made-up businesses, to show what he can make for a real one: a ${a('/samples/pizza-shop', 'pizza shop')} and a ${a('/samples/heating-cooling', 'heating and cooling company')}. This site is his work too, and the rest is on the ${a('/projects', 'projects page')}.`,
+    samples: `Akash built samples for made-up businesses, to show what he can make for a real one: websites for a ${a('/samples/pizza-shop', 'pizza shop')} and a ${a('/samples/heating-cooling', 'heating and cooling company')}, and a ${a('/samples/test-dashboard', 'test results dashboard')} for a factory. This site is his work too, and the rest is on the ${a('/projects', 'projects page')}.`,
     site: `This site is Akash's own work: plain HTML, CSS and JavaScript generated from one template, with an admin page he can use from his phone and forms that email him. ${a('/projects/reachakash-website', 'How it\'s built')}`,
     socials: `Akash is on ${a('https://www.linkedin.com/in/akashreddyv/', 'LinkedIn')}, ${a('https://github.com/akashreddyv', 'GitHub')}, ${a('https://www.instagram.com/ak.r48', 'Instagram')}, ${a('https://x.com/AkReddy48', 'X')} and ${a('https://www.youtube.com/@ak.r48', 'YouTube')}. Every profile is on the ${a('/socials', 'socials page')}.`,
     price: "Every project is priced on what it needs, so there's no fixed price list. Tell Akash what you have in mind (tap <b>Message Akash</b>) and he'll reply with a quote.",
@@ -63,6 +63,8 @@
     [/\b(websites?|web ?sites?|web design|web dev\w*|landing pages?|online store|e-?commerce)\b/, 'website'],
     [/\b(coach|coaching|training|teach|workshop)\b/, 'coaching'],
     [/\b(ai|agents?|automation|automate|chatbot|gpt|llm)\b/, 'ai'],
+    // Before referrals, whose "offers?" would otherwise catch "what services do you offer".
+    [/\bservices?\b|\bwhat (do|can|does) (you|akash|he) (do|offer|build|make)\b/, 'services'],
     [/\b(referrals?|refer|promo|bonus|invite|codes?|coupons?|offers?|sign ?up)\b/, 'referrals'],
     [/\b(suggest|suggestions?|ideas?|feedback|features?|improve)\b/, 'suggest'],
     [/\b(contact|email|reach|call|phone|talk to|speak to|get in touch)\b/, 'contact'],

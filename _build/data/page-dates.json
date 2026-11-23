@@ -1,11 +1,11 @@
 {
   "/": {
-    "date": "2026-11-21",
-    "hash": "05205efe95d7"
+    "date": "2026-11-23",
+    "hash": "c2989694d510"
   },
   "/contact": {
-    "date": "2026-11-21",
-    "hash": "aa48f87f0565"
+    "date": "2026-11-23",
+    "hash": "b681dceaeb7a"
   },
   "/gallery": {
     "date": "2026-11-14",
@@ -24,16 +24,16 @@
     "hash": "f6f2bf125f59"
   },
   "/privacy": {
-    "date": "2026-11-14",
-    "hash": "2cfddf1bd0e1"
+    "date": "2026-11-23",
+    "hash": "77d8938a37f6"
   },
   "/professional": {
     "date": "2026-11-14",
     "hash": "db7c5ccf4e5a"
   },
   "/projects": {
-    "date": "2026-11-15",
-    "hash": "94080074e96e"
+    "date": "2026-11-23",
+    "hash": "2847c18e8801"
   },
   "/projects/reachakash-website": {
     "date": "2026-11-14",
@@ -156,24 +156,24 @@
     "hash": "216251a1b2aa"
   },
   "/services": {
-    "date": "2026-11-21",
-    "hash": "e2f97b4e0a37"
+    "date": "2026-11-23",
+    "hash": "a836f49c0452"
   },
   "/services/ai-agents": {
-    "date": "2026-11-14",
-    "hash": "ae66da1b08f5"
+    "date": "2026-11-23",
+    "hash": "7f9074148b94"
   },
   "/services/ai-coaching": {
-    "date": "2026-11-14",
-    "hash": "cc8a33557872"
+    "date": "2026-11-23",
+    "hash": "410accd5c6ef"
   },
   "/services/custom-software": {
-    "date": "2026-11-14",
-    "hash": "80dd6e70684d"
+    "date": "2026-11-23",
+    "hash": "c4dec353256c"
   },
   "/services/website-development": {
-    "date": "2026-11-15",
-    "hash": "a7949c3fa1cd"
+    "date": "2026-11-23",
+    "hash": "7a5d94e24d9c"
   },
   "/socials": {
     "date": "2026-11-14",

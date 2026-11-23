@@ -343,10 +343,10 @@ const routes = [
   {
     slug: 'projects', path: '/projects', out: 'projects.html', source: 'pages/projects.html', nav: 'projects',
     title: 'Projects by Akash Reddy | Websites, Software & 3D',
-    description: 'Projects by Akash Reddy: this website, two sample small-business websites (a pizza shop and a heating company) and a 3D logo viewer.',
+    description: 'Projects by Akash Reddy: this website, sample websites for a pizza shop and a heating company, a sample test data dashboard and a 3D logo viewer.',
     ogType: 'website',
     ogTitle: 'Akash Reddy, Software Projects and Portfolio',
-    ogDesc: 'Projects by Akash Reddy: his own website, two sample small-business websites and a 3D logo viewer built with Three.js.',
+    ogDesc: 'Projects by Akash Reddy: his own website, two sample small-business websites, a sample test data dashboard and a 3D logo viewer built with Three.js.',
     jsonld: [
       {
         '@context': 'https://schema.org',
@@ -370,7 +370,7 @@ const routes = [
             url: url('/projects/logodesigns'),
             creator: PERSON_REF
           },
-          // The two sample sites (standalone pages in /samples, marked noindex). Always say they are samples.
+          // The samples (standalone pages in /samples, marked noindex). Always say they are samples.
           {
             '@type': 'CreativeWork',
             name: 'Sample pizza shop website (Rivet Pizza Co., a made-up business)',
@@ -384,13 +384,20 @@ const routes = [
             description: 'A sample one-page website for a made-up home-service company: a call button, a quote request form, services, a service-area map and common questions. Built to show what a contractor website can be.',
             url: url('/samples/heating-cooling'),
             creator: PERSON_REF
+          },
+          {
+            '@type': 'CreativeWork',
+            name: 'Sample test results dashboard (Sample Factory, made-up data)',
+            description: 'A sample custom software tool: a dashboard of production test results for a made-up factory, with first-pass yield by day, the most common failures, test stations and a searchable list of failed units with CSV export. Built to show what custom software can be.',
+            url: url('/samples/test-dashboard'),
+            creator: PERSON_REF
           }
         ]
       },
       crumbs(['Projects', '/projects'])
     ],
     sitemap: { changefreq: 'monthly', priority: '0.8' },
-    llms: 'Software portfolio, including personal website reachakash.com (HTML/CSS/JS, GitHub Pages) and a 3D interactive logo viewer (Three.js, SVG). Also two sample websites for made-up businesses, built to show what a small-business site can be: a pizza shop (' + url('/samples/pizza-shop') + ') and a heating and cooling company (' + url('/samples/heating-cooling') + ').'
+    llms: 'Software portfolio, including personal website reachakash.com (HTML/CSS/JS, GitHub Pages) and a 3D interactive logo viewer (Three.js, SVG). Also samples for made-up businesses, built to show what Akash can build: websites for a pizza shop (' + url('/samples/pizza-shop') + ') and a heating and cooling company (' + url('/samples/heating-cooling') + '), and a test results dashboard for a factory (' + url('/samples/test-dashboard') + ').'
   },
   {
     // The write-up of this site. Keep it true: when the site changes, update pages/projects/reachakash-website.html.

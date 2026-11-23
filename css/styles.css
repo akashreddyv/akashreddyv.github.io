@@ -468,7 +468,7 @@ html:not(.js) .footer-term-wrap { display: none; }
   position: relative;
   z-index: 1;
   width: min(560px, 90vw);
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 1200 / 847;
   margin: 0 auto 80px;
   border-radius: 10px;
   overflow: hidden;
@@ -495,7 +495,7 @@ html:not(.js) .footer-term-wrap { display: none; }
 .home-slide img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   display: block;
 }
 
@@ -578,7 +578,20 @@ html:not(.js) .footer-term-wrap { display: none; }
 .home-ideas-text { flex: 1 1 420px; }
 .home-ideas-title { font-family: var(--font-display); font-size: clamp(19px, 2.2vw, 23px); font-weight: 700; color: var(--white); margin-bottom: 6px; }
 .home-ideas p { font-size: 15px; line-height: 1.7; color: var(--muted); }
-@media (prefers-reduced-motion: reduce) { .home-ideas { opacity: 1; animation: none; } }
+@media (prefers-reduced-motion: reduce) { .home-ideas, .home-work { opacity: 1; animation: none; } }
+
+/* "Sample work": the three samples, as picture cards (they reuse .home-card, so every theme styles them) */
+.home-work { width: 100%; max-width: 1100px; margin-top: 40px; text-align: left; opacity: 0; animation: fadeUp 0.9s ease 0.8s forwards; }
+.home-work-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 24px; margin-bottom: 16px; }
+.home-work-head p { font-size: 15px; line-height: 1.7; color: var(--muted); }
+.home-work-head p a { color: var(--text); text-underline-offset: 4px; }
+.home-work-head p a:hover { color: var(--accent); }
+.home-work-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.home-card.home-work-card { padding: 0; overflow: hidden; }
+.home-work-card img { display: block; width: 100%; height: auto; border-bottom: 1px solid var(--border); }
+.home-work-card .home-card-title { display: block; margin: 16px 20px 4px; }
+.home-work-card .home-card-desc { display: block; margin: 0 20px 18px; }
+@media (max-width: 900px) { .home-work-grid { grid-template-columns: 1fr; } }
 
 .home-cards {
   margin-top: 80px;
@@ -747,11 +760,12 @@ html:not(.js) .footer-term-wrap { display: none; }
 .contact-icon    { width: 38px; height: 38px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
 
 .contact-form-block   { background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: 40px; }
-.contact-form-block h3 { font-family: var(--font-display); font-size: 24px; color: var(--white); margin-bottom: 28px; }
+.contact-form-block h2 { font-family: var(--font-display); font-size: 24px; color: var(--white); margin-bottom: 28px; }
 
 .form-group          { margin-bottom: 20px; }
 .form-group label    { display: block; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
 .form-group input,
+.form-group select,
 .form-group textarea {
   width: 100%;
   background: var(--bg);
@@ -767,7 +781,12 @@ html:not(.js) .footer-term-wrap { display: none; }
 }
 
 .form-group input:focus,
+.form-group select:focus,
 .form-group textarea:focus { border-color: var(--accent); }
+.form-group select { appearance: none; padding-right: 40px; } /* its arrow is drawn at the end of this file */
+.form-group select option { background: var(--card); color: var(--text); }
+.form-optional { letter-spacing: 0.08em; text-transform: none; opacity: 0.8; }
+.form-note { margin-top: 14px; font-size: 13px; color: var(--muted); text-align: center; }
 
 .form-group textarea { height: 120px; resize: vertical; }
 
@@ -1226,6 +1245,7 @@ footer p      { font-size: 13px; color: var(--muted); }
 /* ── FORMS ── */
 .theme-retro body input[type="text"],
 .theme-retro body input[type="email"],
+.theme-retro body select,
 .theme-retro body textarea {
   background: #ffffff;
   color: #000000;
@@ -1240,6 +1260,7 @@ footer p      { font-size: 13px; color: var(--muted); }
 .theme-retro body input::placeholder,
 .theme-retro body textarea::placeholder { color: #888888; font-family: 'Courier New', monospace; }
 .theme-retro body input:focus,
+.theme-retro body select:focus,
 .theme-retro body textarea:focus { outline: 1px dotted #000080; outline-offset: 2px; box-shadow: none; }
 .theme-retro body label { font-family: 'Arial', sans-serif; color: #000000; font-size: 12px; font-weight: bold; }
 /* …but the terminal's input line stays a bare DOS prompt, not a white form field */
@@ -1689,6 +1710,7 @@ footer p      { font-size: 13px; color: var(--muted); }
 
 .theme-space body input[type="text"],
 .theme-space body input[type="email"],
+.theme-space body select,
 .theme-space body textarea {
   background: rgba(0, 0, 0, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.18);
@@ -1697,6 +1719,7 @@ footer p      { font-size: 13px; color: var(--muted); }
 .theme-space body input::placeholder,
 .theme-space body textarea::placeholder { color: #6a6a6a; }
 .theme-space body input:focus,
+.theme-space body select:focus,
 .theme-space body textarea:focus {
   border-color: #ffe81f;
   box-shadow: 0 0 0 3px rgba(255, 232, 31, 0.18);
@@ -2306,7 +2329,8 @@ a.project-card { display: block; color: inherit; text-decoration: none; }
 .legal-section h2 { font-size: 19px; font-weight: 700; color: var(--white); margin-bottom: 10px; scroll-margin-top: calc(var(--nav-h) + 16px); }
 .legal-section p { font-size: 15px; line-height: 1.75; color: var(--muted); }
 .legal-section p + p { margin-top: 12px; }
-.legal-section ul { margin: 12px 0 0 20px; }
+.legal-section ul,
+.legal-section ol { margin: 12px 0 0 20px; }
 .legal-section li { font-size: 15px; line-height: 1.75; color: var(--muted); }
 .legal-section li + li { margin-top: 6px; }
 .legal-updated { margin-top: 48px; font-size: 13px; color: var(--muted); }
@@ -2683,4 +2707,13 @@ html.logo-intro .logo-anim .logo-curve-wipe {
 @media (prefers-reduced-motion: reduce) {
   html.logo-intro .logo-anim .logo-step,
   html.logo-intro .logo-anim .logo-curve-wipe { animation: none; }
+}
+
+/* The contact form's topic dropdown draws its own arrow, in the text colour. Last in the file and only
+   background-image/position/size, so the themes' "background" rules above keep their colours. */
+body .form-group select {
+  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position: calc(100% - 20px) 50%, calc(100% - 15px) 50%;
+  background-size: 5px 5px;
+  background-repeat: no-repeat;
 }

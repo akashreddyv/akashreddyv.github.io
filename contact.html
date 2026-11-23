@@ -103,7 +103,7 @@
         "name": "Reach Akash",
         "url": "https://reachakash.com/"
       },
-      "dateModified": "2026-11-21"
+      "dateModified": "2026-11-23"
     },
     {
       "@context": "https://schema.org",
@@ -492,14 +492,14 @@
   <div class="page-header">
     <p class="page-eyebrow">Get In Touch</p>
     <h1 class="page-title">Let's <em>Connect</em></h1>
-    <p class="page-subtitle">Whether it's about work, collaboration, or just saying hi. Always open for a conversation. Based in Detroit, MI.</p>
+    <p class="page-subtitle">Tell me about a project, ask a question or just say hi. Every message comes straight to my inbox, and I reply by email. Based in Detroit, MI.</p>
   </div>
 
   <div class="contact-layout">
 
     <!-- LEFT: Contact info -->
     <div class="contact-info">
-      <p>The best ways to reach me are LinkedIn for professional inquiries or Instagram for everything else.</p>
+      <p>For a project, the form is the quickest way to reach me. For anything else, LinkedIn and Instagram work too.</p>
 
       <div class="divider"></div>
 
@@ -570,6 +570,23 @@
           <label for="form-email">Your Email</label>
           <input type="email" id="form-email" name="email" placeholder="john@example.com" autocomplete="email" required/>
         </div>
+        <!-- Topic and business are optional. js/main.js adds them to the top of the message, since the
+             contact Worker only reads name, email and message. ?topic=website (etc.) picks the topic. -->
+        <div class="form-group">
+          <label for="form-topic">What's it about?</label>
+          <select id="form-topic" name="topic">
+            <option value="">Choose one (optional)</option>
+            <option value="website">A website</option>
+            <option value="software">Custom software</option>
+            <option value="ai-agents">An AI agent</option>
+            <option value="ai-coaching">AI coaching</option>
+            <option value="other">Something else</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="form-business">Business or website <span class="form-optional">(optional)</span></label>
+          <input type="text" id="form-business" name="business" placeholder="Your business name or current website" autocomplete="organization" maxlength="200"/>
+        </div>
         <div class="form-group">
           <label for="form-msg">Message</label>
           <textarea id="form-msg" name="message" placeholder="What's on your mind?" required></textarea>
@@ -578,6 +595,7 @@
         <div id="form-status" style="display:none;margin-bottom:12px;padding:12px 16px;border-radius:8px;font-size:14px;font-family:var(--font-body);"></div>
 
         <button type="submit" id="form-submit" class="btn btn-primary" style="width:100%;justify-content:center;">Send Message</button>
+        <p class="form-note">I read every message myself and reply by email.</p>
       </form>
     </div>
 

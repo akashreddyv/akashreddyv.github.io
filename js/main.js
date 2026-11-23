@@ -133,17 +133,22 @@ document.addEventListener("DOMContentLoaded", function () {
   // ── Contact Form ────────────────────────────────────────────────
   const form = document.getElementById('contact-form');
 
-  // /contact?topic=… (from the Services tiles) starts the message for the visitor.
-  const TOPICS = {
-    'software': 'software services',
-    'website': 'website development',
-    'ai-agents': 'a custom AI agent',
-    'ai-coaching': 'AI coaching'
-  };
-  const topic = TOPICS[new URLSearchParams(location.search).get('topic')];
+  // The topic dropdown: /contact?topic=… (from the service pages) picks it, and each topic asks
+  // its own question in the message box.
+  const topicBox = document.getElementById('form-topic');
   const msgBox = document.getElementById('form-msg');
-  if (form && topic && msgBox && !msgBox.value) {
-    msgBox.value = 'Hi Akash, I’d like to ask about ' + topic + '. ';
+  const PROMPTS = {
+    'website': 'What is the site for, which pages do you have in mind, and are there sites you like?',
+    'software': 'What would you like to build or automate, and how is it done today?',
+    'ai-agents': 'Which task would you like to hand off, and how do you do it today?',
+    'ai-coaching': 'Who is the coaching for, and what would you like to get better at?'
+  };
+  const askFor = () => { if (msgBox) msgBox.placeholder = PROMPTS[topicBox.value] || "What's on your mind?"; };
+  if (form && topicBox) {
+    const asked = new URLSearchParams(location.search).get('topic');
+    if (asked && PROMPTS[asked]) topicBox.value = asked;
+    askFor();
+    topicBox.addEventListener('change', askFor);
   }
 
   if (form) {
@@ -156,8 +161,19 @@ document.addEventListener("DOMContentLoaded", function () {
       btn.textContent = 'Sending…';
       status.style.display = 'none';
 
+      // The contact Worker reads only name, email and message, so the topic and business go on top of the message.
+      const fd = new FormData(form);
+      const topicText = topicBox && topicBox.value ? topicBox.options[topicBox.selectedIndex].text : '';
+      const business = String(fd.get('business') || '').trim();
+      const head = [topicText && 'About: ' + topicText, business && 'Business or website: ' + business].filter(Boolean);
+      if (head.length) fd.set('message', head.join('\n') + '\n\n' + String(fd.get('message') || '').trim());
+      fd.delete('topic');
+      fd.delete('business');
+
       try {
-        const res  = await fetch(form.action, { method: 'POST', body: new FormData(form) });
+        // An empty message stays empty (no header added above it), so the Worker still asks for one.
+        if (!String(fd.get('message') || '').replace(/^(About|Business or website): .*$/gm, '').trim()) fd.set('message', '');
+        const res  = await fetch(form.action, { method: 'POST', body: fd });
         let data;
         try { data = await res.json(); } catch { throw new Error('Could not reach the server. Please email ' + window.SITE_CONFIG.contactEmail + ' directly.'); }
 
@@ -168,6 +184,7 @@ document.addEventListener("DOMContentLoaded", function () {
           status.style.color         = 'var(--accent)';
           status.style.display       = 'block';
           form.reset();
+          if (topicBox) askFor();
         } else {
           throw new Error(data.error || 'Something went wrong.');
         }
