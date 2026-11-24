@@ -1,46 +1,47 @@
 <!-- pages/bots/polymarket.html: the Polymarket bot, live. Every number is filled in by js/bots.js from the public
-     JSON on the repo's bots-data branch (replaced about every 5 minutes; no personal or account data). -->
+     JSON on the repo's bots-data branch (replaced about every 5 minutes). Counts and percentages only: no money
+     amounts, bet sizes or prices, and strategies and bots are shown under anonymous labels. -->
 <div class="page-inner" data-bots="polymarket">
 
   <div class="page-header">
     <p class="page-eyebrow"><a href="/bots">Bots</a> · Live</p>
     <h1 class="page-title">Polymarket <em>Bot</em></h1>
-    <p class="page-subtitle">Every 5 minutes Polymarket opens a new "up or down?" market for Bitcoin, Ether, Solana and XRP. This bot records every one, scores each strategy on real prices and fees, and places small real-money bets on Polymarket US with the strategies that hold up.</p>
+    <p class="page-subtitle">Every 5 minutes Polymarket opens a new "up or down?" market for Bitcoin, Ether, Solana and XRP. My bots record every one, put a whole field of strategies through the same tests on real prices and fees, and trade the few that prove themselves with real money on Polymarket US.</p>
     <div class="bots-updated" data-slot="updated"></div>
   </div>
 
   <div class="bots-tiles" data-slot="status"></div>
 
   <section class="bots-section">
-    <h2>Real bets</h2>
-    <p class="bots-lead">Every bet the bot has placed with real money since its first test, settled by the exchange. A couple of shares at a time: each share pays $1 if its side wins.</p>
+    <h2>Real-money results</h2>
+    <p class="bots-lead">Every bet the bots have placed with real money since the first live test, settled by the exchange. Shown as percentages: how often they win, and the return on the money staked after fees.</p>
     <div class="bots-tiles" data-slot="real"></div>
     <div class="bots-gap" data-slot="per-bot"></div>
     <div class="bots-chart-box bots-gap" data-slot="real-chart"></div>
-    <div class="bots-gap" data-slot="trades"></div>
+    <div class="bots-gap" data-slot="daily"></div>
   </section>
 
   <section class="bots-section">
     <h2>Strategy scoreboard</h2>
-    <p class="bots-lead">How each strategy would have done trading exactly like the bot: one bet per coin per window, 90 seconds before the end (60 if that price was missed), buying at the real asking price of at most 98¢, fees included, held to the end. "Profit per $1" is what each dollar bet made; the 95% range shows how sure that number is.</p>
+    <p class="bots-lead">Each strategy is scored exactly as a bot would trade it, on real prices with real fees, next to a coin-flip control and a simple benchmark it has to beat. The names are hidden; the numbers are real. "Return" is the profit on the money staked; the 95% range shows how sure that number is.</p>
     <div data-slot="scoreboard"></div>
   </section>
 
   <section class="bots-section">
-    <h2>Profit over time</h2>
-    <p class="bots-lead">Cumulative profit of each strategy on Polymarket US at 2 shares a bet, since recording began.</p>
+    <h2>Return over time</h2>
+    <p class="bots-lead">Running return of each strategy on Polymarket US since recording began.</p>
     <div class="bots-chart-box" data-slot="strat-chart"></div>
   </section>
 
   <section class="bots-section">
-    <h2>What the data has taught me so far</h2>
+    <h2>What the testing shows so far</h2>
     <ol class="bots-steps">
-      <li><b>Losses are rare but big.</b> Buying the favourite at 90¢+ wins most of the time, yet one loss can wipe out a dozen wins. Profit per dollar matters, not the count of losses.</li>
-      <li><b>Weekends flatter.</b> Quiet weekend markets made some strategies look great; busier weekday trading hours were much harder. Only weeks of data settle it.</li>
-      <li><b>Stop-losses didn't help.</b> Prices here jump rather than slide, so a stop usually sells after the drop, and it sells too many bets that would have won.</li>
+      <li><b>Most ideas don't survive.</b> Half of the strategies tested so far never beat the coin flip and were dropped. Only a few make it to real money.</li>
+      <li><b>Win rate isn't the goal.</b> A strategy can win nearly every bet and still lose money; the return on the money staked is what counts.</li>
+      <li><b>A good weekend proves nothing.</b> Results swing with the market's mood, so only weeks of data, real fees and a beaten control count.</li>
     </ol>
   </section>
 
-  <p class="bots-note">Research and education, not financial advice. Prediction markets are risky and past results don't predict future ones. Real bets are placed only on Polymarket US, a regulated US exchange; polymarket.com prices are recorded for research only. No personal or account information is shown.</p>
+  <p class="bots-note">Research and education, not financial advice. Prediction markets are risky and past results don't predict future ones. Real bets are placed only on Polymarket US, a regulated US exchange; polymarket.com prices are recorded for research only. No money amounts, account information or strategy details are shown.</p>
 
 </div>

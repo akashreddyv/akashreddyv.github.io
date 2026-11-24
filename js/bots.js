@@ -1,7 +1,8 @@
 /* js/bots.js: the live bot pages (/bots, /bots/polymarket, /bots/kalshi).
-   Reads the public JSON that the bots' publisher replaces about every 5 minutes on the repo's `bots-data`
-   branch (no personal or account data is ever in it), and redraws every minute. Plain JS + inline SVG,
-   no libraries (the site's CSP only allows its own scripts). Everything shown is escaped text. */
+   Reads the public JSON that the bots' publisher replaces about every 5 minutes on the repo's `bots-data` branch,
+   and redraws every minute. That JSON holds counts and percentages only: no money amounts, bet sizes or prices,
+   no strategy names or rules (strategies and bots have anonymous labels). Plain JS + inline SVG, no libraries
+   (the site's CSP only allows its own scripts). Everything shown is escaped text. */
 (function () {
   'use strict';
   var BASE = 'https://raw.githubusercontent.com/akashreddyv/akashreddyv.github.io/bots-data/';
@@ -16,13 +17,10 @@
   }
   function el(id) { return root.querySelector('[data-slot="' + id + '"]'); }
   function set(id, html) { var e = el(id); if (e) e.innerHTML = html; }
-  function money(v) {
-    if (v == null) return '–';
-    return (v < 0 ? '−$' : '+$') + Math.abs(v).toFixed(2);
-  }
-  function cents(v) { return v == null ? '–' : (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v).toFixed(1) + '¢'; }
+  function ret(v) { return v == null ? '–' : (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v).toFixed(1) + '%'; }
   function sign(v) { return v == null ? '' : v > 0 ? 'bots-pos' : v < 0 ? 'bots-neg' : ''; }
   function pct(v) { return v == null ? '–' : v.toFixed(1) + '%'; }
+  function num(v) { return v == null ? '–' : Number(v).toLocaleString(); }
   function ago(iso) {
     var s = (Date.now() - Date.parse(iso)) / 1000;
     if (!isFinite(s)) return '';
@@ -43,7 +41,7 @@
     return sec != null && sec < 300 ? badge('Recorder online', 'live') : badge('Recorder offline', 'stale');
   }
 
-  /* A small line chart: series = [{name, points: [[ms, value], ...]}], drawn into an SVG with a zero line. */
+  /* A small line chart of percentages: series = [{name, points: [[ms, value], ...]}], with a zero line. */
   function chart(series, opts) {
     opts = opts || {};
     var W = 720, H = opts.height || 220, L = 52, R = 12, T = 12, B = 26;
@@ -61,7 +59,7 @@
     var out = '<svg class="bots-chart" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(opts.label || 'Chart') + '">';
     [y0 + pad, (y0 + y1) / 2, y1 - pad].forEach(function (v) {
       out += '<line class="bots-grid" x1="' + L + '" x2="' + (W - R) + '" y1="' + Y(v) + '" y2="' + Y(v) + '"/>' +
-        '<text class="bots-axis" x="' + (L - 6) + '" y="' + (Y(v) + 4) + '" text-anchor="end">' + esc(money(v).replace('+', '')) + '</text>';
+        '<text class="bots-axis" x="' + (L - 6) + '" y="' + (Y(v) + 4) + '" text-anchor="end">' + esc(ret(v)) + '</text>';
     });
     out += '<line class="bots-zero" x1="' + L + '" x2="' + (W - R) + '" y1="' + Y(0) + '" y2="' + Y(0) + '"/>';
     var fmt = function (t) { var d = new Date(t); return (d.getMonth() + 1) + '/' + d.getDate(); };
@@ -76,7 +74,7 @@
     if (series.length > 1) {
       out += '<div class="bots-legend">' + series.map(function (s, i) {
         var last = s.points.length ? s.points[s.points.length - 1][1] : null;
-        return '<span><i class="bots-swatch bots-line-' + (i % 8) + '"></i>' + esc(s.name) + ' <b class="' + sign(last) + '">' + money(last) + '</b></span>';
+        return '<span><i class="bots-swatch bots-line-' + (i % 8) + '"></i>' + esc(s.name) + ' <b class="' + sign(last) + '">' + ret(last) + '</b></span>';
       }).join('') + '</div>';
     }
     return out;
@@ -95,39 +93,32 @@
 
   function polymarket(d) {
     set('updated', fresh(d) + ' ' + online(d.recorder.heartbeat_age_s));
-    var run = d.run || {}, live = d.live || {}, tot = live.totals || {}, rec = d.recorder || {};
+    var live = d.live || {}, tot = live.totals || {}, rec = d.recorder || {}, tested = d.tested || {};
     var wt = rec.windows_today || {};
-    var botNames = run.bots ? Object.keys(run.bots) : [];
-    set('status', tile(botNames.length > 1 ? 'Live bots' : 'Live bot', run.active ? (botNames.length > 1 ? botNames.length + ' live' : 'Live') : 'Paused',
-        run.active ? 'real money, small stakes' : 'no real bets right now', run.active ? 'bots-pos' : '') +
-      (botNames.length > 1
-        ? tile('Strategies trading now', esc(botNames.length + ' bots'), botNames.map(function (n) { return '<b>' + esc(n) + '</b>: ' + esc(run.bots[n].join(' + ')); }).join('<br>') +
-            (run.active ? '<br>' + esc(run.shares) + ' shares a bet each' : ''))
-        : tile('Strategies trading now', esc((run.strategies || []).join(' + ') || '–'), run.active ? esc(run.shares) + ' shares a bet' : '')) +
-      tile('Windows recorded today', esc((wt.polymarket_us || 0).toLocaleString()), 'per venue, all four coins') +
+    set('status', tile(live.bots_live > 1 ? 'Bots live' : 'Bot live', live.active ? esc(live.bots_live || 1) : 'Paused',
+        live.active ? 'trading with real money' : 'no real bets right now', live.active ? 'bots-pos' : '') +
+      tile('Strategies tested', esc(tested.variants || '–'), esc(tested.dropped || 0) + ' dropped, ' + esc(tested.in_race || 0) + ' still in the race') +
+      tile('Windows recorded today', esc(num(wt.polymarket_us || 0)), 'per venue, all four coins') +
       tile('Results vs the exchange', rec.resolved_today ? pct(100 * (1 - rec.result_mismatches_today / rec.resolved_today)) : '–', 'our result = official result today'));
-    set('real', tile('Real bets', esc(tot.bets || 0), 'since ' + esc((tot.first || '').replace(' ET', ''))) +
-      tile('Won / lost', esc(tot.won || 0) + ' / ' + esc(tot.lost || 0), tot.bets ? pct(100 * tot.won / Math.max(1, tot.won + tot.lost)) + ' won' : '') +
-      tile('Profit', money(tot.pnl), 'after fees', sign(tot.pnl)) +
-      tile('Per $1 staked', cents(tot.per_dollar_c), 'profit per dollar bet', sign(tot.per_dollar_c)));
-    var pb = live.bots || {};
-    set('per-bot', Object.keys(pb).length ? table(['Bot (this run, since ' + esc((run.since || '').replace(' ET', '')) + ' ET)', 'Strategies', 'Bets', 'Won / lost', 'Profit', 'Per $1'],
-      Object.keys(pb).map(function (n) {
-        var b = pb[n];
-        return '<tr><td><b>' + esc(n) + '</b></td><td>' + esc(((run.bots || {})[n] || []).join(' + ')) + '</td><td>' + esc(b.bets) + '</td><td>' +
-          esc(b.won) + ' / ' + esc(b.lost) + '</td><td class="' + sign(b.pnl) + '">' + money(b.pnl) + '</td><td class="' + sign(b.per_dollar_c) + '">' + cents(b.per_dollar_c) + '</td></tr>';
+    set('real', tile('Real bets', esc(num(tot.bets || 0)), 'since ' + esc(tot.first || '')) +
+      tile('Won / lost', esc(tot.won || 0) + ' / ' + esc(tot.lost || 0), '') +
+      tile('Win rate', pct(tot.win_pct), 'of settled bets') +
+      tile('Return', ret(tot.return_pct), 'on the money staked, after fees', sign(tot.return_pct)));
+    set('per-bot', (live.bots || []).length ? table(['Bot (current run)', 'Trades', 'Bets', 'Won / lost', 'Win rate', 'Return'],
+      live.bots.map(function (b) {
+        return '<tr><td><b>' + esc(b.name) + '</b></td><td>' + esc((b.strategies || []).join(' + ')) + '</td><td>' + esc(b.bets) + '</td><td>' +
+          esc(b.won) + ' / ' + esc(b.lost) + '</td><td>' + pct(b.win_pct) + '</td><td class="' + sign(b.return_pct) + '">' + ret(b.return_pct) + '</td></tr>';
       })) : '');
-    set('real-chart', chart([{ name: 'Real profit', points: live.cum || [] }], { label: 'Cumulative profit of the real bets', height: 200 }));
-    set('trades', table(['Time', 'Coin', 'Bet', 'Price', 'Shares', 'Strategy', 'Bot', 'Result', 'Profit'],
-      (live.trades || []).slice(0, 25).map(function (t) {
-        return '<tr><td>' + esc(t.time) + '</td><td>' + esc(t.coin) + '</td><td>' + esc(t.side) + ' at T-' + esc(t.checkpoint) + 's</td><td>' +
-          esc(Math.round(t.price * 100)) + '¢</td><td>' + esc(t.shares) + '</td><td>' + esc(t.strategies) + '</td><td>' + esc(t.bot || '–') + '</td><td>' +
-          (t.result ? badge(t.result, t.result === 'won' ? 'live' : 'stale') : badge('waiting', 'dry')) + '</td><td class="' + sign(t.pnl) + '">' + money(t.pnl) + '</td></tr>';
+    set('real-chart', chart([{ name: 'Return on real bets', points: live.curve || [] }], { label: 'Running return of the real bets, in percent', height: 200 }));
+    set('daily', table(['Day (ET)', 'Bets', 'Won / lost', 'Win rate', 'Return'],
+      (live.daily || []).map(function (x) {
+        return '<tr><td>' + esc(x.day) + '</td><td>' + esc(x.bets) + '</td><td>' + esc(x.won) + ' / ' + esc(x.lost) + '</td><td>' +
+          pct(x.win_pct) + '</td><td class="' + sign(x.return_pct) + '">' + ret(x.return_pct) + '</td></tr>';
       })));
     scoreboard(d);
-    var cum = (d.strategies.us_live || []).filter(function (r) { return r.cum && r.cum.length > 1 && r.key !== 'S12'; })
-      .map(function (r) { return { name: r.key, points: r.cum }; });
-    set('strat-chart', chart(cum, { label: 'Cumulative profit per strategy at 2 shares a bet', height: 240 }));
+    var curves = (d.strategies.us_live || []).filter(function (r) { return r.curve && r.curve.length > 1; })
+      .map(function (r) { return { name: r.name, points: r.curve }; });
+    set('strat-chart', chart(curves, { label: 'Running return of each strategy, in percent', height: 240 }));
   }
 
   function scoreboard(d) {
@@ -137,12 +128,11 @@
     }).join('');
     var rows = (d.strategies[p[2]] || []).map(function (r) {
       var s = r[p[0]] || {};
-      return '<tr><td><b>' + esc(r.key) + '</b></td><td class="bots-rule">' + esc((d.strategy_rules || {})[r.key] || '') + '</td><td>' + esc(s.bets || 0) +
-        '</td><td>' + pct(s.win_pct) + '</td><td>' + (s.avg_price != null ? esc(Math.round(s.avg_price * 100)) + '¢' : '–') + '</td><td class="' + sign(s.per_dollar_c) + '">' +
-        cents(s.per_dollar_c) + (s.ci_c ? '<span class="bots-ci">' + cents(s.ci_c[0]) + ' to ' + cents(s.ci_c[1]) + '</span>' : '') + '</td><td class="' + sign(s.pnl_2sh) + '">' + money(s.pnl_2sh) + '</td></tr>';
+      return '<tr><td><b>' + esc(r.name) + '</b></td><td>' + esc(num(s.bets || 0)) + '</td><td>' + pct(s.win_pct) + '</td><td class="' + sign(s.return_pct) + '">' +
+        ret(s.return_pct) + (s.range_pct ? '<span class="bots-ci">' + ret(s.range_pct[0]) + ' to ' + ret(s.range_pct[1]) + '</span>' : '') + '</td></tr>';
     });
     set('scoreboard', '<div class="bots-tabs" role="group" aria-label="Period">' + tabs + '</div>' +
-      table(['Strategy', 'Rule', 'Bets', 'Won', 'Avg price', 'Profit per $1 (95% range)', 'Profit at 2 shares'], rows));
+      table(['Strategy', 'Bets', 'Win rate', 'Return (95% range)'], rows));
     root.querySelectorAll('[data-period]').forEach(function (b) {
       b.addEventListener('click', function () { period = +b.getAttribute('data-period'); scoreboard(d); });
     });
@@ -153,8 +143,8 @@
     set('updated', fresh(d) + ' ' + online(d.recorder.heartbeat_age_s));
     var rc = d.results_check || {}, rec = d.recorder || {};
     var med = Object.keys(rc.per_coin || {}).map(function (c) { return rc.per_coin[c].median_bps; }).filter(function (v) { return v != null; });
-    set('status', tile('Windows recorded', esc((rec.windows || 0).toLocaleString()), 'since ' + esc((rec.recording_since || '').replace(' ET', '') + ' ET')) +
-      tile('Market snapshots', esc((rec.snapshots || 0).toLocaleString()), 'one every 5 seconds per coin') +
+    set('status', tile('Windows recorded', esc(num(rec.windows || 0)), 'since ' + esc((rec.recording_since || '').replace(' ET', '') + ' ET')) +
+      tile('Market snapshots', esc(num(rec.snapshots || 0)), 'one every 5 seconds per coin') +
       tile('Our result = Kalshi\'s', rc.total ? esc(rc.agree) + ' / ' + esc(rc.total) : '–', rc.total ? pct(100 * rc.agree / rc.total) + ' of windows' : '') +
       tile('Typical gap to Kalshi\'s number', med.length ? esc((med.reduce(function (a, b) { return a + b; }, 0) / med.length).toFixed(1)) + ' bp' : '–', '1 bp = 0.01%'));
     set('stage', esc(d.stage || ''));
@@ -164,7 +154,7 @@
         return '<tr><td><b>' + esc(m.coin) + '</b></td><td>' + esc(m.window_end) + '</td><td>' + esc(Math.max(0, Math.round(m.secs_left / 60))) + ' min</td><td>' +
           c(m.up_bid) + ' / ' + c(m.up_ask) + '</td><td>' + c(m.down_bid) + ' / ' + c(m.down_ask) + '</td><td class="' + sign(m.move_pct) + '">' +
           (m.move_pct == null ? '–' : (m.move_pct > 0 ? '+' : '') + m.move_pct.toFixed(3) + '%') + '</td></tr>';
-      }), 'As of ' + ((d.latest || [])[0] || {}).as_of));
+      }), 'Market prices as of ' + ((d.latest || [])[0] || {}).as_of));
     set('recent', table(['Coin', 'Window', 'Target', 'End', 'Official', 'Ours'],
       (d.recent || []).slice(0, 20).map(function (w) {
         var n = function (v) { return v == null ? '–' : (v >= 100 ? v.toLocaleString(undefined, { maximumFractionDigits: 2 }) : v); };
@@ -177,15 +167,16 @@
   /* ---------- Hub ---------- */
   function hub(p, k) {
     if (p) {
-      var t = p.live.totals || {};
-      set('pm-summary', tile('Real bets', esc(t.bets || 0), '') + tile('Won', t.bets ? pct(100 * t.won / Math.max(1, t.won + t.lost)) : '–', '') +
-        tile('Profit', money(t.pnl), 'after fees', sign(t.pnl)));
+      var t = (p.live || {}).totals || {};
+      set('pm-summary', tile('Real bets', esc(num(t.bets || 0)), '') + tile('Win rate', pct(t.win_pct), '') +
+        tile('Return', ret(t.return_pct), 'after fees', sign(t.return_pct)));
       set('pm-updated', fresh(p));
     }
     if (k) {
       var rc = k.results_check || {};
-      set('k-summary', tile('Windows recorded', esc((k.recorder.windows || 0).toLocaleString()), '') +
-        tile('Our result = Kalshi\'s', rc.total ? esc(rc.agree) + ' / ' + esc(rc.total) : '–', '') + tile('Snapshots', esc((k.recorder.snapshots || 0).toLocaleString()), ''));
+      set('k-summary', tile('Windows recorded', esc(num(k.recorder.windows || 0)), '') +
+        tile('Our result = Kalshi\'s', rc.total ? esc(rc.agree) + ' / ' + esc(rc.total) : '–', '') +
+        tile('Snapshots', esc(num(k.recorder.snapshots || 0)), ''));
       set('k-updated', fresh(k));
     }
   }

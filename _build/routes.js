@@ -432,21 +432,21 @@ const routes = [
     jsonld: [crumbs(['Projects', '/projects'], ['Bots', '/bots'])],
     sitemap: { changefreq: 'daily', priority: '0.7' },
     llmsName: 'Prediction-market bots (live)',
-    llms: 'Two trading bots by Akash Reddy for 5- and 15-minute crypto Up/Down prediction markets (Polymarket, Kalshi): they record every window, test strategies on real prices and fees against a random control, and bet small real money on Polymarket US. Live results, no personal data.'
+    llms: 'Two trading bots by Akash Reddy for 5- and 15-minute crypto Up/Down prediction markets (Polymarket, Kalshi): they record every window, test strategies on real prices and fees against a random control, and trade real money on Polymarket US. Live results in percentages; no personal or financial data.'
   },
   {
     slug: 'bots-polymarket', path: '/bots/polymarket', out: 'bots/polymarket.html', source: 'pages/bots/polymarket.html',
     nav: 'projects', navCurrent: 'true',
     title: 'Polymarket Trading Bot, Live Results | Akash Reddy',
-    description: 'A bot for Polymarket\'s 5-minute crypto markets: every window recorded, strategies scored on real prices and fees, small real-money bets on Polymarket US.',
+    description: 'A bot for Polymarket\'s 5-minute crypto markets: every window recorded, strategies scored on real prices and fees, the best traded with real money.',
     ogType: 'website',
     ogTitle: 'Polymarket trading bot, live results',
-    ogDesc: 'Every 5-minute window recorded, strategies scored on real prices, small real-money bets on Polymarket US.',
+    ogDesc: 'Every 5-minute window recorded, strategies scored on real prices, the best traded with real money.',
     headExtra: BOTS_HEAD,
     jsonld: [crumbs(['Projects', '/projects'], ['Bots', '/bots'], ['Polymarket', '/bots/polymarket'])],
     sitemap: { changefreq: 'daily', priority: '0.6' },
     llmsName: 'Polymarket bot (live)',
-    llms: 'Polymarket bot: records every 5-minute BTC/ETH/SOL/XRP Up/Down window on Polymarket and Polymarket US, scores strategies bot-style on real prices and fees, and places small real-money bets on Polymarket US. Live real-bet results and strategy scoreboard.'
+    llms: 'Polymarket bot: records every 5-minute BTC/ETH/SOL/XRP Up/Down window on Polymarket and Polymarket US, scores a field of strategies on real prices and fees, and trades the best with real money on Polymarket US. Live results in percentages, strategies anonymous.'
   },
   {
     slug: 'bots-kalshi', path: '/bots/kalshi', out: 'bots/kalshi.html', source: 'pages/bots/kalshi.html',
