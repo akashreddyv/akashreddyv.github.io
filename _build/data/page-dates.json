@@ -3,6 +3,18 @@
     "date": "2026-11-23",
     "hash": "d8b4ad358fc7"
   },
+  "/bots": {
+    "date": "2026-11-24",
+    "hash": "d6874cbfef7c"
+  },
+  "/bots/kalshi": {
+    "date": "2026-11-24",
+    "hash": "453e1b937917"
+  },
+  "/bots/polymarket": {
+    "date": "2026-11-24",
+    "hash": "91a5d7cabe91"
+  },
   "/contact": {
     "date": "2026-11-23",
     "hash": "b681dceaeb7a"
@@ -32,8 +44,8 @@
     "hash": "db7c5ccf4e5a"
   },
   "/projects": {
-    "date": "2026-11-23",
-    "hash": "e7b86a37a204"
+    "date": "2026-11-24",
+    "hash": "06210f51e72b"
   },
   "/projects/reachakash-website": {
     "date": "2026-11-14",

@@ -1,0 +1,77 @@
+/* css/bots.css: the live bot pages (/bots, /bots/polymarket, /bots/kalshi). Uses the site's theme variables
+   (css/styles.css), so the dark and light themes both work. */
+.bots-section { margin: 56px 0; }
+.bots-section > h2 { font-family: var(--font-display); font-size: 22px; font-weight: 600; color: var(--white); margin-bottom: 8px; }
+.bots-section > p.bots-lead { color: var(--muted); font-size: 15px; line-height: 1.8; margin-bottom: 20px; max-width: 760px; }
+.bots-updated { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; min-height: 26px; }
+.bots-gap { margin-top: 16px; }
+.project-card .bots-tiles { margin-top: 18px; }
+.project-card .bots-tile { padding: 12px 14px; }
+.project-card .bots-tile-value { font-size: 20px; }
+
+.bots-tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.bots-tiles.bots-tiles-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.bots-tile { background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: 18px 20px; min-width: 0; }
+.bots-tile-value { font-family: var(--font-display); font-size: 26px; font-weight: 600; color: var(--white); overflow-wrap: break-word; }
+.bots-tile-label { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-top: 8px; }
+.bots-tile-note { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+.bots-pos { color: #2fbf71; }
+.bots-neg { color: var(--accent-red); }
+:root.theme-light .bots-pos { color: #12804a; }
+.bots-muted { color: var(--muted); }
+
+.bots-badge { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 12px; letter-spacing: 0.03em;
+  border: 1px solid var(--border); color: var(--muted); white-space: nowrap; }
+.bots-badge-live { border-color: rgba(47, 191, 113, 0.45); color: #2fbf71; }
+:root.theme-light .bots-badge-live { color: #12804a; }
+.bots-badge-stale { border-color: rgba(var(--accent-red-rgb), 0.5); color: var(--accent-red); }
+.bots-badge-dry { color: var(--muted); }
+
+.bots-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 4px; background: var(--card); }
+.bots-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.bots-table caption { caption-side: bottom; text-align: left; padding: 10px 14px; color: var(--muted); font-size: 12px; }
+.bots-table th { text-align: left; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
+  font-weight: 500; padding: 12px 14px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+.bots-table td { padding: 11px 14px; border-bottom: 1px solid var(--border); color: var(--text); white-space: nowrap; vertical-align: top; }
+.bots-table tr:last-child td { border-bottom: 0; }
+.bots-table td.bots-rule { white-space: normal; min-width: 260px; color: var(--muted); font-size: 13px; line-height: 1.6; }
+.bots-ci { display: block; font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+.bots-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.bots-tab { font: inherit; font-size: 13px; padding: 7px 14px; border-radius: 999px; border: 1px solid var(--border);
+  background: none; color: var(--muted); cursor: pointer; }
+.bots-tab[aria-pressed="true"] { background: var(--btn-bg); color: var(--on-accent); border-color: var(--btn-bg); }
+.bots-tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.bots-chart-box { background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: 14px 14px 10px; }
+.bots-chart { width: 100%; height: auto; display: block; }
+.bots-grid { stroke: var(--border); stroke-width: 1; }
+.bots-zero { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 4 4; opacity: 0.6; }
+.bots-axis { fill: var(--muted); font-size: 12px; font-family: var(--font-body); }
+.bots-line { fill: none; stroke-width: 2.2; stroke-linejoin: round; stroke-linecap: round; }
+.bots-line-0 { stroke: var(--accent-red); background: var(--accent-red); }
+.bots-line-1 { stroke: #4ea1ff; background: #4ea1ff; }
+.bots-line-2 { stroke: #2fbf71; background: #2fbf71; }
+.bots-line-3 { stroke: #f2b84b; background: #f2b84b; }
+.bots-line-4 { stroke: #b48cff; background: #b48cff; }
+.bots-line-5 { stroke: #3fd0d4; background: #3fd0d4; }
+.bots-line-6 { stroke: #ff7ab6; background: #ff7ab6; }
+.bots-line-7 { stroke: var(--muted); background: var(--muted); }
+.bots-legend { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 10px; font-size: 13px; color: var(--muted); }
+.bots-swatch { display: inline-block; width: 12px; height: 3px; margin-right: 6px; vertical-align: middle; border-radius: 2px; }
+
+.bots-note { font-size: 13px; color: var(--muted); line-height: 1.8; border-left: 2px solid var(--border); padding: 4px 0 4px 16px; }
+.bots-steps { counter-reset: step; list-style: none; display: grid; gap: 14px; }
+.bots-steps li { position: relative; padding-left: 40px; color: var(--muted); line-height: 1.7; font-size: 15px; }
+.bots-steps li::before { counter-increment: step; content: counter(step); position: absolute; left: 0; top: 0; width: 26px; height: 26px;
+  border-radius: 50%; border: 1px solid var(--border); color: var(--accent); font-size: 12px; display: grid; place-items: center; }
+.bots-steps b { color: var(--text); font-weight: 600; }
+
+@media (max-width: 900px) {
+  .bots-tiles, .bots-tiles.bots-tiles-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 520px) {
+  .bots-tiles, .bots-tiles.bots-tiles-3 { grid-template-columns: 1fr; }
+  .bots-tile-value { font-size: 22px; }
+}

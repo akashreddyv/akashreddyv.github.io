@@ -237,6 +237,11 @@ const SERVICE_PAGES = [
   llms: description
 }));
 
+// The live bot pages (/bots, /bots/polymarket, /bots/kalshi) load their own stylesheet and script. js/bots.js reads
+// the public JSON that the bots' publisher replaces about every 5 minutes on this repo's `bots-data` branch
+// (never main, so it starts no build). No personal or account data is in it.
+const BOTS_HEAD = '  <link rel="stylesheet" href="/css/bots.css">\n  <script src="/js/bots.js" defer></script>\n';
+
 const routes = [
   {
     slug: 'home', path: '/', out: 'index.html', source: 'pages/home.html', nav: 'home',
@@ -413,6 +418,49 @@ const routes = [
     sitemap: { changefreq: 'monthly', priority: '0.7' },
     llmsName: 'How reachakash.com is built',
     llms: 'How the site works: plain HTML, CSS and JavaScript generated from one template by a small Node.js build script (no framework), hosted on GitHub Pages; an admin page built on Decap CMS with automatic builds on GitHub Actions; contact form, suggestion box and chat box that email through a Cloudflare Worker; structured data, a sitemap with dates and images, IndexNow pings and llms.txt; cookieless analytics; a 3D logo viewer built with Three.js.'
+  },
+
+  // ── Live bot pages. Static HTML; js/bots.js fills in the numbers from the public JSON on the bots-data branch.
+  {
+    slug: 'bots', path: '/bots', out: 'bots.html', source: 'pages/bots.html', nav: 'projects', navCurrent: 'true',
+    title: 'Prediction-Market Bots, Live | Akash Reddy',
+    description: 'Trading bots Akash Reddy built for 5- and 15-minute crypto prediction markets on Polymarket and Kalshi, tested on real prices, with live results.',
+    ogType: 'website',
+    ogTitle: 'Prediction-market bots, live',
+    ogDesc: 'Trading bots for short crypto prediction markets, tested on real prices, with live results.',
+    headExtra: BOTS_HEAD,
+    jsonld: [crumbs(['Projects', '/projects'], ['Bots', '/bots'])],
+    sitemap: { changefreq: 'daily', priority: '0.7' },
+    llmsName: 'Prediction-market bots (live)',
+    llms: 'Two trading bots by Akash Reddy for 5- and 15-minute crypto Up/Down prediction markets (Polymarket, Kalshi): they record every window, test strategies on real prices and fees against a random control, and bet small real money on Polymarket US. Live results, no personal data.'
+  },
+  {
+    slug: 'bots-polymarket', path: '/bots/polymarket', out: 'bots/polymarket.html', source: 'pages/bots/polymarket.html',
+    nav: 'projects', navCurrent: 'true',
+    title: 'Polymarket Trading Bot, Live Results | Akash Reddy',
+    description: 'A bot for Polymarket\'s 5-minute crypto markets: every window recorded, strategies scored on real prices and fees, small real-money bets on Polymarket US.',
+    ogType: 'website',
+    ogTitle: 'Polymarket trading bot, live results',
+    ogDesc: 'Every 5-minute window recorded, strategies scored on real prices, small real-money bets on Polymarket US.',
+    headExtra: BOTS_HEAD,
+    jsonld: [crumbs(['Projects', '/projects'], ['Bots', '/bots'], ['Polymarket', '/bots/polymarket'])],
+    sitemap: { changefreq: 'daily', priority: '0.6' },
+    llmsName: 'Polymarket bot (live)',
+    llms: 'Polymarket bot: records every 5-minute BTC/ETH/SOL/XRP Up/Down window on Polymarket and Polymarket US, scores strategies bot-style on real prices and fees, and places small real-money bets on Polymarket US. Live real-bet results and strategy scoreboard.'
+  },
+  {
+    slug: 'bots-kalshi', path: '/bots/kalshi', out: 'bots/kalshi.html', source: 'pages/bots/kalshi.html',
+    nav: 'projects', navCurrent: 'true',
+    title: 'Kalshi Trading Bot, Live Data | Akash Reddy',
+    description: 'A bot for Kalshi\'s 15-minute crypto markets: every window recorded and checked against Kalshi\'s official results, with strategies and a dry run next.',
+    ogType: 'website',
+    ogTitle: 'Kalshi trading bot, live data',
+    ogDesc: 'Every 15-minute window recorded and checked against Kalshi\'s official results.',
+    headExtra: BOTS_HEAD,
+    jsonld: [crumbs(['Projects', '/projects'], ['Bots', '/bots'], ['Kalshi', '/bots/kalshi'])],
+    sitemap: { changefreq: 'daily', priority: '0.6' },
+    llmsName: 'Kalshi bot (live)',
+    llms: 'Kalshi bot: records every 15-minute BTC/ETH/SOL/XRP "price up?" window on Kalshi and checks its own result against Kalshi\'s official one; strategy testing and a no-money dry run come next. Live data, no bets yet.'
   },
 
   {

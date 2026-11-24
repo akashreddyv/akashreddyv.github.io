@@ -1,0 +1,33 @@
+<!-- pages/bots/kalshi.html: the Kalshi bot, live. Every number is filled in by js/bots.js from the public JSON on
+     the repo's bots-data branch (replaced about every 5 minutes; no personal or account data). -->
+<div class="page-inner" data-bots="kalshi">
+
+  <div class="page-header">
+    <p class="page-eyebrow"><a href="/bots">Bots</a> · Recording</p>
+    <h1 class="page-title">Kalshi <em>Bot</em></h1>
+    <p class="page-subtitle">Kalshi, a regulated US exchange, opens a "price up in the next 15 minutes?" market for Bitcoin, Ether, Solana and XRP four times an hour. This bot records every window and checks its own numbers against Kalshi's official results. Strategy testing and a no-money dry run come next.</p>
+    <div class="bots-updated" data-slot="updated"></div>
+  </div>
+
+  <div class="bots-tiles" data-slot="status"></div>
+
+  <section class="bots-section">
+    <h2>Right now</h2>
+    <p class="bots-lead">The latest prices the bot saw in each coin's current window. "Price vs target" is how far the coin is from the price it has to finish at or above for "up" to win.</p>
+    <div data-slot="latest"></div>
+  </section>
+
+  <section class="bots-section">
+    <h2>Official results vs the bot's own</h2>
+    <p class="bots-lead">When a window closes, the bot works out the result from its own price feeds and compares it with Kalshi's. The two must agree before any strategy is trusted; a miss usually means the price finished within a hair of the target.</p>
+    <div data-slot="recent"></div>
+  </section>
+
+  <section class="bots-section">
+    <h2>Where it's at</h2>
+    <p class="bots-lead" data-slot="stage"></p>
+  </section>
+
+  <p class="bots-note">Research and education, not financial advice. Prediction markets are risky and past results don't predict future ones. This bot places no bets yet. No personal or account information is shown.</p>
+
+</div>
