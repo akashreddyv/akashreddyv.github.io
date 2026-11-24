@@ -64,12 +64,12 @@
 
 ## Referral codes
 
-Akash Reddy's referral codes and links, each with its own page (code, what you get, steps, official terms), last checked 2026-10-24. He earns a reward when people sign up through them. All of them: https://reachakash.com/referrals. Machine-readable: https://reachakash.com/referrals.json
+Akash Reddy's referral codes and links, each with its own page (code, what you get, steps, official terms), last checked 2026-11-23. He earns a reward when people sign up through them. All of them: https://reachakash.com/referrals. Machine-readable: https://reachakash.com/referrals.json
 
 ### By category
 
 - [Credit cards referral codes](https://reachakash.com/referrals/credit-cards): Chase Sapphire Reserve / Sapphire Preferred, Chase Freedom Unlimited / Freedom Flex, Bilt Card, Amex Blue Cash Everyday, Amex Delta SkyMiles Blue, Discover Card
-- [Investing & trading referral codes](https://reachakash.com/referrals/investing): Robinhood, Kraken Pro, Kalshi
+- [Investing & trading referral codes](https://reachakash.com/referrals/investing): Robinhood, Kraken Pro, Kalshi, Polymarket
 - [Payments referral codes](https://reachakash.com/referrals/payments): Cash App, CRED, CheQ
 - [Send money to India referral codes](https://reachakash.com/referrals/send-money-to-india): Remitly, Abound (Times of India), MyPursu, Crobo, Unplex
 - [Shopping & cash back referral codes](https://reachakash.com/referrals/shopping): Rakuten, TopCashback, Upside, CashKaro
@@ -86,6 +86,7 @@ Akash Reddy's referral codes and links, each with its own page (code, what you g
 - [Robinhood referral link](https://reachakash.com/referrals/robinhood): no code, link only; for you: a free stock reward when you sign up; where: US; sign up: https://join.robinhood.com/akashrv-3b29f4; official terms: https://robinhood.com/us/en/support/articles/invite-friends-pick-stock/
 - [Kraken Pro referral code](https://reachakash.com/referrals/kraken): code r9rh9tdr; for you: sign-up rewards for both of us; see Kraken's terms; where: US; sign up: https://proinvite.kraken.com/9f1e/m0oer0nw; official terms: https://www.kraken.com/legal/referrals
 - [Kalshi referral link](https://reachakash.com/referrals/kalshi): no code, link only; for you: bonus trading credit; the amount varies, see Kalshi's terms; where: US; sign up: https://kalshi.com/sign-up/?referral=12577357-c5de-4e67-b5d6-a0374d053009; official terms: https://kalshi.com/tc/500
+- [Polymarket referral code](https://reachakash.com/referrals/polymarket): code REACHAKASH; for you: $25 to trade after you sign up with the code and make the qualifying deposit (as of 2026-11-23); where: US; sign up: https://polymarket.us/join/reachakash; official terms: https://www.cftc.gov/filings/orgrules/rules08102614982.pdf
 - [Cash App referral code](https://reachakash.com/referrals/cash-app): code DLC673L; for you: $5 when you send $5 or more; terms apply (as of 2026-10-11); where: US; sign up: https://cash.app/refer/DLC673L; official terms: https://cash.app/help/us/en-us/3136-referral-bonus
 - [CRED referral link](https://reachakash.com/referrals/cred): no code, link only; for you: ₹50 off any upcoming bill of ₹100 or more (as of 2026-10-24); where: India; sign up: https://app.cred.club/spQx/3r0c3lt9; official terms: https://cred.club/terms
 - [CheQ referral link](https://reachakash.com/referrals/cheq): no code, link only; for you: up to ₹1,000 in referral rewards (as of 2026-10-24); where: India; sign up: https://cheq.onelink.me/3UIC/1z6bcvu2; official terms: https://cheq.one/legal/terms-and-conditions

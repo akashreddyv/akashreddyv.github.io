@@ -40,8 +40,8 @@
     "hash": "10605a66b6fe"
   },
   "/referrals": {
-    "date": "2026-11-14",
-    "hash": "fbcf8968c88c"
+    "date": "2026-11-24",
+    "hash": "8011778d6567"
   },
   "/referrals/abound": {
     "date": "2026-11-14",
@@ -104,16 +104,16 @@
     "hash": "f68cc625c002"
   },
   "/referrals/investing": {
-    "date": "2026-11-14",
-    "hash": "c8268a56d0a5"
+    "date": "2026-11-24",
+    "hash": "36d4a88338dc"
   },
   "/referrals/kalshi": {
-    "date": "2026-11-14",
-    "hash": "88abb4ae39f9"
+    "date": "2026-11-24",
+    "hash": "bd936a18e481"
   },
   "/referrals/kraken": {
-    "date": "2026-11-14",
-    "hash": "1ed65c2e894f"
+    "date": "2026-11-24",
+    "hash": "c2c8392d1174"
   },
   "/referrals/mypursu": {
     "date": "2026-11-14",
@@ -122,6 +122,10 @@
   "/referrals/payments": {
     "date": "2026-11-14",
     "hash": "9393f4d2ba3f"
+  },
+  "/referrals/polymarket": {
+    "date": "2026-11-24",
+    "hash": "da6ab4bcebbc"
   },
   "/referrals/rakuten": {
     "date": "2026-11-14",
@@ -132,8 +136,8 @@
     "hash": "68f0f3b66f40"
   },
   "/referrals/robinhood": {
-    "date": "2026-11-14",
-    "hash": "35d52220f02a"
+    "date": "2026-11-24",
+    "hash": "89f16cd7a6e3"
   },
   "/referrals/send-money-to-india": {
     "date": "2026-11-14",

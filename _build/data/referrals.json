@@ -201,6 +201,23 @@
       "publish": true
     },
     {
+      "id": "polymarket",
+      "name": "Polymarket",
+      "logo": "/images/referrals/polymarket.png",
+      "category": "investing",
+      "region": "US",
+      "code": "REACHAKASH",
+      "url": "https://polymarket.us/join/reachakash",
+      "forYou": "$25 to trade after you sign up with the code and make the qualifying deposit",
+      "headline": "$25 to trade",
+      "iGet": null,
+      "termsUrl": "https://www.cftc.gov/filings/orgrules/rules08102614982.pdf",
+      "lastVerified": "2026-11-23",
+      "asOf": "2026-11-23",
+      "note": "Polymarket US. The $25 can only be used to trade, and you can withdraw it once those positions settle or you sell them.",
+      "publish": true
+    },
+    {
       "id": "cash-app",
       "name": "Cash App",
       "logo": "/images/referrals/cashapp.png",
