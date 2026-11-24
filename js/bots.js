@@ -97,19 +97,31 @@
     set('updated', fresh(d) + ' ' + online(d.recorder.heartbeat_age_s));
     var run = d.run || {}, live = d.live || {}, tot = live.totals || {}, rec = d.recorder || {};
     var wt = rec.windows_today || {};
-    set('status', tile('Live bot', run.active ? 'Live' : 'Paused', run.active ? 'real money, small stakes' : 'no real bets right now', run.active ? 'bots-pos' : '') +
-      tile('Strategies trading now', esc((run.strategies || []).join(' + ') || '–'), run.active ? esc(run.shares) + ' shares a bet' : '') +
+    var botNames = run.bots ? Object.keys(run.bots) : [];
+    set('status', tile(botNames.length > 1 ? 'Live bots' : 'Live bot', run.active ? (botNames.length > 1 ? botNames.length + ' live' : 'Live') : 'Paused',
+        run.active ? 'real money, small stakes' : 'no real bets right now', run.active ? 'bots-pos' : '') +
+      (botNames.length > 1
+        ? tile('Strategies trading now', esc(botNames.length + ' bots'), botNames.map(function (n) { return '<b>' + esc(n) + '</b>: ' + esc(run.bots[n].join(' + ')); }).join('<br>') +
+            (run.active ? '<br>' + esc(run.shares) + ' shares a bet each' : ''))
+        : tile('Strategies trading now', esc((run.strategies || []).join(' + ') || '–'), run.active ? esc(run.shares) + ' shares a bet' : '')) +
       tile('Windows recorded today', esc((wt.polymarket_us || 0).toLocaleString()), 'per venue, all four coins') +
       tile('Results vs the exchange', rec.resolved_today ? pct(100 * (1 - rec.result_mismatches_today / rec.resolved_today)) : '–', 'our result = official result today'));
     set('real', tile('Real bets', esc(tot.bets || 0), 'since ' + esc((tot.first || '').replace(' ET', ''))) +
       tile('Won / lost', esc(tot.won || 0) + ' / ' + esc(tot.lost || 0), tot.bets ? pct(100 * tot.won / Math.max(1, tot.won + tot.lost)) + ' won' : '') +
       tile('Profit', money(tot.pnl), 'after fees', sign(tot.pnl)) +
       tile('Per $1 staked', cents(tot.per_dollar_c), 'profit per dollar bet', sign(tot.per_dollar_c)));
+    var pb = live.bots || {};
+    set('per-bot', Object.keys(pb).length ? table(['Bot (this run, since ' + esc((run.since || '').replace(' ET', '')) + ' ET)', 'Strategies', 'Bets', 'Won / lost', 'Profit', 'Per $1'],
+      Object.keys(pb).map(function (n) {
+        var b = pb[n];
+        return '<tr><td><b>' + esc(n) + '</b></td><td>' + esc(((run.bots || {})[n] || []).join(' + ')) + '</td><td>' + esc(b.bets) + '</td><td>' +
+          esc(b.won) + ' / ' + esc(b.lost) + '</td><td class="' + sign(b.pnl) + '">' + money(b.pnl) + '</td><td class="' + sign(b.per_dollar_c) + '">' + cents(b.per_dollar_c) + '</td></tr>';
+      })) : '');
     set('real-chart', chart([{ name: 'Real profit', points: live.cum || [] }], { label: 'Cumulative profit of the real bets', height: 200 }));
-    set('trades', table(['Time', 'Coin', 'Bet', 'Price', 'Shares', 'Strategy', 'Result', 'Profit'],
+    set('trades', table(['Time', 'Coin', 'Bet', 'Price', 'Shares', 'Strategy', 'Bot', 'Result', 'Profit'],
       (live.trades || []).slice(0, 25).map(function (t) {
         return '<tr><td>' + esc(t.time) + '</td><td>' + esc(t.coin) + '</td><td>' + esc(t.side) + ' at T-' + esc(t.checkpoint) + 's</td><td>' +
-          esc(Math.round(t.price * 100)) + '¢</td><td>' + esc(t.shares) + '</td><td>' + esc(t.strategies) + '</td><td>' +
+          esc(Math.round(t.price * 100)) + '¢</td><td>' + esc(t.shares) + '</td><td>' + esc(t.strategies) + '</td><td>' + esc(t.bot || '–') + '</td><td>' +
           (t.result ? badge(t.result, t.result === 'won' ? 'live' : 'stale') : badge('waiting', 'dry')) + '</td><td class="' + sign(t.pnl) + '">' + money(t.pnl) + '</td></tr>';
       })));
     scoreboard(d);
