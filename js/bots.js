@@ -191,7 +191,7 @@
   var API = 'https://api.github.com/repos/akashreddyv/akashreddyv.github.io/contents/';
   var CYCLE = page === 'kalshi' ? 900000 : 300000;              // window length, ms
   var MOMENTS = [90000, 60000];                                  // pick moments, ms before the close
-  var BURST = [2200, 3500, 5000, 7500, 11000];                   // asks after a pick moment until it shows up
+  var BURST = [3300, 4300, 5800, 8500, 12000];                   // asks after a pick moment until it shows up
   var AFTER_START = page === 'kalshi' ? [16000, 75000, 150000] : [16000, 55000];   // new window (pushed at :12), results
   var picksData = null, picksSlow = false, apiBlockedUntil = 0, pollTimer = null, polling = false;
 
