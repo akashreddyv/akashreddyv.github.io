@@ -182,17 +182,18 @@
   }
 
   /* ---------- Live picks (venue pages) ----------
-     The publisher replaces <page>-picks.json within about 10 seconds of a pick. raw.githubusercontent.com caches
-     files for 5 minutes, so picks are read from GitHub's API instead (fresh with a unique query string; 60 requests
-     an hour per visitor, so the page asks only just after the moments picks are made, and falls back to the cached
-     copy if GitHub says to slow down). */
+     The publisher pushes <page>-picks.json about 2 seconds after each pick moment (90 and 60 s before a window's
+     close), with a `checked` marker naming the latest moment it covers. raw.githubusercontent.com caches files for
+     5 minutes, so picks are read from GitHub's API (fresh with a unique query string). GitHub allows 60 such requests
+     an hour per visitor, so the page asks in a short burst just after each pick moment and stops as soon as the
+     marker shows that moment, once just after a window starts (new window, last result), not while the tab is
+     hidden, and falls back to the cached copy when GitHub says to slow down. */
   var API = 'https://api.github.com/repos/akashreddyv/akashreddyv.github.io/contents/';
   var CYCLE = page === 'kalshi' ? 900000 : 300000;              // window length, ms
-  // ms into a window: just after it starts (the new window and the last one's result), ~13 s after each pick moment
-  // (90 and 60 s before the close) and once more 30 s before the close: 4 requests per window (48 an hour on the
-  // Polymarket page, 16 on Kalshi's, under GitHub's 60).
-  var POLLS = page === 'kalshi' ? [15000, 823000, 853000, 870000] : [12000, 223000, 253000, 270000];
-  var picksData = null, picksSlow = false;
+  var MOMENTS = [90000, 60000];                                  // pick moments, ms before the close
+  var BURST = [2200, 3500, 5000, 7500, 11000];                   // asks after a pick moment until it shows up
+  var AFTER_START = page === 'kalshi' ? [16000, 75000, 150000] : [16000, 55000];   // new window (pushed at :12), results
+  var picksData = null, picksSlow = false, apiBlockedUntil = 0, pollTimer = null, polling = false;
 
   function loadPicks() {
     var name = page + '-picks.json';
@@ -200,14 +201,49 @@
       return fetch(BASE + name + '?t=' + Math.floor(Date.now() / 60000), { cache: 'no-store' })
         .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); });
     };
+    if (Date.now() < apiBlockedUntil) { picksSlow = true; return raw(); }
     // a unique query string: GitHub's API caches each URL for up to a minute
     return fetch(API + name + '?ref=bots-data&n=' + Date.now(), { headers: { Accept: 'application/vnd.github.raw+json' }, cache: 'no-store' })
       .then(function (r) {
+        if (r.status === 403 || r.status === 429) {                // over the hourly limit: wait for its reset
+          var reset = +r.headers.get('X-RateLimit-Reset');
+          apiBlockedUntil = reset ? reset * 1000 + 2000 : Date.now() + 600000;
+        }
         if (!r.ok) throw new Error(r.status);
         picksSlow = false;
         return r.json();
       })
       .catch(function () { picksSlow = true; return raw(); });
+  }
+  function covered(close, cp) {                                  // does the data include this pick moment?
+    var c = picksData && picksData.checked;
+    if (!c) return false;
+    var cc = Date.parse(c.closes_at);
+    return cc > close || (cc === close && c.seconds_before_close * 1000 <= cp);
+  }
+  function resultsIn(close) {                                    // are the results of the window closing then in?
+    var ws = (picksData && picksData.windows) || [];
+    var done = ws.filter(function (w) { return Date.parse(w.closes_at) === close; });
+    return done.length > 0 && done.every(function (w) { return w.result != null; });
+  }
+  function nextPoll(now) {
+    var base = now - now % CYCLE, best = null;
+    function consider(at, skip) { if (at > now + 250 && !skip && (best === null || at < best)) best = at; }
+    [base, base + CYCLE].forEach(function (start) {
+      var close = start + CYCLE;
+      AFTER_START.forEach(function (o, i) { consider(start + o, i > 0 && resultsIn(start)); });
+      MOMENTS.forEach(function (cp) {
+        BURST.forEach(function (b) { consider(close - cp + b, covered(close, cp)); });
+      });
+    });
+    return best;
+  }
+  function nextMoment(now) {
+    var base = now - now % CYCLE, out = null;
+    [base, base + CYCLE].forEach(function (start) {
+      MOMENTS.forEach(function (cp) { var m = start + CYCLE - cp; if (m > now && (out === null || m < out)) out = m; });
+    });
+    return out;
   }
   function mmss(ms) {
     var s = Math.max(0, Math.round(ms / 1000));
@@ -236,8 +272,10 @@
     var open = ws.filter(function (w) { return w.open && Date.parse(w.closes_at) === firstOpen; });
     var done = ws.filter(function (w) { return !w.open && Date.parse(w.closes_at) === lastDone; });
     var close = open.length ? Date.parse(open[0].closes_at) : null;
+    var nm = nextMoment(now);
     var head = close ? '<div class="bots-pick-head"><b>Current window closes ' + esc(open[0].closes_et) + ' ET</b> · ' +
-      '<span data-countdown="' + close + '">' + mmss(close - now) + '</span> left</div>'
+      '<span data-countdown="' + close + '">' + mmss(close - now) + '</span> left' +
+      (nm && nm < close ? ' · next pick check in <span data-countdown="' + nm + '">' + mmss(nm - now) + '</span>' : '') + '</div>'
       : '<div class="bots-pick-head"><b>New window starting…</b> its picks load in a few seconds</div>';
     var row = function (w, withResult) {
       var b = w.best, r = b ? rec[b.by] || {} : {};
@@ -255,7 +293,7 @@
     };
     var html = head + table(['Coin', 'Pick', 'Price then', 'Picked at', 'By'], open.map(function (w) { return row(w, false); }),
       'Picks refresh by themselves. ' + (picksSlow ? 'GitHub is limiting live updates right now, so picks may show up to 5 minutes late.' :
-        'A new pick shows up here about 20 seconds after it is made.'));
+        'A new pick shows up here within a few seconds of being made.'));
     if (done.length) {
       html += '<p class="bots-sub">Previous window (closed ' + esc(done[0].closes_et) + ' ET)</p>' +
         table(['Coin', 'Pick', 'Price then', 'Picked at', 'By', 'Result'], done.map(function (w) { return row(w, true); }));
@@ -273,17 +311,24 @@
       : badge('Live · last change ' + ago(d.generated_at), 'live'));
   }
   function refreshPicks() {
-    loadPicks().then(function (d) { picksData = d; renderPicks(); })
+    return loadPicks().then(function (d) { picksData = d; renderPicks(); })
       .catch(function () { set('picks-updated', badge('Picks unavailable right now', 'stale')); });
   }
   function schedulePicks() {
-    var now = Date.now(), base = now - now % CYCLE, next = null;
-    POLLS.concat(POLLS.map(function (o) { return o + CYCLE; })).forEach(function (o) {
-      var at = base + o;
-      if (at > now + 1000 && (next === null || at < next)) next = at;
-    });
-    setTimeout(function () { refreshPicks(); schedulePicks(); }, next - now);
+    clearTimeout(pollTimer);
+    var now = Date.now(), at = nextPoll(now);
+    pollTimer = setTimeout(function () {
+      if (document.visibilityState === 'hidden' || polling) { schedulePicks(); return; }
+      polling = true;
+      refreshPicks().then(function () { polling = false; schedulePicks(); });
+    }, at - now);
   }
+  document.addEventListener('visibilitychange', function () {   // back on the tab: catch up at once
+    if (document.visibilityState === 'visible' && el('picks') && !polling) {
+      polling = true;
+      refreshPicks().then(function () { polling = false; schedulePicks(); });
+    }
+  });
   function tick() {
     root.querySelectorAll('[data-countdown]').forEach(function (e) {
       e.textContent = mmss(+e.getAttribute('data-countdown') - Date.now());
