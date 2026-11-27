@@ -188,9 +188,10 @@
      copy if GitHub says to slow down). */
   var API = 'https://api.github.com/repos/akashreddyv/akashreddyv.github.io/contents/';
   var CYCLE = page === 'kalshi' ? 900000 : 300000;              // window length, ms
-  // ms into a window: ~13 s after each pick moment (90 and 60 s before the close), once more 30 s before the close,
-  // and once after it for the result: 4 requests per window (48 an hour on this page, under GitHub's 60).
-  var POLLS = page === 'kalshi' ? [823000, 853000, 870000, 120000] : [223000, 253000, 270000, 100000];
+  // ms into a window: just after it starts (the new window and the last one's result), ~13 s after each pick moment
+  // (90 and 60 s before the close) and once more 30 s before the close: 4 requests per window (48 an hour on the
+  // Polymarket page, 16 on Kalshi's, under GitHub's 60).
+  var POLLS = page === 'kalshi' ? [15000, 823000, 853000, 870000] : [12000, 223000, 253000, 270000];
   var picksData = null, picksSlow = false;
 
   function loadPicks() {
@@ -236,7 +237,8 @@
     var done = ws.filter(function (w) { return !w.open && Date.parse(w.closes_at) === lastDone; });
     var close = open.length ? Date.parse(open[0].closes_at) : null;
     var head = close ? '<div class="bots-pick-head"><b>Current window closes ' + esc(open[0].closes_et) + ' ET</b> · ' +
-      '<span data-countdown="' + close + '">' + mmss(close - now) + '</span> left</div>' : '';
+      '<span data-countdown="' + close + '">' + mmss(close - now) + '</span> left</div>'
+      : '<div class="bots-pick-head"><b>New window starting…</b> its picks load in a few seconds</div>';
     var row = function (w, withResult) {
       var b = w.best, r = b ? rec[b.by] || {} : {};
       var res = '';
