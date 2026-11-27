@@ -3,13 +3,20 @@
 <div class="page-inner" data-bots="kalshi">
 
   <div class="page-header">
-    <p class="page-eyebrow"><a href="/bots">Bots</a> · Recording</p>
+    <p class="page-eyebrow"><a href="/bots">Bots</a> · Recording and testing</p>
     <h1 class="page-title">Kalshi <em>Bot</em></h1>
-    <p class="page-subtitle">Kalshi, a regulated US exchange, opens a "price up in the next 15 minutes?" market for Bitcoin, Ether, Solana and XRP four times an hour. This bot records every window and checks its own numbers against Kalshi's official results. Strategy testing and a no-money dry run come next.</p>
+    <p class="page-subtitle">Kalshi, a regulated US exchange, opens a "price up in the next 15 minutes?" market for Bitcoin, Ether, Solana and XRP four times an hour. This bot records every window, checks its own numbers against Kalshi's official results, and now tests the Polymarket bot's strategies on the recorded prices. A no-money dry run comes next.</p>
     <div class="bots-updated" data-slot="updated"></div>
   </div>
 
   <div class="bots-tiles" data-slot="status"></div>
+
+  <section class="bots-section">
+    <h2>Live picks <span class="bots-badge bots-badge-dry">under test</span></h2>
+    <p class="bots-lead">The side each picking rule would buy in the current 15-minute window on Kalshi, about a minute and a half before the close. The rules come from the Polymarket bot; on Kalshi their record is simulated on recorded prices over only a few days, so treat these picks as an experiment, not a tip. Prices move fast near the close: check the live price before buying anything.</p>
+    <div class="bots-updated" data-slot="picks-updated"></div>
+    <div data-slot="picks"></div>
+  </section>
 
   <section class="bots-section">
     <h2>Right now</h2>

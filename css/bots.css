@@ -68,6 +68,16 @@
   border-radius: 50%; border: 1px solid var(--border); color: var(--accent); font-size: 12px; display: grid; place-items: center; }
 .bots-steps b { color: var(--text); font-weight: 600; }
 
+.bots-pick { display: inline-block; padding: 2px 10px; border-radius: 999px; font-weight: 600; font-size: 13px; border: 1px solid; white-space: nowrap; }
+.bots-pick-up { color: #2fbf71; border-color: rgba(47, 191, 113, 0.5); }
+:root.theme-light .bots-pick-up { color: #12804a; }
+.bots-pick-down { color: var(--accent-red); border-color: rgba(var(--accent-red-rgb), 0.5); }
+.bots-pick-head { margin: 4px 0 12px; color: var(--muted); font-size: 15px; }
+.bots-pick-head b { color: var(--white); font-weight: 600; }
+.bots-pick-head [data-countdown] { color: var(--text); font-variant-numeric: tabular-nums; }
+.bots-sub { margin: 26px 0 10px; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
+.bots-section > h2 .bots-badge { vertical-align: middle; margin-left: 8px; font-family: var(--font-body); font-weight: 400; }
+
 @media (max-width: 900px) {
   .bots-tiles, .bots-tiles.bots-tiles-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }

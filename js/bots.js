@@ -181,6 +181,117 @@
     }
   }
 
+  /* ---------- Live picks (venue pages) ----------
+     The publisher replaces <page>-picks.json within about 10 seconds of a pick. raw.githubusercontent.com caches
+     files for 5 minutes, so picks are read from GitHub's API instead (fresh with a unique query string; 60 requests
+     an hour per visitor, so the page asks only just after the moments picks are made, and falls back to the cached
+     copy if GitHub says to slow down). */
+  var API = 'https://api.github.com/repos/akashreddyv/akashreddyv.github.io/contents/';
+  var CYCLE = page === 'kalshi' ? 900000 : 300000;              // window length, ms
+  // ms into a window: ~13 s after each pick moment (90 and 60 s before the close), once more 30 s before the close,
+  // and once after it for the result: 4 requests per window (48 an hour on this page, under GitHub's 60).
+  var POLLS = page === 'kalshi' ? [823000, 853000, 870000, 120000] : [223000, 253000, 270000, 100000];
+  var picksData = null, picksSlow = false;
+
+  function loadPicks() {
+    var name = page + '-picks.json';
+    var raw = function () {
+      return fetch(BASE + name + '?t=' + Math.floor(Date.now() / 60000), { cache: 'no-store' })
+        .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); });
+    };
+    // a unique query string: GitHub's API caches each URL for up to a minute
+    return fetch(API + name + '?ref=bots-data&n=' + Date.now(), { headers: { Accept: 'application/vnd.github.raw+json' }, cache: 'no-store' })
+      .then(function (r) {
+        if (!r.ok) throw new Error(r.status);
+        picksSlow = false;
+        return r.json();
+      })
+      .catch(function () { picksSlow = true; return raw(); });
+  }
+  function mmss(ms) {
+    var s = Math.max(0, Math.round(ms / 1000));
+    return Math.floor(s / 60) + ':' + ('0' + (s % 60)).slice(-2);
+  }
+  function sideBadge(side) {
+    return '<span class="bots-pick bots-pick-' + (side === 'Up' ? 'up' : 'down') + '">' + (side === 'Up' ? '▲ Up' : '▼ Down') + '</span>';
+  }
+  function pickState(w, now) {
+    var close = Date.parse(w.closes_at);
+    if (w.best) return '';
+    if (!w.open) return '<span class="bots-muted">No pick</span>';
+    var last = (picksData.pick_minutes_before_close || [1]).slice(-1)[0] * 60000;
+    return now < close - last + 20000 ? '<span class="bots-muted">Waiting…</span>' : '<span class="bots-muted">No pick this window</span>';
+  }
+  function renderPicks() {
+    var d = picksData;
+    if (!d) return;
+    var now = Date.now();
+    var rules = d.rules || [];
+    var rec = {};
+    rules.forEach(function (r) { rec[r.label] = r; });
+    var ws = d.windows || [];
+    var firstOpen = Math.min.apply(null, ws.filter(function (w) { return w.open; }).map(function (w) { return Date.parse(w.closes_at); }));
+    var lastDone = Math.max.apply(null, ws.filter(function (w) { return !w.open; }).map(function (w) { return Date.parse(w.closes_at); }));
+    var open = ws.filter(function (w) { return w.open && Date.parse(w.closes_at) === firstOpen; });
+    var done = ws.filter(function (w) { return !w.open && Date.parse(w.closes_at) === lastDone; });
+    var close = open.length ? Date.parse(open[0].closes_at) : null;
+    var head = close ? '<div class="bots-pick-head"><b>Current window closes ' + esc(open[0].closes_et) + ' ET</b> · ' +
+      '<span data-countdown="' + close + '">' + mmss(close - now) + '</span> left</div>' : '';
+    var row = function (w, withResult) {
+      var b = w.best, r = b ? rec[b.by] || {} : {};
+      var res = '';
+      if (withResult) {
+        res = w.result == null ? '<span class="bots-muted">waiting for the result</span>'
+          : !b ? esc(w.result)
+          : w.result === b.side ? badge(w.result + ' · pick won', 'live') : badge(w.result + ' · pick lost', 'stale');
+      }
+      var also = (w.others || []).map(function (o) { return esc(o.by) + ': ' + esc(o.side); }).join(', ');
+      return '<tr><td><b>' + esc(w.coin) + '</b></td><td>' + (b ? sideBadge(b.side) : pickState(w, now)) + '</td><td>' +
+        (b ? esc(b.price_c) + '¢' : '–') + '</td><td>' + (b ? esc(b.at_et) + ' ET' : '–') + '</td><td>' +
+        (b ? esc(b.by) + (r.win_pct != null ? '<span class="bots-ci">' + pct(r.win_pct) + ' won · ' + ret(r.return_pct) + '</span>' : '') : '–') +
+        (also ? '<span class="bots-ci">also ' + also + '</span>' : '') + '</td>' + (withResult ? '<td>' + res + '</td>' : '') + '</tr>';
+    };
+    var html = head + table(['Coin', 'Pick', 'Price then', 'Picked at', 'By'], open.map(function (w) { return row(w, false); }),
+      'Picks refresh by themselves. ' + (picksSlow ? 'GitHub is limiting live updates right now, so picks may show up to 5 minutes late.' :
+        'A new pick shows up here about 20 seconds after it is made.'));
+    if (done.length) {
+      html += '<p class="bots-sub">Previous window (closed ' + esc(done[0].closes_et) + ' ET)</p>' +
+        table(['Coin', 'Pick', 'Price then', 'Picked at', 'By', 'Result'], done.map(function (w) { return row(w, true); }));
+    }
+    html += '<p class="bots-sub">How the picking rules have done</p>' +
+      table(['Rule', 'Picks', 'Won / lost', 'Win rate', 'Return', '1st half / 2nd half'], rules.map(function (r) {
+        var h = r.halves_pct || [];
+        return '<tr><td><b>' + esc(r.label) + '</b>' + (r.uses ? '<span class="bots-ci">' + esc(r.uses.join(' + ')) + '</span>' : '') +
+          (r.coins && r.coins.length < 4 ? '<span class="bots-ci">' + esc(r.coins.join(', ')) + ' only</span>' : '') + '</td><td>' +
+          esc(num(r.bets)) + '</td><td>' + esc(num(r.bets - r.lost)) + ' / ' + esc(num(r.lost)) + '</td><td>' + pct(r.win_pct) +
+          '</td><td class="' + sign(r.return_pct) + '">' + ret(r.return_pct) + '</td><td>' + ret(h[0]) + ' / ' + ret(h[1]) + '</td></tr>';
+      }), 'Every pick since ' + ((rules[0] || {}).since || 'the start') + ', at the price on offer then, fee included. ' + (d.note || ''));
+    set('picks', html);
+    set('picks-updated', picksSlow ? badge('Slow updates (GitHub limit) · last change ' + ago(d.generated_at), 'stale')
+      : badge('Live · last change ' + ago(d.generated_at), 'live'));
+  }
+  function refreshPicks() {
+    loadPicks().then(function (d) { picksData = d; renderPicks(); })
+      .catch(function () { set('picks-updated', badge('Picks unavailable right now', 'stale')); });
+  }
+  function schedulePicks() {
+    var now = Date.now(), base = now - now % CYCLE, next = null;
+    POLLS.concat(POLLS.map(function (o) { return o + CYCLE; })).forEach(function (o) {
+      var at = base + o;
+      if (at > now + 1000 && (next === null || at < next)) next = at;
+    });
+    setTimeout(function () { refreshPicks(); schedulePicks(); }, next - now);
+  }
+  function tick() {
+    root.querySelectorAll('[data-countdown]').forEach(function (e) {
+      e.textContent = mmss(+e.getAttribute('data-countdown') - Date.now());
+    });
+    if (picksData && (picksData.windows || []).some(function (w) { return w.open && Date.parse(w.closes_at) <= Date.now(); })) {
+      picksData.windows.forEach(function (w) { if (w.open && Date.parse(w.closes_at) <= Date.now()) w.open = false; });
+      renderPicks();                                         // the window just closed: move it down until new data comes
+    }
+  }
+
   function load(name) {
     return fetch(BASE + name + '.json?t=' + Math.floor(Date.now() / 60000), { cache: 'no-store' })
       .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); });
@@ -194,4 +305,9 @@
   }
   refresh();
   setInterval(refresh, 60000);
+  if (el('picks')) {
+    refreshPicks();
+    schedulePicks();
+    setInterval(tick, 1000);
+  }
 })();
