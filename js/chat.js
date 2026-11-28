@@ -35,7 +35,7 @@
     price: "Every project is priced on what it needs, so there's no fixed price list. Tell Akash what you have in mind (tap <b>Message Akash</b>) and he'll reply with a quote.",
     ai: `Akash is an AI enthusiast: he builds custom AI agents that work with your documents and tools to take repeat tasks off your plate, and he offers AI coaching for people and teams. ${a('/services/ai-agents', 'Custom AI agents')}`,
     coaching: `AI coaching with Akash is one-on-one or team sessions on using AI in your own work: better prompts, automating repeat tasks, and knowing where AI helps and where it doesn't. ${a('/services/ai-coaching', 'AI coaching')}`,
-    referrals: `Akash shares his referral codes for credit cards, investing, payments, sending money to India, cash back and AI tools: ${a('/referrals', 'all referral codes')}. Ask me about a company, like "Remitly" or "Chase".`,
+    referrals: `Akash shares his referral codes for credit cards, investing, payments, sending money to India, cash back, AI tools and sports picks: ${a('/referrals', 'all referral codes')}. Ask me about a company, like "Remitly" or "Chase".`,
     suggest: `Akash would love your idea! Type it here and I'll drop it in his suggestion box (anonymous unless you add your email). Or use the ${a('/suggestions', 'suggestion box page')}.`,
     direct: "Sure, type your message and I'll send it straight to Akash. He replies by email.",
     contact: `Message Akash right here (tap <b>Message Akash</b>), use the ${a('/contact', 'contact form')}, or email ${a('mailto:' + CONFIG.contactEmail, CONFIG.contactEmail)}.`,

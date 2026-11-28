@@ -560,14 +560,14 @@ const routes = [
         '@type': 'CollectionPage',
         '@id': url('/referrals#webpage'),
         name: 'Referral codes and sign-up bonuses',
-        description: 'Referral codes and links from Akash Reddy for credit cards, investing, payments, sending money to India, cash back and AI tools, with a disclosure that he earns a reward and links to each program’s official terms.',
+        description: 'Referral codes and links from Akash Reddy for credit cards, investing, payments, sending money to India, cash back, AI tools and sports picks, with a disclosure that he earns a reward and links to each program’s official terms.',
         author: PERSON_REF,
         dateModified: REFERRALS_UPDATED
       },
       crumbs(['Referrals', '/referrals'])
     ],
     sitemap: { changefreq: 'weekly', priority: '0.9' },
-    llms: 'Referral codes and links of Akash Reddy (credit cards, investing and trading, payments, sending money to India, shopping and cash back, AI tools), each with its own page, a disclosure that he earns a reward and links to official terms. Machine-readable copy: https://reachakash.com/referrals.json'
+    llms: 'Referral codes and links of Akash Reddy (credit cards, investing and trading, payments, sending money to India, shopping and cash back, AI tools, sports picks), each with its own page, a disclosure that he earns a reward and links to official terms. Machine-readable copy: https://reachakash.com/referrals.json'
   },
 
   // ── Business routes. Lab is retired (no links point to it) and stays a noindex

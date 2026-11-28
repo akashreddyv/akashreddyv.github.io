@@ -15,7 +15,7 @@
 - [Socials](https://reachakash.com/socials): Social media profiles. LinkedIn @akashreddyv, GitHub @akashreddyv, Instagram @ak.r48, X @AkReddy48, YouTube @ak.r48, Snapchat @ak.r48, Discord @ak.r48, Threads @ak.r48, Facebook @ak.r48.
 - [Contact](https://reachakash.com/contact): Contact Akash Reddy: the contact form, email mail@reachakash.com, LinkedIn, Instagram or X. Located in Detroit, MI, USA.
 - [Gallery](https://reachakash.com/gallery): Gallery: photos of Akash Reddy, and the reachAkash logo in every version (cover banner, logo on black and on white, the mark, a red-only mark, the website name), including on a t-shirt, polo, cap, bumper sticker, mug and business cards.
-- [Referrals](https://reachakash.com/referrals): Referral codes and links of Akash Reddy (credit cards, investing and trading, payments, sending money to India, shopping and cash back, AI tools), each with its own page, a disclosure that he earns a reward and links to official terms. Machine-readable copy: https://reachakash.com/referrals.json
+- [Referrals](https://reachakash.com/referrals): Referral codes and links of Akash Reddy (credit cards, investing and trading, payments, sending money to India, shopping and cash back, AI tools, sports picks), each with its own page, a disclosure that he earns a reward and links to official terms. Machine-readable copy: https://reachakash.com/referrals.json
 - [Services](https://reachakash.com/services): Services from Akash Reddy at Reach Akash in Detroit, Michigan: custom software (including test data and workflow tools for teams that build and test hardware), custom AI agents, AI coaching (one-on-one or team) and website development (fast, mobile-friendly websites built around what each client needs). Each service has its own page under /services/. Contact: https://reachakash.com/contact
 - [Custom software](https://reachakash.com/services/custom-software): Custom software developer in Detroit, MI: test and data acquisition software, databases, analysis tools and automation from Akash Reddy.
 - [Website development](https://reachakash.com/services/website-development): Website developer in Detroit, MI: Akash Reddy designs and builds fast, mobile-friendly websites, from one-page sites to full business websites.
@@ -67,7 +67,7 @@
 
 ## Referral codes
 
-Akash Reddy's referral codes and links, each with its own page (code, what you get, steps, official terms), last checked 2026-11-23. He earns a reward when people sign up through them. All of them: https://reachakash.com/referrals. Machine-readable: https://reachakash.com/referrals.json
+Akash Reddy's referral codes and links, each with its own page (code, what you get, steps, official terms), last checked 2026-11-27. He earns a reward when people sign up through them. All of them: https://reachakash.com/referrals. Machine-readable: https://reachakash.com/referrals.json
 
 ### By category
 
@@ -77,6 +77,7 @@ Akash Reddy's referral codes and links, each with its own page (code, what you g
 - [Send money to India referral codes](https://reachakash.com/referrals/send-money-to-india): Remitly, Abound (Times of India), MyPursu, Crobo, Unplex
 - [Shopping & cash back referral codes](https://reachakash.com/referrals/shopping): Rakuten, TopCashback, Upside, CashKaro
 - [AI tools referral codes](https://reachakash.com/referrals/ai-tools): Claude
+- [Sports picks referral codes](https://reachakash.com/referrals/sports-picks): Betr
 
 ### Every offer
 
@@ -90,6 +91,7 @@ Akash Reddy's referral codes and links, each with its own page (code, what you g
 - [Kraken Pro referral code](https://reachakash.com/referrals/kraken): code r9rh9tdr; for you: sign-up rewards for both of us; see Kraken's terms; where: US; sign up: https://proinvite.kraken.com/9f1e/m0oer0nw; official terms: https://www.kraken.com/legal/referrals
 - [Kalshi referral link](https://reachakash.com/referrals/kalshi): no code, link only; for you: bonus trading credit; the amount varies, see Kalshi's terms; where: US; sign up: https://kalshi.com/sign-up/?referral=12577357-c5de-4e67-b5d6-a0374d053009; official terms: https://kalshi.com/tc/500
 - [Polymarket referral code](https://reachakash.com/referrals/polymarket): code REACHAKASH; for you: $25 to trade after you sign up with the code and make the qualifying deposit (as of 2026-11-23); where: US; sign up: https://polymarket.us/join/reachakash; official terms: https://www.cftc.gov/filings/orgrules/rules08102614982.pdf
+- [Betr referral link](https://reachakash.com/referrals/betr): no code, link only; for you: $20 in Betr Bucks after you deposit $20 and play $20 in cash entries (as of 2026-11-27); where: US; sign up: https://promos.betr.app/referafriend/arcade?userId=b9398f02-ebf6-4323-99b4-d18d3c237d0a; official terms: https://help.betr.app/en/articles/9462096-betr-picks-terms-and-conditions
 - [Cash App referral code](https://reachakash.com/referrals/cash-app): code DLC673L; for you: $5 when you send $5 or more; terms apply (as of 2026-10-11); where: US; sign up: https://cash.app/refer/DLC673L; official terms: https://cash.app/help/us/en-us/3136-referral-bonus
 - [CRED referral link](https://reachakash.com/referrals/cred): no code, link only; for you: ₹50 off any upcoming bill of ₹100 or more (as of 2026-10-24); where: India; sign up: https://app.cred.club/spQx/3r0c3lt9; official terms: https://cred.club/terms
 - [CheQ referral link](https://reachakash.com/referrals/cheq): no code, link only; for you: up to ₹1,000 in referral rewards (as of 2026-10-24); where: India; sign up: https://cheq.onelink.me/3UIC/1z6bcvu2; official terms: https://cheq.one/legal/terms-and-conditions

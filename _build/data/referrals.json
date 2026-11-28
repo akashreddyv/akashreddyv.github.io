@@ -60,6 +60,16 @@
         "referral links"
       ],
       "intro": "Referral links for AI tools."
+    },
+    {
+      "id": "sports-picks",
+      "label": "Sports picks",
+      "titleLead": "Sports Picks Referral Links",
+      "h1": [
+        "Sports picks",
+        "referral links"
+      ],
+      "intro": "Referral links for sports picks apps. You have to be of legal age and in an eligible state, each app sets its own sign-up bonus and rules, and playing for real money carries risk."
     }
   ],
   "entries": [
@@ -215,6 +225,23 @@
       "lastVerified": "2026-11-23",
       "asOf": "2026-11-23",
       "note": "Polymarket US. The $25 can only be used to trade, and you can withdraw it once those positions settle or you sell them.",
+      "publish": true
+    },
+    {
+      "id": "betr",
+      "name": "Betr",
+      "logo": "/images/referrals/betr.png",
+      "category": "sports-picks",
+      "region": "US",
+      "code": null,
+      "url": "https://promos.betr.app/referafriend/arcade?userId=b9398f02-ebf6-4323-99b4-d18d3c237d0a",
+      "forYou": "$20 in Betr Bucks after you deposit $20 and play $20 in cash entries",
+      "headline": "$20 in Betr Bucks",
+      "iGet": "$20 in Betr Bucks when you qualify",
+      "termsUrl": "https://help.betr.app/en/articles/9462096-betr-picks-terms-and-conditions",
+      "lastVerified": "2026-11-27",
+      "asOf": "2026-11-27",
+      "note": "US only, 18+ or the legal age where you live, not in Massachusetts, and Betr isn't legal in every state. Sign up in the iOS or Android app, not on mobile web. Playing for real money carries risk.",
       "publish": true
     },
     {
